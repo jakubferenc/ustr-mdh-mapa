@@ -1,0 +1,152 @@
+@import '../../node_modules/bulma/bulma.sass';
+// Required Core Stylesheet
+
+/* fonts */
+@import "fonts";
+/* end fonts */
+@import "lib/all";
+
+
+div, textarea {box-sizing: border-box;}
+
+html {
+  font-size: 12px;
+
+  @include from($widescreen) {
+    font-size: 14px;
+  }
+
+  @include from($fullhd) {
+    font-size: $base-font-size;
+  }
+}
+
+body {
+  font-family: sans-serif;
+  font-weight: 200;
+  color: $primary-color;
+  line-height: 1.7;
+  margin: 0;
+
+  @include from($widescreen) {
+
+  }
+
+}
+
+strong {
+  font-weight: 400;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+h1, h2, h3, .title, .large-text, .main-nav {
+  font-family: NBInternationalPro-Reg, sans-serif;
+  font-weight: normal;
+}
+
+p {line-height: $base-line-height;}
+
+/* :CUSTOM CLASSES: */
+.home-info em {
+  font-style: normal;
+  border-bottom: 1px solid black; padding-bottom: 0px;
+}
+
+.main-container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Removes the forced telephone styling on mobile phones */
+a[href^="tel"] {
+  color: inherit; /* Inherit text color of parent element. */
+  text-decoration: none; /* Remove underline. */
+  /* Additional css `propery: value;` pairs here */
+}
+
+[data-rel] {
+  cursor: pointer;
+}
+
+.button {
+
+  border: none;
+  padding: 0;
+
+  &.button-text {
+
+    .text {
+
+      @include from($widescreen) {
+
+        @include fontSize(20px);
+        font-weight: bold;
+        color: #000;
+        border-bottom: 2px solid #000;
+      }
+
+    }
+
+    .arrow, .text {display: inline-block;}
+
+    .arrow {margin-left: 15px;}
+  }
+}
+
+/****************************************************/
+/* :ICONS: */
+
+/****************************************************/
+
+/* :GRID: */
+
+/****************************************************/
+/* :LAYOUT: */
+
+.container {
+  max-width: none;
+
+  padding-left: 0;
+  padding-right: 0;
+
+  @include from($widescreen) {
+    padding-left: $base-widescreen-side-margin;
+    padding-right: $base-widescreen-side-margin;
+  }
+
+
+}
+
+/****************************************************/
+
+
+
+/****************************************************/
+/* :HEADER: */
+@import "partials/header";
+
+/****************************************************/
+
+
+/****************************************************/
+/* :MAIN: */
+@import "partials/sections";
+
+/****************************************************/
+
+/****************************************************/
+/* :COMPONENTS: */
+
+
+/****************************************************/
+
+
+/****************************************************/
+/* :FOOTER: */
+@import "partials/footer";
+
+/****************************************************/

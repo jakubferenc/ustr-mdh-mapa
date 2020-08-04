@@ -1,0 +1,3 @@
+ssh user@ssh.wellnessfood.savana-hosting.cz -p 9136 -t cp -Rfu /www/assemblage.cz/{$NAZEV_PROJEKTU}/dist/* /www/{$NAZEV_PROJEKTU}/
+
+

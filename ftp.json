@@ -1,0 +1,14 @@
+{
+  "deploy" : true,
+  "proxy" : "https://qybic.assemblage.cz",
+  "globs" : [ "!.git", "dist/**/*", "php/**/*", "dist/.htaccess"],
+  "base": ".",
+  "ftp" : {
+    "host" : "wellnessfood.savana-hosting.cz",
+    "user" : "assemblage",
+    "password" : "A$$ervaz258FTP!",
+    "dir" : "/assemblage.cz/qybic",
+    "time" : 5000
+  }
+}
+
