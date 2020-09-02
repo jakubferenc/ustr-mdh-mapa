@@ -38,32 +38,6 @@ const ftp = require( 'vinyl-ftp' );
 const changed = require('gulp-changed');
 
 
-const GulpSSH = require('gulp-ssh');
-
-// test os type
-const isWin = process.platform === "win32";
-const isMac = process.platform === "darwin";
-
-
-
-let privateKeyPath = "";
-if (isWin) {
-  privateKeyPath = 'C:/Users/jakub/.ssh/id_rsa';
-} else {
-  privateKeyPath = '/Users/jakubferenc/.ssh/id_rsa';
-}
-
-const configSSH = {
-  host: 'ssh.wellnessfood.savana-hosting.cz',
-  port: 9136,
-  username: 'user',
-  privateKey: fs.readFileSync(privateKeyPath)
-}
-
-const gulpSSH = new GulpSSH({
-  ignoreErrors: false,
-  sshConfig: configSSH
-})
 // ==========================================
 // 2. FUNCTIONS
 // ==========================================
