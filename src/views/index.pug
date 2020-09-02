@@ -7,4 +7,130 @@ block main
 
   main
 
-    .main-container
+    .main-container(data-component="map-detail-view")
+
+      .filter(data-component="filter")
+        
+        .filter-section-container
+          .filter-section
+            .filter-section-title Řadit dlle
+            .filter-section-list
+              ul
+                li
+                  a(href="#") Kategorie
+                li
+                  a(href="#") Typ objektu
+                li
+                  a(href="#") Roku
+
+          .filter-section
+            .filter-section-title Řadit dle
+            .filter-section-list
+              ul
+                li
+                  a(href="#") položka kategorie
+                li
+                  a(href="#") položka kategorie
+                li
+                  a(href="#") položka kategorie
+
+          .filter-section
+            .filter-section-title Typ objektu
+            .filter-section-list
+              ul
+                li
+                  a(href="#")
+                    .icon
+                    .text
+                li
+                  a(href="#")
+                    .icon
+                    .text
+                li
+                  a(href="#")
+                    .icon
+                    .text
+                li
+                  a(href="#")
+                    .icon
+                    .text
+                li
+                  a(href="#")
+                    .icon
+                    .text
+                li
+                  a(href="#")
+                    .icon
+                    .text
+
+        .filter-button-switch
+          .filter-button-switch-icon-container
+            .icon
+              <svg xmlns="http://www.w3.org/2000/svg" width="19.729" height="27" viewBox="0 0 19.729 27"><defs><style>.a{fill:#1a1818;}</style></defs><path class="a" d="M832.374,540.853l-9.865,15.981-9.864-15.981" transform="translate(-812.645 -540.853)"/><path class="a" d="M859.426,600.558l4.525-4.458V579.9h-4.525Z" transform="translate(-851.826 -573.558)"/></svg>
+            .icon-text Třídit
+
+      .main-content(data-component="list-view")
+
+        .main-content-top-bar
+          a.icon-container.icon-back(href="#")
+            <svg xmlns="http://www.w3.org/2000/svg" width="19.245" height="28" viewBox="0 0 19.245 28"><defs><style>.a{fill:#1a1818;}</style></defs><g transform="translate(-634.499 -538.828)"><path class="a" d="M645.238,566.828l-10.739-14,10.739-14"/><rect class="a" width="10.158" height="10.158" transform="translate(643.586 547.749)"/></g></svg> 
+            span.icon-text Zpět
+
+
+        h1.title Julius Fučík – místa paměti Praha
+
+        .cards-container
+
+          article.card(data-component="card")
+
+            .layer-bar
+              .meta.meta-category test
+
+            .card-content-container
+              .image
+              .title-bar
+                .card-title
+                .icons
+              .footer-bar
+                .meta.meta-address
+                .icons
+
+          article.card(data-component="card")
+
+            .layer-bar
+              .meta.meta-category test
+
+            .card-content-container
+              .image
+              .title-bar
+                .card-title
+                .icons
+              .footer-bar
+                .meta.meta-address
+                .icons
+
+
+          article.card(data-component="card")
+
+            .layer-bar
+              .meta.meta-category test
+
+            .card-content-container
+              .image
+              .title-bar
+                .card-title
+                .icons
+              .footer-bar
+                .meta.meta-address
+                .icons
+                
+
+      .map(data-component="mapbox")
+
+      .view-switch(data-component="view-switch")
+        .heading Zobrazeni: 
+        nav
+          a(href="#").item Položka
+          a(href="#").item Položka
+          a(href="#").item Položka
+          a(href="#").item Položka

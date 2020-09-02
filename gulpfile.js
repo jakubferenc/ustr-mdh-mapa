@@ -50,7 +50,7 @@ let privateKeyPath = "";
 if (isWin) {
   privateKeyPath = 'C:/Users/jakub/.ssh/id_rsa';
 } else {
-  privateKeyPath = '~/.ssh/id_rsa';
+  privateKeyPath = '/Users/jakubferenc/.ssh/id_rsa';
 }
 
 const configSSH = {
@@ -336,9 +336,6 @@ gulp.task('clean', (done) => {
   return del(['dist'], done);
 });
 
-gulp.task('clean-dist-article', (done) => {
-  return del(['dist/article'], done);
-});
 
 // SERVER
 gulp.task('serve', () => {
@@ -357,11 +354,10 @@ gulp.task('pug', () => {
     )
     .pipe($.pug(config.pug))
     .pipe(gulp.dest('dist/'))
-    .pipe(browserSync.stream());
+    .pipe(browserSync.reload({
+      stream: true,
+    }));
   });
-
-gulp.watch(['src/views/**/*.pug'], gulp.series('pug', 'reload'));
-gulp.watch('nastaveni.json', gulp.series('pug', 'reload'));
 
 // SASS
 gulp.task('sass', () => {
@@ -378,14 +374,17 @@ gulp.task('sass', () => {
       stream: true,
     }));
 });
-gulp.watch('src/scss/**/*.scss', gulp.series('sass', 'reload'));
 
 
 gulp.task('js', async () => {
   const bundle = await rollup(config.rollup.bundle);
   bundle.write(config.rollup.output);
+
+  browserSync.reload({
+    stream: true,
+  });
+
 });
-gulp.watch('src/js/**/*.js', gulp.series('js', 'reload'));
 
 // IMAGES
 gulp.task('images', () => gulp.src('src/images/**/*.{jpg,png,svg,gif}')
@@ -409,39 +408,20 @@ gulp.task('copyToDist', () => {
   .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('deployFtp', () => {
-
-  const conn = ftp.create( {
-    host: ftpSettings.ftp.host,
-    user: ftpSettings.ftp.user,
-    password: ftpSettings.ftp.password,
-    parallel: 10,
-    timeOffset: ftpSettings.ftp.time
-  });
-
-  return gulp.src( ftpSettings.globs, {base: ftpSettings.base, buffer: false})
-    .pipe(conn.newerOrDifferentSize(ftpSettings.ftp.dir))
-    .pipe(conn.dest(ftpSettings.ftp.dir))
-    .pipe(browserSync.stream());
-
+gulp.task('watch', (cb) => {
+  gulp.watch(['site.webmanifest'], gulp.series('pug'));
+  gulp.watch('src/js/**/*.js', gulp.series('js'));
+  gulp.watch('src/scss/**/*.scss', gulp.series('sass'));
+  gulp.watch(['src/views/**/*.pug'], gulp.series('pug'));
+  gulp.watch('src/*.html', gulp.series(browserSync.reload));
+  gulp.watch(['src/images/**/*.+(png|jpg|jpeg|gif|svg)'], gulp.series('images'));
+  gulp.watch(['src/views/**/*.pug'], gulp.series('pug'));
+  gulp.watch('nastaveni.json', gulp.series('pug'));
+  cb();
 });
-
-gulp.task('deployProduction',  () => {
-  return gulpSSH
-    .exec(['cp -Rfu /www/assemblage.cz/jakubferenc/dist/ /www/jakubferenc.cz/'], {filePath: 'commands.log'})
-    .pipe(gulp.dest('logs'))
-})
-
-
-gulp.watch(['site.webmanifest'], gulp.series('pug'));
-gulp.watch('src/js/**/*.js', gulp.series('js', browserSync.reload));
-gulp.watch('src/scss/**/*.scss', gulp.series('sass'));
-gulp.watch(['src/views/**/*.pug'], gulp.series('pug'));
-gulp.watch('src/*.html', gulp.series(browserSync.reload));
-gulp.watch(['src/images/**/*.+(png|jpg|jpeg|gif|svg)'], gulp.series('images'));
 
 // GULP:build
 gulp.task('build', gulp.series('clean', 'mergeJson', 'pug', 'sass', 'js', 'images', 'fonts', 'copyToDist'));
 
 // GULP:default
-gulp.task('default', gulp.series('build'));
+gulp.task('default', gulp.series('build', 'watch', 'serve'));

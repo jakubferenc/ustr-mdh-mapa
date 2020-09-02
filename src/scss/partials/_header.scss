@@ -1,0 +1,21 @@
+.header-main {
+    height: 42px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: $base-mobile-side-margin;
+    padding-right: $base-mobile-side-margin;
+}
+
+.logo-nav {width: 450px;}
+.main-nav {
+    width: 400px;
+    font-size: 12px;
+    color: #7E7E7E;
+    text-transform: uppercase;
+
+    .item {margin-left: 40px;}
+    .item:first-child {margin-left: 0;}
+}
+.user-actions-nav {width: 450px; text-align: right;}

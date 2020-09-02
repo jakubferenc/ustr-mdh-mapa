@@ -22,8 +22,8 @@ html {
 }
 
 body {
-  font-family: sans-serif;
-  font-weight: 200;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 400;
   color: $primary-color;
   line-height: 1.7;
   margin: 0;
@@ -43,9 +43,8 @@ a {
   text-decoration: none;
 }
 
-h1, h2, h3, .title, .large-text, .main-nav {
-  font-family: NBInternationalPro-Reg, sans-serif;
-  font-weight: normal;
+h1, h2, h3 {
+  font-weight: 200;
 }
 
 p {line-height: $base-line-height;}

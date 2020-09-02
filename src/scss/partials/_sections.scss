@@ -1,0 +1,118 @@
+.main-container {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icon-text {font-weight: 700; text-transform: uppercase;}
+.icon-container {display: flex; align-items: center; }
+[data-component="filter"] {
+    height: calc(100vh - 42px);
+    background: #fff;
+    display: flex;
+    align-items: center;
+
+    .filter-section-container {
+        display: none;
+    }
+
+    &.open .filter-section-container {
+        display: block;
+    }
+
+    .filter-button-switch {
+        width: 77px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #000;
+            color: #fff;
+
+            svg .a {fill: #fff !important}
+        }
+
+        .filter-button-switch-icon-container {
+            
+            text-align: center;
+            
+        }
+    }
+}
+
+[data-component="list-view"] {
+    width: auto;
+    flex: 1;
+    background: #eee;
+    height: calc(100vh - 42px);
+
+    .main-content-top-bar {
+        margin-top: 40px;
+        padding-left: $base-mobile-side-margin * 2;
+        padding-right: $base-mobile-side-margin * 2;
+    }
+    .icon-container {
+        .icon-text {margin-left: $base-mobile-side-margin / 2}
+    }
+    .title {
+        margin-top: $base-mobile-side-margin * 2; 
+        text-align: center; 
+        font-size: 48px; font-weight: normal;
+        margin-bottom: $base-mobile-side-margin * 4; 
+    }
+
+    .cards-container {
+        padding-left: $base-mobile-side-margin * 2;
+        padding-right: $base-mobile-side-margin * 2;
+        display: flex;
+        justify-content: space-between;
+    }
+
+}
+
+[data-component="card"] {
+
+    min-width: 248px; 
+    background: none;
+    box-shadow: none;
+
+
+    .layer-bar {
+        background: #48D0B0;
+        height: 33px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        position: relative;
+        z-index: 0;
+        padding-left: $base-mobile-side-margin;
+        padding-right: $base-mobile-side-margin;
+        font-size: 12px;
+        line-height: 33px;
+    }
+    
+    .card-content-container {
+        margin-top: -5px;
+        min-height: 339px;
+        position: relative;
+        z-index: 1;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+    }
+
+}
+
+
+[data-component="mapbox"] {
+    width: 50%;
+    background: red;
+    height: calc(100vh - 42px);
+}
+
+[data-component="view-switch"] {
+    position: absolute; top: 60px; right: 60px;
+}
