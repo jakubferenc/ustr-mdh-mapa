@@ -1,5 +1,5 @@
 {
-  "name": "assemblage-starter",
+  "name": "jakubferenc-starter",
   "version": "1.0.0",
   "description": "The `dev` branch is the main development branch. Merge all accepted feature branches to the `dev` branch or make pull/merge requests. If feature branch was merged, delete that branch. Keep updated your feature branches with current `dev` status.",
   "main": "gulpfile.js",
@@ -10,11 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/jakubferenccz/prototype.git"
+    "url": "git+ssh://git@github.com:jakubferenc/ustr-mdh-mapa.git"
   },
   "author": "Mgr. Jakub Ferenc",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/jakubferenccz/prototype#readme",
+  "homepage": "https://github.com/jakubferenc/ustr-mdh-mapa/",
   "devDependencies": {
     "@babel/core": "^7.7.0",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
@@ -77,14 +77,10 @@
     "vinyl-ftp": "^0.6.1"
   },
   "dependencies": {
-    "@glidejs/glide": "^3.4.1",
-    "@types/smoothscroll-polyfill": "^0.3.1",
     "bulma": "^0.8.0",
     "gulp": "^4.0.2",
-    "huntjs": "^5.0.0",
     "leaflet": "^1.7.1",
     "mapbox-gl": "^1.12.0",
-    "seamless-scroll-polyfill": "^1.1.0",
     "svgstore": "^3.0.0-2"
   }
 }
