@@ -3,12 +3,15 @@ The `dev` branch is the main development branch. Merge all accepted feature bran
 
 # Requirements
 ## Development environment
-* [Github account](https://bitbucgithubket.org/)
+* [Github account](https://github.com/)
 * [Git](https://git-scm.com/downloads)
-* [SourceTree](https://www.sourcetreeapp.com/)
 * [Node.js & npm](https://nodejs.org/en/) (use the LTS version)
 * [Gulp](http://gulpjs.com/) (`npm install gulp-cli -g`)
 * ... and text editor ie. [Visual Studio Code](https://code.visualstudio.com/)
+
+## Follows code standards
+* [ESLint Config for JavaScript Standard Style](https://github.com/standard/eslint-config-standard)
+
 
 ## Start to develop
 * Clone the repository from [MDH team](https://bitbucket.org/DOPLNIT/DOPLNIT)

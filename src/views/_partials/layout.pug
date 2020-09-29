@@ -1,3 +1,6 @@
+//- Include pug mixins and components (order matters)
+include ../components/filter.pug
+
 
 doctype html
 html(lang="cs")
@@ -18,9 +21,6 @@ html(lang="cs")
       link(rel="apple-touch-icon" sizes="120x120" href="/assets/img/apple-touch-icon-120x120.png")
       link(rel="apple-touch-icon" sizes="152x152" href="/assets/img/apple-touch-icon-152x152.png")
 
-      <meta name="google-site-verification" content="TUISU3Si652d93sr6HaA9gQvZX8fK2aDi3VyfjPvVw8" />
-      <meta name="msvalidate.01" content="5651FB29C6F4AEE97EA50AEA2610C140" />
-
       <!-- SEO -->
       <meta name="description" content=" "/>
       <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -36,9 +36,8 @@ html(lang="cs")
       <meta name="twitter:description" content="" />
       <meta name="twitter:title" content="" />
       <meta name="twitter:site" content="" />
-      <meta name="msvalidate.01" content="5651FB29C6F4AEE97EA50AEA2610C140" />
-      <meta name="google-site-verification" content="TUISU3Si652d93sr6HaA9gQvZX8fK2aDi3VyfjPvVw8" />
-      <script type='application/ld+json' class='yoast-schema-graph yoast-schema-graph--main'>{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"#website","url":"","name":"jakubferenc.cz | data, (ux) design, filosofie","publisher":{"@id":"#/schema/person/"},"potentialAction":{"@type":"SearchAction","target":"?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"CollectionPage","@id":"#webpage","url":"","inLanguage":"cs-CZ","name":"jakubferenc.cz | data, (ux) design, filosofie","isPartOf":{"@id":"#website"},"about":{"@id":"#/schema/person/"},"description":"data, (ux) design, filosofie"}]}</script>
+      <meta name="msvalidate.01" content="" />
+      <meta name="google-site-verification" content="" />
       <!-- / SEO -->
 
     - let bodyClass = 'index';
@@ -48,12 +47,18 @@ html(lang="cs")
 
     block css
       <!-- inject:css -->
+      link(rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin="")
       link(rel="stylesheet" href="/assets/css/main.css?" + Math.floor(Date.now() / 1000))
       <!-- endinject -->
 
     block js
 
       <!-- Global site tag (gtag.js) - Google Analytics -->
+      script(src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin="")
       script(async src="https://www.googletagmanager.com/gtag/js?id=")
       script.
         window.dataLayer = window.dataLayer || [];
@@ -68,9 +73,7 @@ html(lang="cs")
     body(class=bodyClass)
 
       block svg
-        <!-- inject:svg -->
-
-        <!-- endinject -->
+        <!-- inject:svg --><!-- endinject -->
 
       block head
         include ./header.pug
@@ -80,9 +83,8 @@ html(lang="cs")
       block foot
         include ./footer.pug
 
-
       block javascript
+        script.
 
         script(src="/assets/js/app.build.js?" + Math.floor(Date.now() / 1000))
-
 

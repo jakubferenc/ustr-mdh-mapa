@@ -1,4 +1,8 @@
-@import '../../node_modules/bulma/bulma.sass';
+@charset "utf-8";
+
+// Import only what you need from Bulma
+@import "../../node_modules/bulma/sass/utilities/_all.sass";
+@import "../../node_modules/bulma/sass/base/_all.sass";
 // Required Core Stylesheet
 
 /* fonts */
@@ -98,7 +102,7 @@ a[href^="tel"] {
 
 /****************************************************/
 /* :ICONS: */
-
+.icon.icon-action {cursor: pointer;}
 /****************************************************/
 
 /* :GRID: */
