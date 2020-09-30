@@ -1,4 +1,4 @@
-import { __toggleClass } from './lib/utils/utils';
+import { __addClass, __remove, __removeClass, __toggleClass } from './lib/utils/utils';
 import geoJsonMdhData from './data-mdh.json';
 
 
@@ -62,10 +62,45 @@ const domLoad = () => {
 
 
   // map detail
+  const $mapDetailView = document.querySelector('[data-component="map-detail-view"]');
   const $mapDetailFilter = document.querySelector('[data-component="filter"]');
   const $mapDetailFilterSwitch = document.querySelector('.filter-button-switch');
   $mapDetailFilterSwitch.addEventListener('click', (e) => {
     __toggleClass($mapDetailFilter, 'open');
+  });
+
+  // map view switch
+  const $mapViewSwitch = document.querySelector('[data-component="view-switch"] ');
+  const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
+
+  const $mapbox = document.getElementById('mapbox');
+  const $listViewContainer = document.querySelector('.list-view-container');
+
+  Array.from($mapViewSwitchLinks).forEach($item => {
+
+    $item.addEventListener('click', (e) => {
+
+      const viewSwitchAction = e.currentTarget.getAttribute('rel');
+
+      $mapDetailView.setAttribute('data-mode', `${viewSwitchAction}`);
+
+      if (viewSwitchAction === 'default') {
+
+        mymap.invalidateSize();
+
+      }
+
+      if (viewSwitchAction === 'map') {
+
+        mymap.invalidateSize();
+
+      }
+
+      __removeClass($mapViewSwitchLinks, 'active');
+      __addClass(e.currentTarget, 'active');
+
+    });
+
   });
 
 };

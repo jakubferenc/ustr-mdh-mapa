@@ -4,6 +4,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &[data-mode="objects"] {
+
+      [data-component="mapbox"] {
+        display: none;
+
+      }
+
+      [data-component="list-view-container"] {
+        width: 100%;
+        .cards-container {
+          width: 1385px;
+          margin: 0 auto;
+        }
+      }
+
+    }
+
+    &[data-mode="map"] {
+
+      [data-component="list-view-container"] {
+        display: none;
+      }
+
+      [data-component="mapbox"] {
+        width: 100%;
+      }
+
+    }
+
+    &[data-mode="default"] {
+
+    }
+
 }
 
 .icon-text {font-weight: 700; text-transform: uppercase;}
@@ -159,11 +193,9 @@
     }
 }
 
-
 [data-component="list-view-container"] {
   background: #eee;
   height: calc(100vh - 42px);
-  width: calc(50vw - 77px);
   overflow: auto;
 
   .main-content-top-bar {
@@ -173,14 +205,6 @@
   }
   .icon-container {
       .icon-text {margin-left: $base-mobile-side-margin / 2}
-  }
-
-
-  .cards-container {
-      padding-left: $base-mobile-side-margin * 2;
-      padding-right: $base-mobile-side-margin * 2;
-      display: flex;
-      justify-content: space-between;
   }
 
   [data-component="card"] {
@@ -199,14 +223,17 @@
   }
   .cards-container {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
+    padding-left: $base-mobile-side-margin * 2;
+    padding-right: $base-mobile-side-margin * 2;
+    justify-content: space-between;
   }
+
 }
 
 [data-component="card"] {
 
-    min-width: 248px;
+    width: 238px;
     background: none;
     box-shadow: none;
     margin-bottom: 50px;
@@ -294,13 +321,49 @@
     height: calc(100vh - 42px);
     position: relative;
     z-index: 1;
+    min-width: 50%;
 }
 
 [data-component="view-switch"] {
-    position: absolute; top: 60px; right: 60px;
-    z-index: 9;
-    width: 165px;
-    height: 45px;
-    background-color: #fff;
-    box-shadow: 0 0.2em .5em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+  position: absolute;
+  top: $base-mobile-side-margin * 2; /* the same as .list-view-detail button back margin top */
+  right: 60px;
+  z-index: 9;
+  width: 165px;
+  height: 60px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0.2em .5em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+
+  .view-switch-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .item {
+    margin-top: 7px; /* :TODO: */
+    margin-left: 10px;
+
+    &:first-child {
+      margin-left: 0;
+      &::before {content: none}
+    }
+
+    &:before {
+      content: "";
+      width: 1px;
+      height: 17px;
+      background: $passive-gray;
+      margin-right: 10px;
+      display: inline-block;
+      position: relative; top: -5px;
+    }
+
+    &.active,
+    &:hover {
+      svg * {fill: #000}
+    }
+  }
+
 }
