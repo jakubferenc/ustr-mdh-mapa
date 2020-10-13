@@ -19,6 +19,8 @@ const rollupBabel = require('rollup-plugin-babel');
 const rollupJson = require('rollup-plugin-json');
 const postcssAutoprefixer = require('autoprefixer');
 const postcssCssnano = require('cssnano');
+const mapStream = require('map-stream');
+
 
 const path = require('path');
 
@@ -261,7 +263,7 @@ gulp.task('reload', () => {
 
 // pug:index & pug:home (pug -> html)
 gulp.task('pug', () => {
-  return gulp.src(['src/views/**/*.pug'])
+  return gulp.src(['src/views/index.pug'])
     .pipe(
       $.data(() => JSON.parse(fs.readFileSync('./temp/data_merged.json')))
     )
@@ -319,7 +321,57 @@ const mergeJsonFunc = () => {
   .pipe(gulp.dest('./temp/'));
 };
 
-gulp.task('mergeJson', gulp.series('clean-temp', mergeJsonFunc));
+const mergeMapJson = () => {
+  return gulp.src('./data-maps/**/*.json')
+  .pipe(mapStream((file, done) => {
+
+    const filename = path.basename(file.path, path.extname(file.path));
+
+    const json = JSON.parse(file.contents.toString());
+    const transformedJson = {
+      [filename]: json
+    };
+    file.contents = new Buffer.from(JSON.stringify(transformedJson));
+
+    done(null, file);
+  }))
+  .pipe($.mergeJson({
+    fileName: 'data_maps_merged.json',
+  }))
+  .pipe(gulp.dest('./temp/'));
+};
+
+const preparePagesMapDetail = (done) => {
+
+  const data = JSON.parse(fs.readFileSync('./temp/data_maps_merged.json'));
+
+  for (const [key, value] of Object.entries(data)) {
+
+    //  html
+     gulp.src('src/views/_templates/map-detail.pug')
+      .pipe(
+        $.data(
+          (file) => value
+        )
+      )
+      /*.pipe(
+        $.data(() => JSON.parse(fs.readFileSync('./data/data_merged.json')))
+      )*/
+      .pipe($.pug(config.pug))
+      .pipe($.rename(`${key}.html`))
+      .pipe(gulp.dest(`./dist/`));
+
+  }
+
+  done();
+
+};
+
+gulp.task('mergeJson', gulp.series('clean-temp', mergeJsonFunc, mergeMapJson));
+
+gulp.task('preparePagesMapDetail',  gulp.series(mergeMapJson, preparePagesMapDetail));
+
+
 
 gulp.task('copyToDist', () => {
   return gulp.src('.htaccess')
@@ -364,7 +416,7 @@ gulp.task('watch', (cb) => {
 });
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'mergeJson', 'pug', 'sass', 'js', 'images', 'fonts', 'copyToDist'));
+gulp.task('build', gulp.series('clean', 'mergeJson', 'sass', 'js', 'images', 'fonts', 'pug', 'copyToDist'));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));
