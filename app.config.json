@@ -1,5 +1,46 @@
 {
-  "config": {
+  "appConfig": {
+    "mdh": {
+      "object": {
+        "types": {
+          "1": {
+            "label": "Památníky",
+            "slug": "pamatnik",
+            "icon": "icon-object-pamatnik"
+          },
+          "2": {
+            "label": "Ulice",
+            "slug": "ulice",
+            "icon": "icon-object-ulice"
+          },
+          "3": {
+            "label": "Muzea",
+            "slug": "muzeum",
+            "icon": "icon-object-muzeum"
+          },
+          "4": {
+            "label": "Dokumenty",
+            "slug": "dokument",
+            "icon": "icon-object-dokument"
+          },
+          "5": {
+            "label": "Budovy",
+            "slug": "budova",
+            "icon": "icon-object-budova"
+          },
+          "6": {
+            "label": "Místa",
+            "slug": "misto",
+            "icon": "icon-object-misto"
+          },
+          "7": {
+            "label": "Artefakty",
+            "slug": "artefakt",
+            "icon": "icon-object-artefakt"
+          }
+        }
+      }
+    },
     "mapbox": {
       "accessToken": "pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
     }

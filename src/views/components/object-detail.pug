@@ -1,11 +1,11 @@
-mixin object-detail(opts)
+mixin object-detail(objekt)
 
-    article.card.card-detail(data-component="card-detail")
+    article.card.card-detail.is-hidden(data-object-detail-id=`${objekt.properties.name}` data-component="card-detail")
 
-      .layer-bar
+      .layer-bar(style=`background-color: ${mapSettings.layers[objekt.properties.layer].color}`)
         .meta.meta-category
           span.text-icon #
-          span.text-content Místa fyzicky související s Fučíkem
+          span.text-content #{objekt.properties.layer}
 
         .actions
           a(href="#" data-component="close").item Zavřít
@@ -14,7 +14,7 @@ mixin object-detail(opts)
 
         .subheader-bar
           .submetas
-            .meta.meta-address Bylanská 308/39 Praha
+            .meta.meta-address #{objekt.properties.layer}
 
           .actions
             a(href="#").item.item-bookmark
@@ -40,18 +40,18 @@ mixin object-detail(opts)
               </svg>
 
         .title-bar
-          .card-title Greagkso Pomník
+          .card-title #{objekt.properties.name}
 
         .card-content-in
 
           .card-content
             .card-content--description
-              p Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
+              p !{objekt.properties.description}
 
             .card-content--meta
               .item-meta
                 .item-meta--heading GPS
-                .item-meta--content
+                .item-meta--content #{objekt.properties.y}, #{objekt.properties.x}
 
           .gallery.gallery-card-detail
             .gallery-nav
@@ -63,7 +63,7 @@ mixin object-detail(opts)
               .gallery-description Zdroj: Sed ut perspiciatis unde omnis
 
 
-        .related-maps
+        .related-maps.is-hidden
 
           .title Objevuje se na těchto mapách
 

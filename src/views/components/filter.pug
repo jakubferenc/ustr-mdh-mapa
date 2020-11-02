@@ -3,8 +3,8 @@ mixin filter(opts)
   .filter(data-component="filter")
 
     .filter-section-container
-      .filter-section
-        .filter-section-title Řadit dlle
+      .filter-section.is-hidden
+        .filter-section-title Řadit dle
         .filter-section-list
 
           a.filter-item(href="#") Kategorie
@@ -14,80 +14,24 @@ mixin filter(opts)
           a.filter-item(href="#") Roku
 
       .filter-section
-        .filter-section-title Řadit dle
+        .filter-section-title Kategorie
         .filter-section-list.filter-section-list--full-width.filter-section-list--label
-          a.filter-item(href="#") Z rukopisu Reportáže
-          a.filter-item(href="#") Místa fyzicky související s Fučíkem
-          a.filter-item(href="#") Kult Julia Fučíka ve veřejném prostoru: parky, náměstí, továrny, budovy
-          a.filter-item(href="#") Přesuny pomníků po roce 1989
-          a.filter-item(href="#") Podniky a pracovní kolektivy pojmenované po J. Fučíkovi
+
+          each val, key in opts.layers
+            a.filter-item(href="#" data-filter-layer=`${key}`)
+              span.filter-item-text #{key}
+              span.color-indicator(style=`background-color: ${val.color}`)
 
       .filter-section
         .filter-section-title Typ objektu
         .filter-section-list.filter-section-list--icons
 
-              a.filter-item.filter-item--pomniky(href="#")
-                .icon
-                  <svg xmlns="http://www.w3.org/2000/svg" width="17.702" height="26.906" viewBox="0 0 17.702 26.906">
-                    <g id="Group_936" data-name="Group 936" transform="translate(0 0)">
-                      <path id="Path_286" data-name="Path 286" d="M168.111,321.943v13.684H173.6V321.943l-2.744-3.067Z" transform="translate(-162.004 -318.876)"/>
-                      <rect id="Rectangle_420" data-name="Rectangle 420" width="11.794" height="3.541" transform="translate(2.954 18.117)"/>
-                      <rect id="Rectangle_421" data-name="Rectangle 421" width="17.702" height="3.882" transform="translate(0 23.023)"/>
-                    </g>
-                  </svg>
-                .text Pomníky
-              a.filter-item.filter-item--ulice(href="#")
-                .icon
-                  <svg xmlns="http://www.w3.org/2000/svg" width="17.702" height="27.686" viewBox="0 0 17.702 27.686">
-                    <path id="Path_280" data-name="Path 280" d="M134,568.559v-.341h1.536v2.321h8.083V542.853h-8.083v2.321H134v-2.321h-8.083v27.686H134Zm0-16.8v-4.334h1.536V552.1H134Zm0,6.93v-4.334h1.536v4.676H134Zm0,6.93v-4.334h1.536v4.676H134Z" transform="translate(-125.919 -542.853)"/>
-                  </svg>
-                .text Ulice
-              a.filter-item.filter-item--muzea(href="#")
-                .icon
-                  <svg xmlns="http://www.w3.org/2000/svg" width="17.702" height="27.868" viewBox="0 0 17.702 27.868">
-                    <g id="Group_937" data-name="Group 937" transform="translate(0 0)">
-                      <rect id="Rectangle_418" data-name="Rectangle 418" width="3.535" height="11.94" transform="translate(2.245 10.68)"/>
-                      <rect id="Rectangle_419" data-name="Rectangle 419" width="3.535" height="11.94" transform="translate(12.046 10.68)"/>
-                      <rect id="Rectangle_441" data-name="Rectangle 441" width="3.535" height="11.94" transform="translate(7.145 10.68)"/>
-                      <path id="Path_305" data-name="Path 305" d="M1091.325,682.3h-16.265v3.883h17.7V682.3h-1.438Z" transform="translate(-1075.061 -658.316)"/>
-                      <path id="Path_306" data-name="Path 306" d="M1082.931,551.1h11.345l-8.553-9.314-8.553,9.314h5.761Z" transform="translate(-1076.81 -541.785)"/>
-                    </g>
-                  </svg>
-                .text Muzea
-              a.filter-item.filter-item--dokumenty(href="#")
-                .icon
-                  <svg xmlns="http://www.w3.org/2000/svg" width="17.702" height="27.686" viewBox="0 0 17.702 27.686">
-                    <g id="Group_934" data-name="Group 934" transform="translate(0 0)">
-                      <path id="Path_283" data-name="Path 283" d="M447.243,551.229v-8.376h-9.326v27.686h17.7V551.229h-8.377Z" transform="translate(-437.918 -542.853)"/>
-                      <path id="Path_284" data-name="Path 284" d="M500.552,547.681v6.187h6.187Z" transform="translate(-489.861 -546.857)"/>
-                    </g>
-                  </svg>
-                .text Dokumenty
-              a.filter-item.filter-item--budovy(href="#")
-                .icon
-                  <svg id="Group_933" data-name="Group 933" xmlns="http://www.w3.org/2000/svg" width="17.703" height="27.686" viewBox="0 0 17.703 27.686">
-                    <path id="Path_279" data-name="Path 279" d="M467.987,454.133V450.2h-4.516v4.324h4.516Z" transform="translate(-456.878 -426.843)"/>
-                    <rect id="Rectangle_432" data-name="Rectangle 432" width="4.909" height="4.675" transform="translate(0 6.382)"/>
-                    <rect id="Rectangle_433" data-name="Rectangle 433" width="4.909" height="5.016"/>
-                    <rect id="Rectangle_434" data-name="Rectangle 434" width="5.116" height="5.016" transform="translate(6.275)"/>
-                    <rect id="Rectangle_435" data-name="Rectangle 435" width="4.946" height="4.675" transform="translate(12.757 12.422)"/>
-                    <rect id="Rectangle_436" data-name="Rectangle 436" width="4.946" height="5.016" transform="translate(12.757)"/>
-                    <rect id="Rectangle_437" data-name="Rectangle 437" width="4.946" height="4.675" transform="translate(12.757 6.382)"/>
-                    <rect id="Rectangle_438" data-name="Rectangle 438" width="4.909" height="4.675" transform="translate(0 12.422)"/>
-                    <rect id="Rectangle_439" data-name="Rectangle 439" width="5.116" height="4.675" transform="translate(6.275 6.382)"/>
-                    <rect id="Rectangle_440" data-name="Rectangle 440" width="5.116" height="4.675" transform="translate(6.275 12.422)"/>
-                    <path id="Path_304" data-name="Path 304" d="M436.979,425.034h.341v5.69h5.228V421.5h-17.7v9.224h5.228v-5.69h6.905Z" transform="translate(-424.845 -403.038)"/>
-                  </svg>
-                .text Budovy
-              a.filter-item.filter-item--publikace(href="#")
-                .icon
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18.502" height="27.344" viewBox="0 0 18.502 27.344">
-                    <g id="Group_1043" data-name="Group 1043" transform="translate(0 0)">
-                      <path id="Path_281" data-name="Path 281" d="M271.528,545.336v19.431a4.1,4.1,0,0,1,3.068-1.389H290.03V542.853H274.011A2.486,2.486,0,0,0,271.528,545.336Z" transform="translate(-271.528 -542.853)"/>
-                      <path id="Path_282" data-name="Path 282" d="M273.534,673.721c0,.019,0,.038,0,.057s0,.03,0,.045a2.73,2.73,0,0,0,2.727,2.727h15.433v-2.044H276.068a.683.683,0,1,1,0-1.366h15.621V671.1H276.255A2.716,2.716,0,0,0,273.534,673.721Z" transform="translate(-273.187 -649.205)"/>
-                    </g>
-                  </svg>
-                .text Publikace
+              each typeID in opts.types
+                a(class=`filter-item filter-item--${appConfig.mdh.object.types[typeID].label}` data-filter-type=`${appConfig.mdh.object.types[typeID].slug}` href="#")
+                  .icon
+                    img(src=`/assets/images/icons/${appConfig.mdh.object.types[typeID].icon}.svg`)
+
+                  .text #{appConfig.mdh.object.types[typeID].label}
 
     .filter-button-switch
       .filter-button-switch-icon-container

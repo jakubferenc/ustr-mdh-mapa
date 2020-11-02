@@ -9,100 +9,22 @@ block main
 
     .main-container(data-component="map-detail-view")
 
-      +filter()
+      +filter({
+      "types": mapSettings.types,
+      "layers": mapSettings.layers,
+      })
 
       .main-content(data-component="list-view-container")
-
-        article.card.card-detail.is-hidden(data-component="card-detail")
-
-          .layer-bar
-            .meta.meta-category
-              span.text-icon #
-              span.text-content Místa fyzicky související s Fučíkem
-
-            .actions
-              a(href="#" data-component="close").item Zavřít
-
-          .card-content-container
-
-            .subheader-bar
-              .submetas
-                .meta.meta-address Bylanská 308/39 Praha
-
-              .actions
-                a(href="#").item.item-bookmark
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16.23" height="24.958" viewBox="0 0 16 26">
-                    <g id="add_to_bookmarks_with_plus_" data-name="add to bookmarks (with plus)" transform="translate(-0.097 0.182)">
-                      <g id="Group_1006" data-name="Group 1006" transform="translate(4.408 4.258)">
-                        <line id="Line_100" data-name="Line 100" x2="7" transform="translate(0 3.5)" fill="none" stroke="#000" stroke-width="1"/>
-                        <line id="Line_101" data-name="Line 101" y2="7" transform="translate(3.5)" fill="none" stroke="#000" stroke-width="1"/>
-                      </g>
-                      <g id="Path_393" data-name="Path 393" transform="translate(-132.234 -89.491)" fill="none">
-                        <path d="M140.446,106.431l.217.21,7.9,7.626V89.309h-16.23v24.958l7.9-7.626Z" stroke="#000"/>
-                        <path d="M 147.560546875 111.9111633300781 L 147.560546875 90.30860900878906 L 133.3309478759766 90.30860900878906 L 133.3309478759766 111.9111557006836 L 139.5337524414062 105.9218521118164 L 139.7511901855469 105.7119293212891 L 140.4458618164062 105.0412521362305 L 141.1404266357422 105.7120208740234 L 141.3577423095703 105.9218902587891 L 147.560546875 111.9111633300781 M 148.560546875 114.2668304443359 L 140.6631317138672 106.6412734985352 L 140.4457550048828 106.4313507080078 L 140.2283325195312 106.6412734985352 L 132.3309478759766 114.2668304443359 L 132.3309478759766 89.30860900878906 L 148.560546875 89.30860900878906 L 148.560546875 114.2668304443359 Z" stroke="none"/>
-                      </g>
-                    </g>
-                  </svg>
-
-                a(href="#").item.item-link
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14.941" height="23.98" viewBox="0 0 14.941 23.98">
-                    <g id="icon_link" data-name="icon link" transform="translate(0 0)">
-                      <path id="Path_340" data-name="Path 340" d="M1229.615,200.784v2.142a3.82,3.82,0,0,1,3.683,3.813v4.843a3.815,3.815,0,0,1-7.63,0v-4.843a3.818,3.818,0,0,1,.122-.954c-.01-.052-.019-.1-.029-.156s-.02-.1-.028-.154c-.013-.075-.022-.15-.032-.225-.007-.049-.014-.1-.019-.147-.009-.083-.015-.166-.022-.249,0-.041-.007-.083-.01-.124q-.01-.187-.011-.373v-2.168a5.918,5.918,0,0,0-2.112,4.55v4.843a5.956,5.956,0,1,0,11.912,0v-4.843a5.969,5.969,0,0,0-.153-1.337h0A5.922,5.922,0,0,0,1229.615,200.784Z" transform="translate(-1223.527 -193.558)"/>
-                      <path id="Path_341" data-name="Path 341" d="M1249.163,170.282V168.14a3.819,3.819,0,0,1-3.683-3.813v-4.843a3.815,3.815,0,1,1,7.63,0v4.843a3.82,3.82,0,0,1-.122.954c.011.052.019.1.029.156s.02.1.028.153c.013.077.023.153.033.23.006.048.013.1.019.143.009.085.016.169.022.254,0,.04.007.08.01.12q.01.187.01.373v2.168a5.917,5.917,0,0,0,2.112-4.55v-4.843a5.956,5.956,0,1,0-11.912,0v4.843a5.959,5.959,0,0,0,5.824,5.955Z" transform="translate(-1240.309 -153.528)"/>
-                    </g>
-                  </svg>
-
-            .title-bar
-              .card-title Greagkso Pomník
-
-            .card-content-in
-
-              .card-content
-                .card-content--description
-                  p Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-
-                .card-content--meta
-                  .item-meta
-                    .item-meta--heading Adresa
-                    .item-meta--content Kompletní adresa objektu,ompletní adresa objektu, čí číslo, město, stát?
-                  .item-meta
-                    .item-meta--heading Adresa
-                    .item-meta--content Kompletní adresa objektu, číslo, město, stát?
-                  .item-meta
-                    .item-meta--heading Adresa
-                    .item-meta--content Kompletní adresa objektu, číslo, město, stát?
-
-              .gallery.gallery-card-detail
-                .gallery-nav
-                  .prev
-                  .next
-                .gallery-image-container
-                  .gallery-image
-                    img(src="assets/images/dummy/object-dummy-image.jpg")
-                  .gallery-description Zdroj: Sed ut perspiciatis unde omnis
-
-
-            .related-maps
-
-              .title Objevuje se na těchto mapách
-
-              .list-maps
-
-                .item-map-thumb
-
-                  img.image-bg(src="assets/images/dummy/map-dummy-image-02.jpg" alt="")
-                  .item-map-thumb--title Julius Fučík - místa paměti Praha 2
-
-                .item-map-thumb
-
-                  img.image-bg(src="assets/images/dummy/map-dummy-image-02.jpg" alt="")
-                  .item-map-thumb--title Julius Fučík - další mapa o Fučíkovi
 
         .main-content-top-bar
           a.icon-container.icon-back(href="#")
             <svg xmlns="http://www.w3.org/2000/svg" width="19.245" height="28" viewBox="0 0 19.245 28"><defs><style>.a{fill:#1a1818;}</style></defs><g transform="translate(-634.499 -538.828)"><path class="a" d="M645.238,566.828l-10.739-14,10.739-14"/><rect class="a" width="10.158" height="10.158" transform="translate(643.586 547.749)"/></g></svg>
             span.icon-text Zpět
 
+
+        each objekt in features
+
+          +object-detail(objekt)
 
         div(data-component="list-view")
 
@@ -112,35 +34,7 @@ block main
 
             each objekt in features
 
-              - const dataJson = JSON.stringify(objekt);
-
-              article.card(data-component="card" data-metadata=`${dataJson}`)
-
-                .layer-bar
-                  .meta.meta-category #{objekt.properties.layer}
-
-                .card-content-container
-                  .gallery
-                    .gallery-nav
-                      .prev
-                      .next
-                    .gallery-image
-                      img(src="assets/images/dummy/object-dummy-image.jpg")
-
-                  .card-content
-                    .title-bar
-                      .card-title #{objekt.properties.Name}
-                      .icons
-                        <svg class="icon icon-action" xmlns="http://www.w3.org/2000/svg" width="12.871" height="19.793" viewBox="0 0 12.871 19.793">
-                          <g transform="translate(-132.331 -89.309)" fill="none">
-                            <path d="M138.766,102.888l.172.166L145.2,109.1V89.309H132.331V109.1l6.263-6.047Z" stroke="black"/>
-                          </g>
-                        </svg>
-                    .footer-bar
-                      .meta.meta-address GPS: #{objekt.properties.y}, #{objekt.properties.x}
-                      .icons
-                        img(src="assets/images/icons/icon-document.svg")
-
+              +object-card(objekt)
 
       .map(id="mapbox" data-component="mapbox")
 

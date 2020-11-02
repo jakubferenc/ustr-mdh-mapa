@@ -241,6 +241,9 @@ const config = {
 config.pug.locals = {
   makeCzechDateFromYMD, makeCzechDateTimeFromYMDT,
 };
+
+const appConfigJson = JSON.parse(fs.readFileSync('./app.config.json'));
+
 // ==========================================
 // 4. TASKS
 // ==========================================
@@ -268,13 +271,24 @@ gulp.task('pug', () => {
       $.data(() => JSON.parse(fs.readFileSync('./temp/data_merged.json')))
     )
     .pipe(
-      $.data(() => JSON.parse(fs.readFileSync('./app.config.json')))
+      $.data(() => appConfigJson)
     )
     .pipe($.pug(config.pug))
     .pipe(gulp.dest('dist/'))
     .pipe(browserSync.reload({
       stream: true,
     }));
+  });
+
+
+  gulp.task('injectSvg', () => {
+
+    return gulp.src('dist/*.html')
+      .pipe($.embedSvg({
+        root: 'dist/'
+      }))
+      .pipe(gulp.dest('./dist'));
+
   });
 
 // SASS
@@ -354,9 +368,9 @@ const preparePagesMapDetail = (done) => {
           (file) => value
         )
       )
-      /*.pipe(
-        $.data(() => JSON.parse(fs.readFileSync('./data/data_merged.json')))
-      )*/
+      .pipe(
+        $.data(() => appConfigJson)
+      )
       .pipe($.pug(config.pug))
       .pipe($.rename(`${key}.html`))
       .pipe(gulp.dest(`./dist/`));
@@ -369,7 +383,7 @@ const preparePagesMapDetail = (done) => {
 
 gulp.task('mergeJson', gulp.series('clean-temp', mergeJsonFunc, mergeMapJson));
 
-gulp.task('preparePagesMapDetail',  gulp.series(mergeMapJson, preparePagesMapDetail));
+gulp.task('preparePagesMapDetail',  gulp.series('mergeJson', preparePagesMapDetail));
 
 
 
@@ -416,7 +430,7 @@ gulp.task('watch', (cb) => {
 });
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'mergeJson', 'sass', 'js', 'images', 'fonts', 'pug', 'copyToDist'));
+gulp.task('build', gulp.series('clean', 'mergeJson', 'sass', 'js', 'images', 'fonts', 'pug', 'preparePagesMapDetail', 'copyToDist', 'injectSvg'));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));

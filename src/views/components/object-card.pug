@@ -1,0 +1,32 @@
+mixin object-card(objekt)
+
+  - const dataJson = JSON.stringify(objekt.properties);
+
+  article.card(data-object-id=`${objekt.properties.name}` data-object-name=`${objekt.properties.name}` data-component="card" data-object-layer=`${objekt.properties.layer}` data-object-type=`${objekt.properties.type}` )
+
+    .layer-bar(style=`background-color: ${mapSettings.layers[objekt.properties.layer].color}`)
+      .meta.meta-category #{objekt.properties.layer}
+
+    .card-content-container
+      .gallery
+        .gallery-nav
+          .prev
+          .next
+        .gallery-image
+          img(src="/assets/images/dummy/object-dummy-image.jpg")
+
+      .card-content
+        .title-bar
+          .card-title #{objekt.properties.name}
+          .icons
+            <svg class="icon icon-action" xmlns="http://www.w3.org/2000/svg" width="12.871" height="19.793" viewBox="0 0 12.871 19.793">
+              <g transform="translate(-132.331 -89.309)" fill="none">
+                <path d="M138.766,102.888l.172.166L145.2,109.1V89.309H132.331V109.1l6.263-6.047Z" stroke="black"/>
+              </g>
+            </svg>
+        .footer-bar
+          .meta.meta-address GPS: #{objekt.properties.y}, #{objekt.properties.x}
+          .icons
+
+            if (objekt.properties.type)
+              img(src=`/assets/images/icons/icon-object-${objekt.properties.type}.svg`)
