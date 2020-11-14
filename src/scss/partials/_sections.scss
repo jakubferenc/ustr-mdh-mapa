@@ -213,6 +213,15 @@
   flex: 1;
   position: relative;
 
+  &.inactive {
+
+    [data-component="list-view"] {
+      opacity: .1;
+      height: 100vh;
+      overflow: hidden;
+    }
+  }
+
   .main-content-top-bar {
       margin-top: $base-mobile-side-margin * 2;
       padding-left: $base-mobile-side-margin * 2;
@@ -230,6 +239,7 @@
 
 
 [data-component="list-view"] {
+
   .title {
     margin-top: $base-mobile-side-margin * 2;
     text-align: center;
@@ -338,8 +348,9 @@
 
   $card-detail-padding: 30px;
 
-
   margin-top: $base-mobile-side-margin * 2;
+  margin-bottom: $base-mobile-side-margin * 2;
+
   padding-left: $base-mobile-side-margin * 2;
   padding-right: $base-mobile-side-margin * 2;
   position: absolute; top: 0; left: 0;
@@ -384,6 +395,8 @@
 
   .card-content-container {
     padding: 10px $card-detail-padding;
+    cursor: default; /* overriding the cursor for .card */
+
   }
 
   .subheader-bar {
@@ -426,6 +439,8 @@
   .title-bar {justify-content: center; margin-bottom: $base-mobile-side-margin * 2;}
   .title-bar .card-title {
     font-size: 32px;
+
+
   }
 
 
@@ -590,6 +605,29 @@
 
 }
 
+.leaflet-marker-icon {
+
+  &.inactive {
+    opacity: .1;
+    pointer-events: none;
+  }
+
+  &.active {
+    z-index: 999 !important;
+
+    .mdh-map-icon {
+
+      $iconSize: 50px;
+
+      width: $iconSize;
+      height: $iconSize;
+      border-radius: $iconSize;
+
+    }
+
+  }
+
+}
 
 
 /*
@@ -605,6 +643,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 15px auto;
+  transition: width, heigh, border-radius .25s ease-in-out;
+
 
   &.ulice {
     background-image: url(../images/icons/icon-object-ulice.svg);

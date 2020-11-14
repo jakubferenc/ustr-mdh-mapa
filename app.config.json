@@ -41,6 +41,21 @@
         }
       }
     },
+    "images": {
+      "object": {
+        "full": {
+          "width": 1920
+        },
+        "thumbnail": {
+          "width": 218,
+          "height": 158
+        },
+        "galleryThumbnail": {
+          "width": 743,
+          "height": 460
+        }
+      }
+    },
     "mapbox": {
       "accessToken": "pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
     }

@@ -1,5 +1,5 @@
 import { __addClass, __remove, __hasClass, __removeClass, __toggleClass } from './lib/utils/utils';
-import geoJsonMdhData from '../../data-maps/topografie-pameti-julius-fucik.json';
+import geoJsonMdhData from '../../data-maps/topografie-pameti-julius-fucik/topografie-pameti-julius-fucik.json';
 
 
 const domLoad = () => {
@@ -9,10 +9,119 @@ const domLoad = () => {
   const d = document;
   const $body = d.body;
 
-  const mymap = L.map('mapbox', {zoomControl: false}).setView([50.08804, 14.42076], 7);
 
   let currentPage = undefined;
   let previousPage = undefined;
+
+  let store = {
+    page: {},
+    data: {},
+    markes: {}
+  };
+
+  const mymap = L.map('mapbox', {zoomControl: true}).setView([50.08804, 14.42076], 7);
+  store.map = mymap;
+
+  // functions
+  ////////////////////////////////////////////////////////////
+
+  const enableAllInactiveMarkers = () => {
+
+    const $markers = document.querySelectorAll('.mdh-map-icon');
+    Array.from($markers).forEach( ($marker) => {
+
+      __removeClass($marker.parentElement, 'inactive');
+
+    })
+
+  };
+
+  const disableAllInactiveMarkers = () => {
+
+    const $markers = document.querySelectorAll('.mdh-map-icon');
+    Array.from($markers).forEach( ($marker) => {
+
+      __addClass($marker.parentElement, 'inactive');
+
+    })
+
+  };
+
+  const disableAllActiveMarkers = () => {
+
+    const $markers = document.querySelectorAll('.leaflet-marker-icon.active');
+    Array.from($markers).forEach( ($marker) => {
+
+      __removeClass($marker, 'active');
+
+    })
+
+  };
+
+  const closeAllLeafletTooltips = () => {
+
+    const $tooltips = document.querySelectorAll('.leaflet-popup');
+    Array.from($tooltips).forEach( ($item) => {
+      $item.remove();
+    })
+
+  }
+
+  const cardDetailOpen = (cardProperties, fromMarker = false) => {
+
+    const $activeCardDetail = document.querySelector(`[data-object-detail-id]:not(.is-hidden)`);
+
+    if ($activeCardDetail) {
+      __addClass($activeCardDetail, 'is-hidden');
+    }
+
+    const $cardDetail = document.querySelector(`[data-object-detail-id="${cardProperties.objectId}"]`);
+
+    previousPage = window.location;
+    history.replaceState(null, cardProperties.objectId, `?objekt=${cardProperties.objectId}`);
+
+    // prepare list view container for showing the object detail
+    __addClass($listViewContainer, 'inactive');
+
+    /// save scroll position so that we can return back to it once detail is closed
+    store.page.scrollTopPositionBeforeDetailOpen = $listViewContainer.scrollTop;
+    $listViewContainer.scrollTop = 0;
+
+    // open leafLeft marker popup
+    disableAllInactiveMarkers();
+
+    const $activeMarker = document.querySelector(`[data-marker-id="${cardProperties.objectId}"]`).parentElement;
+    __removeClass($activeMarker, 'inactive');
+    __addClass($activeMarker, 'active');
+
+
+    //store.markers[cardProperties.objectId].openPopup();
+    store.map.setView(store.markes[cardProperties.objectId].getLatLng(), 7);
+
+
+    __removeClass($cardDetail, 'is-hidden');
+
+  };
+
+  const cardDetailClose = ($cardDetailObj) => {
+
+    closeAllLeafletTooltips();
+
+    history.replaceState(null, '', previousPage);
+
+    __removeClass($listViewContainer, 'inactive');
+
+    $listViewContainer.scrollTop = store.page.scrollTopPositionBeforeDetailOpen;
+
+    __toggleClass($cardDetailObj, 'is-hidden');
+
+    enableAllInactiveMarkers();
+    disableAllActiveMarkers();
+
+  }
+
+
+  ////////////////////////////////////////////////////////////
 
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Mapová data ÚSTR | Podkladová mapa &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -48,13 +157,35 @@ const domLoad = () => {
 
           const thisMarker = L.marker(latlng, {icon: L.divIcon({
             className: '',
-            html: `<div style="background-color: ${places.mapSettings.layers[feature.properties.layer].color}" class="${classNamesArray.join(' ')}" aria-label="${feature.properties.name}" data-marker-type="${feature.properties.type}"  data-marker-layer="${feature.properties.layer}"></div>`,
+            html: `
+              <div style="background-color: ${places.mapSettings.layers[feature.properties.layer].color}"
+                   class="${classNamesArray.join(' ')}"
+                   aria-label="${feature.properties.name}"
+                   data-marker-id="${feature.properties.name}"
+                   data-marker-type="${feature.properties.type}"
+                   data-marker-layer="${feature.properties.layer}">
+              </div>`,
             iconSize: 'auto',
             riseOnHover: true,
-            click: function(e) {
-              alert("dsd");
-            }
           })});
+
+          thisMarker.on('mouseover', (e) => {
+
+            thisMarker.openPopup();
+
+          });
+
+          thisMarker.on('click', (e) => {
+
+            cardDetailOpen({objectId: e.target.feature.properties.name});
+            thisMarker.setZIndexOffset(30);
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+          });
+
+          store.markes[feature.properties.name] = thisMarker;
+
 
           return thisMarker;
 
@@ -62,6 +193,8 @@ const domLoad = () => {
   });
   const placesGroup = L.layerGroup([vrstvaPlaces]);
   placesGroup.addTo(mymap);
+
+
 
 
   // map detail
@@ -73,11 +206,13 @@ const domLoad = () => {
   });
 
   // map view switch
-  const $mapViewSwitch = document.querySelector('[data-component="view-switch"] ');
+  const $mapViewSwitch = document.querySelector('[data-component="view-switch"]');
   const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
 
   const $mapbox = document.getElementById('mapbox');
-  const $listViewContainer = document.querySelector('.list-view-container');
+  const $listViewContainer = document.querySelector('[data-component="list-view-container"]');
+  const $listView = document.querySelector('[data-component="list-view"]');
+
 
   Array.from($mapViewSwitchLinks).forEach($item => {
 
@@ -112,13 +247,7 @@ const domLoad = () => {
   Array.from($cardDetail).forEach( ($item) => {
 
     const $closeBtn = $item.querySelector('[data-component="close"]');
-    $closeBtn.addEventListener('click', (e) => {
-
-      history.replaceState(null, '', previousPage);
-
-      __toggleClass($item, 'is-hidden');
-
-    });
+    $closeBtn.addEventListener('click', (e) => cardDetailClose($item));
 
   });
 
@@ -129,18 +258,7 @@ const domLoad = () => {
 
   Array.from($cards).forEach( ($card) => {
 
-    const cardId = $card.dataset.objectId;
-
-    $card.addEventListener('click', (e) => {
-
-      const $cardDetail = document.querySelector(`[data-object-detail-id="${cardId}"]`);
-
-      previousPage = window.location;
-      history.replaceState(null, $card.dataset.objectName, `?objekt=${$card.dataset.objectName}`);
-
-      __removeClass($cardDetail, 'is-hidden');
-
-    });
+    $card.addEventListener('click', (e) => cardDetailOpen($card.dataset));
 
   });
 

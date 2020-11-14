@@ -2,7 +2,6 @@
 // 1. DEPENDENCIES
 // ==========================================
 // gulp-dev-dependencies
-
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const gulp = require('gulp');
@@ -20,6 +19,15 @@ const rollupJson = require('rollup-plugin-json');
 const postcssAutoprefixer = require('autoprefixer');
 const postcssCssnano = require('cssnano');
 const mapStream = require('map-stream');
+const slugify = require('slugify');
+const slugifyCustomDefaultSettings = {
+  replacement: '-',  // replace spaces with replacement character, defaults to `-`
+  remove: undefined, // remove characters that match regex, defaults to `undefined`
+  lower: true,      // convert to lower case, defaults to `false`
+  strict: false,     // strip special characters except replacement, defaults to `false`
+  locale: 'cs'       // language code of the locale to use
+};
+const Jimp = require('jimp');
 
 
 const path = require('path');
@@ -34,6 +42,7 @@ const ftpSettings = require('./ftp.json');
 const ftp = require( 'vinyl-ftp' );
 const changed = require('gulp-changed');
 
+const {google} = require('googleapis');
 
 // ==========================================
 // 2. FUNCTIONS
@@ -251,8 +260,13 @@ const appConfigJson = JSON.parse(fs.readFileSync('./app.config.json'));
 gulp.task('clean', (done) => {
   return del(['dist'], done);
 });
+
 gulp.task('clean-temp', (done) => {
   return del(['temp'], done);
+});
+
+gulp.task('clean-temp-data-maps', (done) => {
+  return del(['temp/data-maps'], done);
 });
 
 // SERVER
@@ -268,7 +282,7 @@ gulp.task('reload', () => {
 gulp.task('pug', () => {
   return gulp.src(['src/views/index.pug'])
     .pipe(
-      $.data(() => JSON.parse(fs.readFileSync('./temp/data_merged.json')))
+      $.data(() => JSON.parse(fs.readFileSync('./temp/data_maps_merged.json')))
     )
     .pipe(
       $.data(() => appConfigJson)
@@ -335,13 +349,258 @@ const mergeJsonFunc = () => {
   .pipe(gulp.dest('./temp/'));
 };
 
+const prepareObjectJsonWithImages = (cb) => {
+
+  const subfolderWithImagesName = 'images';
+  const allowedImageExtensions = ['jpg', 'jpeg', 'tif', 'png', 'tiff'];
+  const generateThumbnailImages = true;
+
+  return gulp.src('./data-maps/**/*.json')
+  .pipe(mapStream((file, done) => {
+
+    const filename = path.basename(file.path, path.extname(file.path));
+    const parentFolderName = path.basename(path.dirname(file.path));
+    const parentFolderPath = path.dirname(file.path);
+    const subfolderWithImagesPath = `${parentFolderPath}${path.sep}${subfolderWithImagesName}`;
+    const subfolderImages = fs.readdirSync(subfolderWithImagesPath);
+
+    const objectsJson = JSON.parse(file.contents.toString());
+
+    const objectsNewFeatures = [];
+
+    objectsJson.features.forEach((mapObject) => {
+
+      const newMapObjectFeatureItem = mapObject
+      newMapObjectFeatureItem.images = [];
+
+      newMapObjectFeatureItem.properties.slug = slugify(mapObject.properties.name, slugifyCustomDefaultSettings);
+
+      // check if a folder with the object images exists
+      try {
+
+        subfolderImages.forEach( (folderName) => {
+
+          const folderNameSlug = slugify(folderName, slugifyCustomDefaultSettings);
+
+          if ( newMapObjectFeatureItem.properties.slug === folderNameSlug) {
+
+            // get actual files from the folder
+            const subfolderImagesFiles = fs.readdirSync(`${subfolderWithImagesPath}${path.sep}${folderName}`);
+
+            // process the images one by one and create object structures
+            /// find main image
+            /// resize & convert types
+            const thisFilePath = `${subfolderWithImagesPath}${path.sep}${folderName}${path.sep}`;
+
+            const hasMainPhotoBeenCreated = false;
+
+            subfolderImagesFiles.forEach( (thisFilename) => {
+
+              let thisFileImageExtensionWithoutDot = path.extname(thisFilename).split('.');
+
+              if (thisFileImageExtensionWithoutDot.length > 1) {
+                thisFileImageExtensionWithoutDot = thisFileImageExtensionWithoutDot[1].toLowerCase();
+              } else {
+                return; // probably a dot file like .DS_STORE and other
+              }
+
+              if (allowedImageExtensions.includes(thisFileImageExtensionWithoutDot)) {
+
+                const thisFilenameOnly = thisFilename.split('.')[0];
+                const thisFileImagePath = `${thisFilePath}${thisFilename}`;
+                const potentialTxtFilePath = `${thisFilePath}${thisFilenameOnly}.txt`;
+
+                const imageObj = {};
+
+                imageObj.name = thisFilename;
+                imageObj.thumbnail = `${thisFilename}-thumbnail.jpg`;
+                imageObj.galleryThumbnail = `${thisFilename}-gallery-thumbnail.jpg`;
+
+                // is main?
+                // :TODO: define better way to check which photos are main, via naming "hlavni"?
+                // :TODO: now, the first image in the stack is the main photo
+                imageObj.isMain = false;
+
+                if (!hasMainPhotoBeenCreated) {
+
+                  imageObj.isMain = true;
+
+                }
+
+                if (generateThumbnailImages) {
+
+                  // create new directory in ./temp
+                  try {
+                    // first check if directory already exists
+                    if (!fs.existsSync(`./temp/data-maps/`)) {
+                        fs.mkdirSync(`./temp/data-maps/`);
+                        //console.log("Directory is created.");
+                    } else {
+                        //console.log("Directory already exists.");
+                    }
+                  } catch (err) {
+                    console.log(err);
+                  }
+
+                  try {
+                    // first check if directory already exists
+                    if (!fs.existsSync(`./temp/data-maps/${filename}/`)) {
+                        fs.mkdirSync(`./temp/data-maps/${filename}/`);
+                        //console.log("Directory is created.");
+                    } else {
+                        //console.log("Directory already exists.");
+                    }
+                  } catch (err) {
+                    console.log(err);
+                  }
+
+                  const thisObjectFolderNameForImages = `./temp/data-maps/${filename}/${newMapObjectFeatureItem.properties.slug}`;
+
+                  try {
+                    // first check if directory already exists
+                    if (!fs.existsSync(`${thisObjectFolderNameForImages}${path.sep}`)) {
+                        fs.mkdirSync(`${thisObjectFolderNameForImages}${path.sep}`);
+                        //console.log("Directory is created.");
+                    } else {
+                        //console.log("Directory already exists.");
+                    }
+                  } catch (err) {
+                    console.log(err);
+                  }
+                  // resize, rename original
+                  Jimp.read(thisFileImagePath)
+                  .then(image => {
+
+                    const imageWidth = image.bitmap.width;
+
+                    // check if the original image size is larger than the max full width size defined in the app settings
+                    if (imageWidth > appConfigJson.appConfig.images.object.full.width) {
+                      image.resize(appConfigJson.appConfig.images.object.full.width, Jimp.AUTO); // resize
+                    }
+
+                    return image
+                    .quality(80) // set JPEG quality
+                    .write(`${thisObjectFolderNameForImages}${path.sep}${thisFilenameOnly}.jpg`); // save
+
+                  })
+                  .catch(err => {
+                    console.error(err);
+                  });
+
+                  // generate, esize, rename thumbs
+                  Jimp.read(thisFileImagePath)
+                  .then(image => {
+                    return image
+                      .resize(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
+                      .quality(80) // set JPEG quality
+                      .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`); // save
+                  })
+                  .catch(err => {
+                    console.error(err);
+                  });
+
+                  // generate, resize, rename gallery thumbs
+                  Jimp.read(thisFileImagePath)
+                  .then(image => {
+                    return image
+                      .resize(appConfigJson.appConfig.images.object.galleryThumbnail.width, appConfigJson.appConfig.images.object.galleryThumbnail.height) // resize
+                      .quality(80) // set JPEG quality
+                      .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`); // save
+                  })
+                  .catch(err => {
+                    console.error(err);
+                  });
+
+                }
+
+                // description
+                if (fs.existsSync(potentialTxtFilePath)) {
+                  // found txt file
+                  const data = fs.readFileSync(potentialTxtFilePath, {encoding:'utf8', flag:'r'});
+                  imageObj.description = data;
+                }
+
+                newMapObjectFeatureItem.images.push(imageObj);
+
+
+              } else {
+                console.log('skipping a file with a not allowed extension, this filename: ' + thisFilename);
+              }
+
+            });
+
+            return; // we have found the folderName equal to objectName, jump out of the loop
+          }
+
+        });
+
+
+      } catch (err) {
+          console.log(err);
+      }
+
+      // add newly created feature item to new features array
+      objectsNewFeatures.push(newMapObjectFeatureItem);
+
+    });
+
+    objectsJson.features = objectsNewFeatures;
+
+    // create final json structure
+    const transformedJson = {
+      [filename]: objectsJson
+    };
+
+    // create new directory in ./temp
+    try {
+      // first check if directory already exists
+      if (!fs.existsSync(`./temp/data-maps/`)) {
+          fs.mkdirSync(`./temp/data-maps/`);
+          console.log("Directory is created.");
+      } else {
+          console.log("Directory already exists.");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+    try {
+      // first check if directory already exists
+      if (!fs.existsSync(`./temp/data-maps/${filename}/`)) {
+          fs.mkdirSync(`./temp/data-maps/${filename}/`);
+          console.log("Directory is created.");
+      } else {
+          console.log("Directory already exists.");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+    fs.writeFile(`./temp/data-maps/${filename}/${filename}.json`, JSON.stringify(transformedJson), (err) => {
+      if (!err) {
+          console.log('done');
+      }
+    });
+
+
+    done(null, file);
+    cb();
+
+  }))
+
+};
+gulp.task('prepareObjectJsonWithImages', gulp.series('clean-temp-data-maps', prepareObjectJsonWithImages));
+
+
 const mergeMapJson = () => {
+
   return gulp.src('./data-maps/**/*.json')
   .pipe(mapStream((file, done) => {
 
     const filename = path.basename(file.path, path.extname(file.path));
 
     const json = JSON.parse(file.contents.toString());
+    json.slug = slugify(filename, slugifyCustomDefaultSettings);
     const transformedJson = {
       [filename]: json
     };
@@ -353,6 +612,7 @@ const mergeMapJson = () => {
     fileName: 'data_maps_merged.json',
   }))
   .pipe(gulp.dest('./temp/'));
+
 };
 
 const preparePagesMapDetail = (done) => {
@@ -416,6 +676,7 @@ gulp.task('svg', () => {
 
 });
 
+
 gulp.task('watch', (cb) => {
   gulp.watch(['site.webmanifest'], gulp.series('pug'));
   gulp.watch('src/js/**/*.js', gulp.series('js'));
@@ -430,7 +691,7 @@ gulp.task('watch', (cb) => {
 });
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'mergeJson', 'sass', 'js', 'images', 'fonts', 'pug', 'preparePagesMapDetail', 'copyToDist', 'injectSvg'));
+gulp.task('build', gulp.series('clean', 'mergeJson', 'sass', 'js', 'images', 'fonts', 'preparePagesMapDetail', 'copyToDist', 'injectSvg'));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));
