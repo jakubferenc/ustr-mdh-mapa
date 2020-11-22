@@ -1,6 +1,7 @@
 mixin object-card(objekt)
 
-  - const dataJson = JSON.stringify(objekt.properties);
+  - const images = objekt.images
+
 
   article.card(data-object-id=`${objekt.properties.name}` data-object-name=`${objekt.properties.name}` data-component="card" data-object-layer=`${objekt.properties.layer}` data-object-type=`${objekt.properties.type}` )
 
@@ -13,7 +14,8 @@ mixin object-card(objekt)
           .prev
           .next
         .gallery-image
-          img(src="/assets/images/dummy/object-dummy-image.jpg")
+          if (objekt.images.length > 0)
+            img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${objekt.images[0].thumbnail}`)
 
       .card-content
         .title-bar

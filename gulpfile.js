@@ -3,6 +3,7 @@
 // ==========================================
 // gulp-dev-dependencies
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_ENV = 'development';
 
 const gulp = require('gulp');
 // check package.json for gulp plugins
@@ -19,12 +20,13 @@ const rollupJson = require('rollup-plugin-json');
 const postcssAutoprefixer = require('autoprefixer');
 const postcssCssnano = require('cssnano');
 const mapStream = require('map-stream');
+const latinize = require('latinize');
 const slugify = require('slugify');
 const slugifyCustomDefaultSettings = {
   replacement: '-',  // replace spaces with replacement character, defaults to `-`
-  remove: undefined, // remove characters that match regex, defaults to `undefined`
+  remove: /[*+~.()'"!:@]/g, // remove characters that match regex, defaults to `undefined`
   lower: true,      // convert to lower case, defaults to `false`
-  strict: false,     // strip special characters except replacement, defaults to `false`
+  strict: true,     // strip special characters except replacement, defaults to `false`
   locale: 'cs'       // language code of the locale to use
 };
 const Jimp = require('jimp');
@@ -68,6 +70,12 @@ function startBrowserSync() {
 function fileContents(filePath, file) {
   return file.contents.toString();
 }
+
+const getCleanUpJSONFromImgTags = (jsonString, pattern = '<img[^<]+>') => {
+
+  return jsonString.replace(new RegExp(pattern, "gmi"), '');
+
+};
 
 // ==========================================
 // CONFIG
@@ -341,7 +349,7 @@ gulp.task('fonts', () => gulp.src('src/fonts/**/*.*')
     .pipe(gulp.dest('dist/assets/fonts')));
 
 
-const mergeJsonFunc = () => {
+const mergeJson = () => {
   return gulp.src('./data/**/*.json')
   .pipe($.mergeJson({
     fileName: 'data_merged.json',
@@ -354,9 +362,38 @@ const prepareObjectJsonWithImages = (cb) => {
   const subfolderWithImagesName = 'images';
   const allowedImageExtensions = ['jpg', 'jpeg', 'tif', 'png', 'tiff'];
   const generateThumbnailImages = true;
+  const debug = false;
+
+  // create ./temp
+  try {
+    // first check if directory already exists
+    if (!fs.existsSync(`./temp/`)) {
+        fs.mkdirSync(`./temp/`);
+        console.log("Directory is created.");
+    } else {
+        console.log("Directory already exists.");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  // create new directory in ./temp
+  try {
+    // first check if directory already exists
+    if (!fs.existsSync(`./temp/data-maps/`)) {
+        fs.mkdirSync(`./temp/data-maps/`);
+        //console.log("Directory is created.");
+    } else {
+        //console.log("Directory already exists.");
+    }
+  } catch (err) {
+    console.log(err);
+  }
 
   return gulp.src('./data-maps/**/*.json')
   .pipe(mapStream((file, done) => {
+
+    //const allPromises = [];
 
     const filename = path.basename(file.path, path.extname(file.path));
     const parentFolderName = path.basename(path.dirname(file.path));
@@ -368,181 +405,203 @@ const prepareObjectJsonWithImages = (cb) => {
 
     const objectsNewFeatures = [];
 
+    const statistics = {
+      countObjects: objectsJson.features.length,
+      countFolders: subfolderImages.length,
+      countObjectsHavingFolder: 0,
+      iterationsOverObjectsBegin: 0,
+      iterationsOverObjectsFinished: 0,
+      folderNameUsedForObject: []
+    };
+
+    const subfolderImagesNormalized = subfolderImages.map(item => latinize(slugify(item.normalize('NFC'), slugifyCustomDefaultSettings)).toLowerCase());
+
     objectsJson.features.forEach((mapObject) => {
 
-      const newMapObjectFeatureItem = mapObject
+      if (debug) {
+        statistics.iterationsOverObjectsBegin++;
+        console.log("/////////////////////////////////////////////////");
+        console.log("object start");
+      }
+
+      const newMapObjectFeatureItem = mapObject;
       newMapObjectFeatureItem.images = [];
 
-      newMapObjectFeatureItem.properties.slug = slugify(mapObject.properties.name, slugifyCustomDefaultSettings);
+      newMapObjectFeatureItem.properties.slug = latinize(slugify(mapObject.properties.name.normalize('NFC'), slugifyCustomDefaultSettings));
 
-      // check if a folder with the object images exists
-      try {
+      if (debug) {
+        console.log("object start name: " + newMapObjectFeatureItem.properties.slug);
+      }
 
-        subfolderImages.forEach( (folderName) => {
+      // if true, it means that the map object has images to display
+      // compare it based on the sluggified versions of the object and subfolder names
+      const hasObjectFolderWithImagesIndex = subfolderImagesNormalized.indexOf(newMapObjectFeatureItem.properties.slug);
 
-          const folderNameSlug = slugify(folderName, slugifyCustomDefaultSettings);
+      if ( hasObjectFolderWithImagesIndex > -1 ) {
 
-          if ( newMapObjectFeatureItem.properties.slug === folderNameSlug) {
+        if (debug) {
+          statistics.countObjectsHavingFolder++;
+          statistics.folderNameUsedForObject.push(subfolderImagesNormalized[hasObjectFolderWithImagesIndex]);
+        }
 
-            // get actual files from the folder
-            const subfolderImagesFiles = fs.readdirSync(`${subfolderWithImagesPath}${path.sep}${folderName}`);
+        const folderName = subfolderImages[hasObjectFolderWithImagesIndex];
 
-            // process the images one by one and create object structures
-            /// find main image
-            /// resize & convert types
-            const thisFilePath = `${subfolderWithImagesPath}${path.sep}${folderName}${path.sep}`;
+        const thisFilePath = `${subfolderWithImagesPath}${path.sep}${folderName}${path.sep}`;
 
-            const hasMainPhotoBeenCreated = false;
+        // get a file list from the folder
+        const subfolderImagesFiles = fs.readdirSync(`${thisFilePath}`);
 
-            subfolderImagesFiles.forEach( (thisFilename) => {
+        // process the images one by one and create object structures
+        /// find main image
+        /// resize & convert types
 
-              let thisFileImageExtensionWithoutDot = path.extname(thisFilename).split('.');
+        let hasMainPhotoBeenCreated = false;
 
-              if (thisFileImageExtensionWithoutDot.length > 1) {
-                thisFileImageExtensionWithoutDot = thisFileImageExtensionWithoutDot[1].toLowerCase();
-              } else {
-                return; // probably a dot file like .DS_STORE and other
+        subfolderImagesFiles.forEach( (thisFilename) => {
+
+          thisFilename = thisFilename.normalize('NFKD');
+
+          const thisFileImageExtension = path.extname(thisFilename);
+          let thisFileImageExtensionWithoutDot = thisFileImageExtension.split('.');
+
+          if (thisFileImageExtensionWithoutDot.length > 1) {
+            thisFileImageExtensionWithoutDot = thisFileImageExtensionWithoutDot[1].toLowerCase();
+          } else {
+            // probably a dot file like .DS_STORE and other
+          }
+
+          if (allowedImageExtensions.includes(thisFileImageExtensionWithoutDot)) {
+
+            const thisFilenameOnly = path.basename(thisFilename, thisFileImageExtension);
+            const thisFileImagePath = `${thisFilePath}${thisFilename}`;
+            const potentialTxtFilePath = `${thisFilePath}${thisFilenameOnly}.txt`;
+
+            const imageObj = {};
+
+            imageObj.name = latinize(slugify(`${thisFilenameOnly}-full.jpg`).toLowerCase());
+            imageObj.thumbnail = latinize(slugify(`${thisFilenameOnly}-thumbnail.jpg`).toLowerCase());
+            imageObj.galleryThumbnail = latinize(slugify(`${thisFilenameOnly}-gallery-thumbnail.jpg`).toLowerCase());
+
+            // is main?
+            // :TODO: define better way to check which photos are main, via naming "hlavni"?
+            // :TODO: now, the first image in the stack is the main photo
+            imageObj.isMain = false;
+
+            if (!hasMainPhotoBeenCreated) {
+
+              imageObj.isMain = true;
+              hasMainPhotoBeenCreated = true;
+
+            }
+
+            if (generateThumbnailImages) {
+
+              try {
+                // first check if directory already exists
+                if (!fs.existsSync(`./temp/data-maps/${filename}/`)) {
+                    fs.mkdirSync(`./temp/data-maps/${filename}/`);
+                    //console.log("Directory is created.");
+                } else {
+                    //console.log("Directory already exists.");
+                }
+              } catch (err) {
+                console.log(err);
               }
 
-              if (allowedImageExtensions.includes(thisFileImageExtensionWithoutDot)) {
-
-                const thisFilenameOnly = thisFilename.split('.')[0];
-                const thisFileImagePath = `${thisFilePath}${thisFilename}`;
-                const potentialTxtFilePath = `${thisFilePath}${thisFilenameOnly}.txt`;
-
-                const imageObj = {};
-
-                imageObj.name = thisFilename;
-                imageObj.thumbnail = `${thisFilename}-thumbnail.jpg`;
-                imageObj.galleryThumbnail = `${thisFilename}-gallery-thumbnail.jpg`;
-
-                // is main?
-                // :TODO: define better way to check which photos are main, via naming "hlavni"?
-                // :TODO: now, the first image in the stack is the main photo
-                imageObj.isMain = false;
-
-                if (!hasMainPhotoBeenCreated) {
-
-                  imageObj.isMain = true;
-
+              try {
+                // first check if directory already exists
+                if (!fs.existsSync(`./temp/data-maps/${filename}/${subfolderWithImagesName}/`)) {
+                    fs.mkdirSync(`./temp/data-maps/${filename}/${subfolderWithImagesName}/`);
+                    //console.log("Directory is created.");
+                } else {
+                    //console.log("Directory already exists.");
                 }
-
-                if (generateThumbnailImages) {
-
-                  // create new directory in ./temp
-                  try {
-                    // first check if directory already exists
-                    if (!fs.existsSync(`./temp/data-maps/`)) {
-                        fs.mkdirSync(`./temp/data-maps/`);
-                        //console.log("Directory is created.");
-                    } else {
-                        //console.log("Directory already exists.");
-                    }
-                  } catch (err) {
-                    console.log(err);
-                  }
-
-                  try {
-                    // first check if directory already exists
-                    if (!fs.existsSync(`./temp/data-maps/${filename}/`)) {
-                        fs.mkdirSync(`./temp/data-maps/${filename}/`);
-                        //console.log("Directory is created.");
-                    } else {
-                        //console.log("Directory already exists.");
-                    }
-                  } catch (err) {
-                    console.log(err);
-                  }
-
-                  const thisObjectFolderNameForImages = `./temp/data-maps/${filename}/${newMapObjectFeatureItem.properties.slug}`;
-
-                  try {
-                    // first check if directory already exists
-                    if (!fs.existsSync(`${thisObjectFolderNameForImages}${path.sep}`)) {
-                        fs.mkdirSync(`${thisObjectFolderNameForImages}${path.sep}`);
-                        //console.log("Directory is created.");
-                    } else {
-                        //console.log("Directory already exists.");
-                    }
-                  } catch (err) {
-                    console.log(err);
-                  }
-                  // resize, rename original
-                  Jimp.read(thisFileImagePath)
-                  .then(image => {
-
-                    const imageWidth = image.bitmap.width;
-
-                    // check if the original image size is larger than the max full width size defined in the app settings
-                    if (imageWidth > appConfigJson.appConfig.images.object.full.width) {
-                      image.resize(appConfigJson.appConfig.images.object.full.width, Jimp.AUTO); // resize
-                    }
-
-                    return image
-                    .quality(80) // set JPEG quality
-                    .write(`${thisObjectFolderNameForImages}${path.sep}${thisFilenameOnly}.jpg`); // save
-
-                  })
-                  .catch(err => {
-                    console.error(err);
-                  });
-
-                  // generate, esize, rename thumbs
-                  Jimp.read(thisFileImagePath)
-                  .then(image => {
-                    return image
-                      .resize(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
-                      .quality(80) // set JPEG quality
-                      .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`); // save
-                  })
-                  .catch(err => {
-                    console.error(err);
-                  });
-
-                  // generate, resize, rename gallery thumbs
-                  Jimp.read(thisFileImagePath)
-                  .then(image => {
-                    return image
-                      .resize(appConfigJson.appConfig.images.object.galleryThumbnail.width, appConfigJson.appConfig.images.object.galleryThumbnail.height) // resize
-                      .quality(80) // set JPEG quality
-                      .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`); // save
-                  })
-                  .catch(err => {
-                    console.error(err);
-                  });
-
-                }
-
-                // description
-                if (fs.existsSync(potentialTxtFilePath)) {
-                  // found txt file
-                  const data = fs.readFileSync(potentialTxtFilePath, {encoding:'utf8', flag:'r'});
-                  imageObj.description = data;
-                }
-
-                newMapObjectFeatureItem.images.push(imageObj);
-
-
-              } else {
-                console.log('skipping a file with a not allowed extension, this filename: ' + thisFilename);
+              } catch (err) {
+                console.log(err);
               }
 
-            });
+              const thisObjectFolderNameForImages = `./temp/data-maps/${filename}/images/${newMapObjectFeatureItem.properties.slug}`;
 
-            return; // we have found the folderName equal to objectName, jump out of the loop
+              try {
+                // first check if directory already exists
+                if (!fs.existsSync(`${thisObjectFolderNameForImages}${path.sep}`)) {
+                    fs.mkdirSync(`${thisObjectFolderNameForImages}${path.sep}`);
+                    //console.log("Directory is created.");
+                } else {
+                    //console.log("Directory already exists.");
+                }
+              } catch (err) {
+                console.log(err);
+              }
+
+              // resize, rename original
+              Jimp.read(thisFileImagePath)
+              .then(image => {
+
+                const imageWidth = image.bitmap.width;
+
+                // check if the original image size is larger than the max full width size defined in the app settings
+                if (imageWidth > appConfigJson.appConfig.images.object.full.width) {
+                  image.resize(appConfigJson.appConfig.images.object.full.width, Jimp.AUTO); // resize
+                }
+
+                return image
+                .quality(80) // set JPEG quality
+                .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.name}`); // save
+
+              })
+              .then(image => {
+                // generate, resize, rename thumbs
+                return image
+                  .cover(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
+                  .quality(80) // set JPEG quality
+                  .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`); // save
+              })
+              .then(image => {
+
+                // generate, resize, rename gallery thumbs
+                return image
+                  .resize(appConfigJson.appConfig.images.object.galleryThumbnail.width, Jimp.AUTO) // resize
+                  .quality(80) // set JPEG quality
+                  .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`); // save
+              })
+              .catch(err => {
+                console.error(err);
+              });
+
+            }
+
+            // description
+            if (fs.existsSync(potentialTxtFilePath)) {
+              // found txt file
+              const textData = fs.readFileSync(potentialTxtFilePath, {encoding:'utf8', flag:'r'});
+              imageObj.description = textData;
+            }
+
+            newMapObjectFeatureItem.images.push(imageObj);
+
+          } else {
+            //console.log('skipping a file with a not allowed extension, this filename: ' + thisFilename);
           }
 
         });
 
-
-      } catch (err) {
-          console.log(err);
       }
+
+      // clean up object
+      delete newMapObjectFeatureItem.gx_media_links;
 
       // add newly created feature item to new features array
       objectsNewFeatures.push(newMapObjectFeatureItem);
 
+      if (debug) {
+        statistics.iterationsOverObjectsFinished++;
+        console.log("object end");
+        console.log("/////////////////////////////////////////////////");
+      }
+
     });
+
 
     objectsJson.features = objectsNewFeatures;
 
@@ -551,42 +610,42 @@ const prepareObjectJsonWithImages = (cb) => {
       [filename]: objectsJson
     };
 
-    // create new directory in ./temp
-    try {
-      // first check if directory already exists
-      if (!fs.existsSync(`./temp/data-maps/`)) {
-          fs.mkdirSync(`./temp/data-maps/`);
-          console.log("Directory is created.");
-      } else {
-          console.log("Directory already exists.");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+
+    // final cleaning up of the JSON file
+    const transformedJsonCleanUp = getCleanUpJSONFromImgTags(JSON.stringify(transformedJson));
 
     try {
       // first check if directory already exists
       if (!fs.existsSync(`./temp/data-maps/${filename}/`)) {
           fs.mkdirSync(`./temp/data-maps/${filename}/`);
-          console.log("Directory is created.");
+          //console.log("Directory is created.");
       } else {
-          console.log("Directory already exists.");
+          //console.log("Directory already exists.");
       }
     } catch (err) {
       console.log(err);
     }
 
-    fs.writeFile(`./temp/data-maps/${filename}/${filename}.json`, JSON.stringify(transformedJson), (err) => {
+    // write the json structure to the file based on the sluggified map name
+    fs.writeFileSync(`./temp/data-maps/${filename}/${filename}.json`, transformedJsonCleanUp, (err) => {
       if (!err) {
           console.log('done');
       }
     });
 
+    if (debug) {
+      statistics.folderNameNotUsedForObject = [];
+      statistics.folderNameNotUsedForObject = subfolderImagesNormalized.filter(item => !statistics.folderNameUsedForObject.includes(item))
+
+      console.log("statistics");
+      console.log(statistics);
+    }
+
 
     done(null, file);
     cb();
 
-  }))
+  }));
 
 };
 gulp.task('prepareObjectJsonWithImages', gulp.series('clean-temp-data-maps', prepareObjectJsonWithImages));
@@ -594,19 +653,11 @@ gulp.task('prepareObjectJsonWithImages', gulp.series('clean-temp-data-maps', pre
 
 const mergeMapJson = () => {
 
-  return gulp.src('./data-maps/**/*.json')
+  return gulp.src('./temp/data-maps/**/*.json')
   .pipe(mapStream((file, done) => {
 
-    const filename = path.basename(file.path, path.extname(file.path));
-
-    const json = JSON.parse(file.contents.toString());
-    json.slug = slugify(filename, slugifyCustomDefaultSettings);
-    const transformedJson = {
-      [filename]: json
-    };
-    file.contents = new Buffer.from(JSON.stringify(transformedJson));
-
     done(null, file);
+
   }))
   .pipe($.mergeJson({
     fileName: 'data_maps_merged.json',
@@ -641,16 +692,24 @@ const preparePagesMapDetail = (done) => {
 
 };
 
-gulp.task('mergeJson', gulp.series('clean-temp', mergeJsonFunc, mergeMapJson));
-
+gulp.task('prepareMapDataAndImages', prepareObjectJsonWithImages);
+gulp.task('mergeJson', gulp.series(mergeJson, mergeMapJson));
 gulp.task('preparePagesMapDetail',  gulp.series('mergeJson', preparePagesMapDetail));
 
 
 
-gulp.task('copyToDist', () => {
-  return gulp.src('.htaccess')
+gulp.task('copyToDist', (done) => {
+  gulp.src(['.htaccess'])
   .pipe(gulp.dest('./dist/'));
+
+  gulp.src(['./temp/**/*'])
+  .pipe(gulp.dest('./dist/assets'));
+
+  done();
+
 });
+
+
 
 gulp.task('svg', () => {
 
@@ -676,6 +735,14 @@ gulp.task('svg', () => {
 
 });
 
+gulp.task('test', (done) => {
+
+  console.log(latinize('č č'));
+  console.log('č'.normalize('NFKD') === 'č'.normalize('NFKD'));
+  console.log('č'.normalize('NFKD').charCodeAt(0) + " " + 'č'.normalize('NFKD').charCodeAt(0));
+  done();
+});
+
 
 gulp.task('watch', (cb) => {
   gulp.watch(['site.webmanifest'], gulp.series('pug'));
@@ -691,7 +758,7 @@ gulp.task('watch', (cb) => {
 });
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'mergeJson', 'sass', 'js', 'images', 'fonts', 'preparePagesMapDetail', 'copyToDist', 'injectSvg'));
+gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'images', 'fonts', 'copyToDist', 'injectSvg'));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));

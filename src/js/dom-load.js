@@ -1,5 +1,5 @@
 import { __addClass, __remove, __hasClass, __removeClass, __toggleClass } from './lib/utils/utils';
-import geoJsonMdhData from '../../data-maps/topografie-pameti-julius-fucik/topografie-pameti-julius-fucik.json';
+import geoJsonMdhData from '../../temp/data-maps/topografie-pameti-julius-fucik/topografie-pameti-julius-fucik.json';
 
 
 const domLoad = () => {

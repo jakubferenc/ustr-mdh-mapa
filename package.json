@@ -4,8 +4,9 @@
   "description": "The `dev` branch is the main development branch. Merge all accepted feature branches to the `dev` branch or make pull/merge requests. If feature branch was merged, delete that branch. Keep updated your feature branches with current `dev` status.",
   "main": "gulpfile.js",
   "scripts": {
+    "build-images": "NODE_OPTIONS=--max_old_space_size=4096 && gulp prepareObjectJsonWithImages",
     "build": "gulp build",
-    "start": "npm install && gulp",
+    "start": "npm install && NODE_OPTIONS=--max_old_space_size=4096 && gulp",
     "update": "npm update && npm outdated"
   },
   "repository": {
@@ -72,6 +73,7 @@
     "gulp-template": "^5.0.0",
     "jimp": "^0.16.1",
     "kss": "^3.0.1",
+    "latinize": "^0.4.1",
     "michelangelo": "^0.8.0",
     "path": "^0.12.7",
     "pug-lint": "^2.5.0",

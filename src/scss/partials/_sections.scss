@@ -299,8 +299,25 @@
     .gallery {
       height: 167px;
       overflow: hidden;
+      position: relative;
       img {
         border-radius: 8px;
+      }
+
+      .gallery-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        .prev, .nav {
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          background-color: #fff;
+          border-radius: 18px;
+        }
       }
     }
     .title-bar {
@@ -502,7 +519,7 @@
       text-align: center;
     }
 
-    img {width: 100%; object-fit: cover; height: 100%;}
+    img {width: 100%; }
   }
 
   .related-maps {

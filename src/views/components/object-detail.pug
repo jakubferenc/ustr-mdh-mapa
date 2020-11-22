@@ -1,5 +1,8 @@
 mixin object-detail(objekt)
 
+  - const images = objekt.images
+
+
     article.card.card-detail.is-hidden(data-object-detail-id=`${objekt.properties.name}` data-component="card-detail")
 
       .layer-bar(style=`background-color: ${mapSettings.layers[objekt.properties.layer].color}`)
@@ -46,7 +49,7 @@ mixin object-detail(objekt)
 
           .card-content
             .card-content--description
-              p !{objekt.properties.description}
+              p !{objekt.properties.popis}
 
             .card-content--meta
               .item-meta
@@ -59,8 +62,15 @@ mixin object-detail(objekt)
               .next
             .gallery-image-container
               .gallery-image
-                img(src="assets/images/dummy/object-dummy-image.jpg")
-              .gallery-description Zdroj: Sed ut perspiciatis unde omnis
+
+                if (objekt.images.length > 0)
+                  img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${objekt.images[0].galleryThumbnail}`)
+                else
+                  img(src="assets/images/dummy/object-dummy-image.jpg")
+
+              if (objekt.images.length > 0)
+                if (objekt.images[0].description)
+                  .gallery-description #{objekt.images[0].description}
 
 
         .related-maps.is-hidden
