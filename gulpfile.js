@@ -610,7 +610,6 @@ const prepareObjectJsonWithImages = (cb) => {
       [filename]: objectsJson
     };
 
-
     // final cleaning up of the JSON file
     const transformedJsonCleanUp = getCleanUpJSONFromImgTags(JSON.stringify(transformedJson));
 
@@ -635,7 +634,7 @@ const prepareObjectJsonWithImages = (cb) => {
 
     if (debug) {
       statistics.folderNameNotUsedForObject = [];
-      statistics.folderNameNotUsedForObject = subfolderImagesNormalized.filter(item => !statistics.folderNameUsedForObject.includes(item))
+      statistics.folderNameNotUsedForObject = subfolderImagesNormalized.filter(item => !statistics.folderNameUsedForObject.includes(item));
 
       console.log("statistics");
       console.log(statistics);

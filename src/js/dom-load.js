@@ -1,17 +1,21 @@
 import { __addClass, __remove, __hasClass, __removeClass, __toggleClass } from './lib/utils/utils';
-import geoJsonMdhData from '../../temp/data-maps/topografie-pameti-julius-fucik/topografie-pameti-julius-fucik.json';
+import geoJsonMdhData from '../../temp/data_maps_merged.json';
+import { MarkerClusterGroup } from 'leaflet.markercluster/src';
 
+import Glide, { Controls } from '@glidejs/glide/dist/glide.modular.esm';
+import SimpleLightbox from "simplelightbox/dist/simple-lightbox.esm";
 
 const domLoad = () => {
 
   console.log('domLoad');
 
+
   const d = document;
   const $body = d.body;
 
 
-  let currentPage = undefined;
-  let previousPage = undefined;
+  let currentPage;
+  let previousPage;
 
   let store = {
     page: {},
@@ -19,8 +23,6 @@ const domLoad = () => {
     markes: {}
   };
 
-  const mymap = L.map('mapbox', {zoomControl: true}).setView([50.08804, 14.42076], 7);
-  store.map = mymap;
 
   // functions
   ////////////////////////////////////////////////////////////
@@ -32,7 +34,7 @@ const domLoad = () => {
 
       __removeClass($marker.parentElement, 'inactive');
 
-    })
+    });
 
   };
 
@@ -43,7 +45,7 @@ const domLoad = () => {
 
       __addClass($marker.parentElement, 'inactive');
 
-    })
+    });
 
   };
 
@@ -54,7 +56,7 @@ const domLoad = () => {
 
       __removeClass($marker, 'active');
 
-    })
+    });
 
   };
 
@@ -63,9 +65,9 @@ const domLoad = () => {
     const $tooltips = document.querySelectorAll('.leaflet-popup');
     Array.from($tooltips).forEach( ($item) => {
       $item.remove();
-    })
+    });
 
-  }
+  };
 
   const cardDetailOpen = (cardProperties, fromMarker = false) => {
 
@@ -101,6 +103,27 @@ const domLoad = () => {
 
     __removeClass($cardDetail, 'is-hidden');
 
+
+    // active gallery
+
+    if (!__hasClass($cardDetail, 'has-gallery-init')) {
+
+      const $thisCardMainGallery = $cardDetail.querySelector('.gallery');
+
+      const glide = new Glide($thisCardMainGallery, {
+        type: 'carousel',
+        startAt: 0,
+        perView: 1
+      }).mount({ Controls });
+
+
+      //const simpleLightbox = new SimpleLightbox('.glide__track .glide__slide a', {});
+
+
+      __addClass($cardDetail, 'has-gallery-init');
+
+    }
+
   };
 
   const cardDetailClose = ($cardDetailObj) => {
@@ -118,28 +141,11 @@ const domLoad = () => {
     enableAllInactiveMarkers();
     disableAllActiveMarkers();
 
-  }
+  };
 
+  const getHTMLforLeafletPopup = (feature) => {
 
-  ////////////////////////////////////////////////////////////
-
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Mapová data ÚSTR | Podkladová mapa &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    tileSize: 512,
-    maxZoom: 15,
-    zoomOffset: -1,
-    id: 'jakubferenc/ckfnqth7411u319o31xieiy4n',
-    accessToken: 'pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
-    }).addTo(mymap);
-
-  //vytvoří proměnou s daty
-  const places = geoJsonMdhData;
-
-
-  //vytvoří skupinu s vrstvou  bez klastrů
-  let vrstvaPlaces = L.geoJSON(places, {
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup(`
+    const html = `
           <div id="popup-${feature.properties.name}" class="map-popup">
           <h1 class="popup-layer-title">${feature.properties.name}</h1>
           <div class="popup-layer-tag">
@@ -148,7 +154,54 @@ const domLoad = () => {
               <span class="text-content">${feature.properties.layer}</span>
             </div>
           </div>
-        `);
+        `;
+
+    return html;
+
+  };
+
+
+  ////////////////////////////////////////////////////////////
+
+ // map detail
+ const $mapDetailView = document.querySelector('[data-component="map-detail-view"]');
+ const $mapDetailFilter = document.querySelector('[data-component="filter"]');
+ const $mapDetailFilterSwitch = document.querySelector('.filter-button-switch');
+
+  // map view switch
+  const $mapViewSwitch = document.querySelector('[data-component="view-switch"]');
+  const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
+
+  const $mapbox = document.querySelector('[data-component="mapbox"]'); /*:TODO: currently working with only one mapbox per page */
+  const $listViewContainer = document.querySelector('[data-component="list-view-container"]');
+  const $listView = document.querySelector('[data-component="list-view"]');
+
+  // we have mapbox item, initialize Leafleft and Mapbox
+  // find map DOM objects and initialize them through Leaflet
+  if ($mapbox) {
+
+    const mymap = L.map('mapbox', {zoomControl: true}).setView([50.08804, 14.42076], 7); /* :TODO: automatize setting the centre of a map via JSON */
+    store.map = mymap;
+
+    const markerClusters = L.markerClusterGroup();
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Mapová data ÚSTR | Podkladová mapa &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      tileSize: 512,
+      maxZoom: 15,
+      zoomOffset: -1,
+      id: 'jakubferenc/ckfnqth7411u319o31xieiy4n',
+      accessToken: 'pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
+      }).addTo(mymap);
+
+
+    const thisMapSlug = $mapbox.dataset.slug;
+    const places = geoJsonMdhData[thisMapSlug];
+
+      //vytvoří skupinu s vrstvou  bez klastrů
+    let vrstvaPlaces = L.geoJSON(places, {
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup(getHTMLforLeafletPopup(feature));
       },
       pointToLayer: function (feature, latlng) {
 
@@ -159,11 +212,11 @@ const domLoad = () => {
             className: '',
             html: `
               <div style="background-color: ${places.mapSettings.layers[feature.properties.layer].color}"
-                   class="${classNamesArray.join(' ')}"
-                   aria-label="${feature.properties.name}"
-                   data-marker-id="${feature.properties.name}"
-                   data-marker-type="${feature.properties.type}"
-                   data-marker-layer="${feature.properties.layer}">
+                  class="${classNamesArray.join(' ')}"
+                  aria-label="${feature.properties.name}"
+                  data-marker-id="${feature.properties.name}"
+                  data-marker-type="${feature.properties.type}"
+                  data-marker-layer="${feature.properties.layer}">
               </div>`,
             iconSize: 'auto',
             riseOnHover: true,
@@ -186,33 +239,24 @@ const domLoad = () => {
 
           store.markes[feature.properties.name] = thisMarker;
 
+          markerClusters.addLayer( thisMarker );
 
           return thisMarker;
 
       },
   });
+
   const placesGroup = L.layerGroup([vrstvaPlaces]);
   placesGroup.addTo(mymap);
 
+    // mymap.addLayer( markerClusters );
+
+  }
 
 
-
-  // map detail
-  const $mapDetailView = document.querySelector('[data-component="map-detail-view"]');
-  const $mapDetailFilter = document.querySelector('[data-component="filter"]');
-  const $mapDetailFilterSwitch = document.querySelector('.filter-button-switch');
   $mapDetailFilterSwitch.addEventListener('click', (e) => {
     __toggleClass($mapDetailFilter, 'open');
   });
-
-  // map view switch
-  const $mapViewSwitch = document.querySelector('[data-component="view-switch"]');
-  const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
-
-  const $mapbox = document.getElementById('mapbox');
-  const $listViewContainer = document.querySelector('[data-component="list-view-container"]');
-  const $listView = document.querySelector('[data-component="list-view"]');
-
 
   Array.from($mapViewSwitchLinks).forEach($item => {
 
@@ -268,7 +312,7 @@ const domLoad = () => {
   let activeFilterItems = {
     "categories": [],
     "types": []
-  }
+  };
 
   const isHiddenClassName = 'is-hidden';
 

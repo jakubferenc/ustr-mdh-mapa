@@ -3,16 +3,13 @@ mixin object-card(objekt)
   - const images = objekt.images
 
 
-  article.card(data-object-id=`${objekt.properties.name}` data-object-name=`${objekt.properties.name}` data-component="card" data-object-layer=`${objekt.properties.layer}` data-object-type=`${objekt.properties.type}` )
+  article.card.card-thumb(data-object-id=`${objekt.properties.name}` data-object-name=`${objekt.properties.name}` data-component="card" data-object-layer=`${objekt.properties.layer}` data-object-type=`${objekt.properties.type}` )
 
     .layer-bar(style=`background-color: ${mapSettings.layers[objekt.properties.layer].color}`)
       .meta.meta-category #{objekt.properties.layer}
 
     .card-content-container
       .gallery
-        .gallery-nav
-          .prev
-          .next
         .gallery-image
           if (objekt.images.length > 0)
             img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${objekt.images[0].thumbnail}`)

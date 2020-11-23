@@ -57,20 +57,26 @@ mixin object-detail(objekt)
                 .item-meta--content #{objekt.properties.y}, #{objekt.properties.x}
 
           .gallery.gallery-card-detail
-            .gallery-nav
-              .prev
-              .next
-            .gallery-image-container
-              .gallery-image
+            .gallery-nav(data-glide-el="controls")
+              a.prev(href="#" data-glide-dir="<")
+              a.next(href="#" data-glide-dir=">")
+            .gallery-image-container.glide__track(data-glide-el="track")
 
+              ul.glide__slides
                 if (objekt.images.length > 0)
-                  img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${objekt.images[0].galleryThumbnail}`)
+
+                  each image in objekt.images
+
+                    li.gallery-image.glide__slide
+                      a(href=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.galleryThumbnail}`)
+                        img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.name}`)
+
+                      if (image.description)
+                        .gallery-description #{image.description}
+
+
                 else
                   img(src="assets/images/dummy/object-dummy-image.jpg")
-
-              if (objekt.images.length > 0)
-                if (objekt.images[0].description)
-                  .gallery-description #{objekt.images[0].description}
 
 
         .related-maps.is-hidden
