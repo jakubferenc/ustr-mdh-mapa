@@ -8,9 +8,11 @@ export default [
   input: 'src/main.js',
   output: {
     dir: 'output',
-    format: ''
+    format: 'umd',
+    indent: false,
+    sourcemap: true,
   },
-  plugins: [json(), nodeResolve(), terser()]
+  plugins: [json(), nodeResolve(), terser(), commonjs()]
   },
   {
     input: 'node_modules/mapbox-gl/dist/mapbox-gl-unminified.js',

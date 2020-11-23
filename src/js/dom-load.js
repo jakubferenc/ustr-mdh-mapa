@@ -3,7 +3,6 @@ import geoJsonMdhData from '../../temp/data_maps_merged.json';
 import { MarkerClusterGroup } from 'leaflet.markercluster/src';
 
 import Glide, { Controls } from '@glidejs/glide/dist/glide.modular.esm';
-import SimpleLightbox from "simplelightbox/dist/simple-lightbox.esm";
 
 const domLoad = () => {
 
@@ -116,8 +115,12 @@ const domLoad = () => {
         perView: 1
       }).mount({ Controls });
 
-
-      //const simpleLightbox = new SimpleLightbox('.glide__track .glide__slide a', {});
+      // here
+      const lightbox = GLightbox({
+        touchNavigation: true,
+        loop: true,
+        autoplayVideos: false
+    });
 
 
       __addClass($cardDetail, 'has-gallery-init');

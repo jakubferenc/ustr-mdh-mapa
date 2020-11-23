@@ -39,6 +39,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.1.0",
     "font-face-generator": "^1.1.1",
+    "glightbox": "^3.0.5",
     "googleapis": "^64.0.0",
     "gulp-autoprefixer": "^4.1.0",
     "gulp-cache": "^0.4.5",
@@ -88,7 +89,6 @@
     "rollup-plugin-uglify": "^6.0.2",
     "run-sequence": "^2.2.1",
     "sass": "^1.29.0",
-    "simplelightbox": "^2.7.0",
     "slugify": "^1.4.6",
     "vinyl-ftp": "^0.6.1"
   },

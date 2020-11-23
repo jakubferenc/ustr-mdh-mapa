@@ -57,9 +57,11 @@ mixin object-detail(objekt)
                 .item-meta--content #{objekt.properties.y}, #{objekt.properties.x}
 
           .gallery.gallery-card-detail
+
             .gallery-nav(data-glide-el="controls")
               a.prev(href="#" data-glide-dir="<")
               a.next(href="#" data-glide-dir=">")
+
             .gallery-image-container.glide__track(data-glide-el="track")
 
               ul.glide__slides
@@ -68,8 +70,8 @@ mixin object-detail(objekt)
                   each image in objekt.images
 
                     li.gallery-image.glide__slide
-                      a(href=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.galleryThumbnail}`)
-                        img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.name}`)
+                      a.glightbox(data-gallery=`gallery-${objekt.properties.slug}` href=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.name}`)
+                        img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.galleryThumbnail}`)
 
                       if (image.description)
                         .gallery-description #{image.description}

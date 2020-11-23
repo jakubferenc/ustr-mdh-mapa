@@ -546,16 +546,9 @@ const prepareObjectJsonWithImages = (cb) => {
                 }
 
                 return image
-                .quality(80) // set JPEG quality
+                .quality(85) // set JPEG quality
                 .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.name}`); // save
 
-              })
-              .then(image => {
-                // generate, resize, rename thumbs
-                return image
-                  .cover(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
-                  .quality(80) // set JPEG quality
-                  .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`); // save
               })
               .then(image => {
 
@@ -564,6 +557,13 @@ const prepareObjectJsonWithImages = (cb) => {
                   .resize(appConfigJson.appConfig.images.object.galleryThumbnail.width, Jimp.AUTO) // resize
                   .quality(80) // set JPEG quality
                   .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`); // save
+              })
+              .then(image => {
+                // generate, resize, rename thumbs
+                return image
+                  .cover(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
+                  .quality(80) // set JPEG quality
+                  .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`); // save
               })
               .catch(err => {
                 console.error(err);

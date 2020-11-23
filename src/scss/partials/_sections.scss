@@ -309,7 +309,7 @@
 
       .gallery-image {
         height: 158px;
-        background-color: lightgray;
+        background-color: #eee;
         border-radius: 8px;
       }
 
@@ -545,7 +545,7 @@
     .item-meta {
       display: flex;
       justify-content: flex-start;
-      font-size: 12px;
+      font-size: 16px;
       margin-bottom: .5rem;
     }
   }
@@ -560,7 +560,6 @@
 
     .gallery-image {
       height: $gallery-height;
-      background-color: none !important;
       overflow: hidden;
     }
 
@@ -575,14 +574,30 @@
   }
 
   .gallery-nav {
-    display: flex;
-    padding: 0 $base-mobile-side-margin;
+    display: block;
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
 
     .prev, .next {
       width: 32px;
       height: 32px;
       border-radius: 32px;
       line-height: 32px;
+      position: absolute;
+      display: inline-block;
+      z-index: 9;
+    }
+
+    .prev {
+      top: 50%; margin-top: -16px;
+      left: $base-mobile-side-margin;
+    }
+
+    .next {
+      top: 50%; margin-top: -16px;
+      right: $base-mobile-side-margin;
     }
 
 
