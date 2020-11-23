@@ -21,6 +21,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
+    "@glidejs/glide": "^3.4.1",
     "@google-cloud/local-auth": "^1.0.0",
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -74,6 +75,7 @@
     "jimp": "^0.16.1",
     "kss": "^3.0.1",
     "latinize": "^0.4.1",
+    "leaflet.markercluster": "^1.4.1",
     "michelangelo": "^0.8.0",
     "path": "^0.12.7",
     "pug-lint": "^2.5.0",
@@ -86,6 +88,7 @@
     "rollup-plugin-uglify": "^6.0.2",
     "run-sequence": "^2.2.1",
     "sass": "^1.29.0",
+    "simplelightbox": "^2.7.0",
     "slugify": "^1.4.6",
     "vinyl-ftp": "^0.6.1"
   },
@@ -93,7 +96,6 @@
     "bulma": "^0.8.0",
     "gulp": "^4.0.2",
     "leaflet": "^1.7.1",
-    "leaflet.markercluster": "^1.4.1",
     "mapbox-gl": "^1.12.0",
     "svgstore": "^3.0.0-2"
   }
