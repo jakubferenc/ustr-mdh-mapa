@@ -757,7 +757,7 @@ gulp.task('watch', (cb) => {
 });
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'images', 'fonts', 'copyToDist', 'injectSvg'));
+gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'pug', 'images', 'fonts', 'copyToDist', 'injectSvg'));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));

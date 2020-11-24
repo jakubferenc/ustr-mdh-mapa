@@ -1,4 +1,4 @@
-extends ./_partials/layout.pug
+extends ./_partials/layout-full.pug
 
 block vars
   - bodyClass = 'index'
@@ -7,122 +7,245 @@ block main
 
   main
 
-    .main-container(data-component="map-detail-view")
+    .page-content.page-content-map-detail-homepage
+
+      .header
+        .header-figure
+
+          ul.header-figure-types
+            li.timeline
+              img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
+            li.objects
+               img(src="assets/images/icons/icon-view-switch-objects-large.svg")
+            li.map
+               img(src="assets/images/icons/icon-view-switch-map-large.svg")
+
+
+          ul.header-figure-actions
+            li.bookmark
+              img(src="assets/images/icons/icon-bookmark-large.svg")
+
+          img.header-figure-image(src="assets/images/maps/map-homepage-main-dummy.png")
+
+        .header-content
+
+          .header-content-text
+
+            h1.main-title Topografie paměti – Julius Fučík
+
+            p Julius Fučík, komunistický novinář a odbojář, se těsně po druhé světové válce stal národním hrdinou symbolizujícím vzdor vůči okupantům. Jeho Reportáž, psaná na oprátce, sepsaná v prostředí Pankrácké věznice nedlouho před popravou, se stala základním textem vysvětlujícím zážitek ilegální činnosti v období protektorátu. Skrze osobnost Julia Fučíka měla společnost v režimu socialistické diktatury oficiálně vzpomínat na vítězství v druhé světové válce.
+
+            p.goals Cílem této mapy je poukázat na významná místa spojena s kultem  utvořeným kolem osoby levicového intelektuála, jenž byl komunistickou stranou uzurpován jako mocný symbol šíření ideologické propagandy.
+
+            .section-content-text
+              h2.section-content-text-title Mapu vytvořili
+
+              .authors
+
+                .author
+                  .author-image
+                    img(src="assets/images/dummy/profile-image-dummy.png" alt="Jméno")
+                  .author-bio
+                    .name Mgr. Jana Nováková, Ph.D.
+                    .what-they-did Texty, tvorba mapy
+                    .institution Ústav pro studium totalitních režimů
+
+                .author
+                  .author-image
+                    img(src="assets/images/dummy/profile-image-dummy-male.png" alt="Jméno")
+                  .author-bio
+                    .name Mgr. Jan Novák, Ph.D.
+                    .what-they-did Texty, didaktika
+                    .institution Ústav pro studium totalitních režimů
+
+                .author
+                  .author-image
+                    img(src="assets/images/dummy/profile-image-dummy-female-2.png" alt="Jméno")
+                  .author-bio
+                    .name Mgr. Kateřina Nová, Ph.D.
+                    .what-they-did Archív muzea dělnického hnutí
+                    .institution Národní muzeum
+
+          .header-button
+
+            a.icon(href="#")
+
+              span
+                img(src="assets/images/icons/icon-button-start-map.svg" alt="")
+
+              .icon-text SPUSTIT MAPU
+
+      .section-container
+
+        .section.section-text-info
+
+          h2 Informace o období
+
+          .section-text-info-content
+            p Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
+
+
+        .section.section-text-info
+          h2 Didaktické a výzkumné cíle
+
+          .section-text-info-content
+            p Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
+
+            ul.attachments
+              li.attachment
+                .icon
+                  img(src="assets/images/icons/icon-file-type-docx.svg" alt="Microsoft Word Docx")
+                .text
+                  div.title Stáhnout
+                  div.text
+                    u Dokument Pracovní list
+
+              li.attachment
+                .icon
+                  img(src="assets/images/icons/icon-file-type-pdf.svg" alt="Adobe PDF")
+                .text
+                  div.title Stáhnout
+                  div.text
+                    u Příprava
+
+        .section.section-text-info
+
+          h2 Témata/Kategorie
+
+          .section-text-info-content
+            p Zde bude krátký text popisující, proč mapa obsahuje témata. Tzn. to, co jsme doposud nazývali jako vrstvy. Pod nadpisem bude výpis jednotlivých vrstev, respektive jejich název a popis toho, co v rámci dané vrstvy člověk může očekávat.
+
+            .layers-container
+
+              .layer(style="background-color: #FFC1C1;")
+                .title Místa fyzicky soufisející s Fučíkem
+                .text Zde bude krátký text popisující, proč mapa obsahuje témata. Tzn. to, co jsme doposud nazývali jako vrstvy. Pod nadpisem bude výpis jednotlivých vrstev, respektive jejich název a popis toho, co v rámci dané vrstvy člověk může očekávat.
+
+              .layer(style="background-color: #C1DBFF;")
+                .title Místa fyzicky soufisející s Fučíkem
+                .text Zde bude krátký text popisující, proč mapa obsahuje témata. Tzn. to, co jsme doposud nazývali jako vrstvy. Pod nadpisem bude výpis jednotlivých vrstev, respektive jejich název a popis toho, co v rámci dané vrstvy člověk může očekávat.
+
+              .layer(style="background-color: #B7EBB9;")
+                .title Místa fyzicky soufisející s Fučíkem
+                .text Zde bude krátký text popisující, proč mapa obsahuje témata. Tzn. to, co jsme doposud nazývali jako vrstvy. Pod nadpisem bude výpis jednotlivých vrstev, respektive jejich název a popis toho, co v rámci dané vrstvy člověk může očekávat.
+
+
+              .layer(style="background-color: #C1F5FF;")
+                .title Místa fyzicky soufisející s Fučíkem
+                .text Zde bude krátký text popisující, proč mapa obsahuje témata. Tzn. to, co jsme doposud nazývali jako vrstvy. Pod nadpisem bude výpis jednotlivých vrstev, respektive jejich název a popis toho, co v rámci dané vrstvy člověk může očekávat.
+
+
+        .section.section-text-info
+
+          h2 O objektech a místech mapy
+
+          .section-text-info-content
+            p Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
+
+
+        .section.section-text-info
+
+          h2 Jak se zapojit do projektu?
+
+          .section-text-info-content
+            p Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
+
+            .section-text-info-content-footer
+
+              a.button.button-send(href="#")
+                .button-text Napište nám
+                .button-icon
+                  img(src="assets/images/icons/icon-button-send.svg" alt="Zaslat zprávu")
+
+block foot
+
+
+  footer.main-footer
+
+    .footer-section.footer-section-social
+
+      .section-newsletter
+
+        h2.section-title Odebírejte náš newsletter
+
+        .section-content
+
+
+          input(type="text")
+
+          button.button.button-submit PŘIHLÁSIT SE DO NEWSLETTERU
+
+
+      .social-icons
+
+        h2.section-title Jsme na sociálních sítích #mdhmapa
+
+        .section-content
+
+          .social-icons-list
+            .social-icon
+              .icon
+                img(src="assets/images/icons/social-facebook.svg" alt="")
+              .text Facebook
+
+            .social-icon
+              .icon
+                img(src="assets/images/icons/social-instagram.svg" alt="")
+              .text Instagram
+
+            .social-icon
+              .icon
+                img(src="assets/images/icons/social-youtube.svg" alt="")
+              .text Youtube
+
+
+    .main-footer-content-in
+
+      .footer-section.footer-section-links
+
+
+        .col-sub
+
+          .col
+
+            .title Cíl aplikace MDH Mapa
+            .content
+              p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+          .col
+
+            .title Cíl aplikace MDH Mapa
+            .content
+
+              .logos
+
+                .logo
+                  .image
+                    img(src="assets/images/icons/logo-ustr.svg" alt="")
+                  .text Ústav pro studium totalitních režimů
+
+                .logo
+                  .image
+                    img(src="assets/images/icons/logo-nm.svg" alt="")
+                  .text Národní muzeum v Praze
 
 
 
-      .main-content(data-component="list-view-container")
+        .col-sub
 
-        .main-content-top-bar
-          a.icon-container.icon-back(href="#")
-            <svg xmlns="http://www.w3.org/2000/svg" width="19.245" height="28" viewBox="0 0 19.245 28"><defs><style>.a{fill:#1a1818;}</style></defs><g transform="translate(-634.499 -538.828)"><path class="a" d="M645.238,566.828l-10.739-14,10.739-14"/><rect class="a" width="10.158" height="10.158" transform="translate(643.586 547.749)"/></g></svg>
-            span.icon-text Zpět
-
-
-        div(data-component="list-view")
-
-          h1.title Julius Fučík – místa paměti Praha
-
-          .cards-container
-
-            each objekt in objekty
-
-              article.card(data-component="card")
-
-                .layer-bar
-                  .meta.meta-category #{objekt.layer}
-
-                .card-content-container
-                  .gallery
-                    .gallery-nav
-                      .prev
-                      .next
-                    .gallery-image
-                      img(src="assets/images/dummy/object-dummy-image.jpg")
-
-                  .card-content
-                    .title-bar
-                      .card-title #{objekt.name}
-                      .icons
-                        <svg class="icon icon-action" xmlns="http://www.w3.org/2000/svg" width="12.871" height="19.793" viewBox="0 0 12.871 19.793">
-                          <g transform="translate(-132.331 -89.309)" fill="none">
-                            <path d="M138.766,102.888l.172.166L145.2,109.1V89.309H132.331V109.1l6.263-6.047Z" stroke="black"/>
-                          </g>
-                        </svg>
-                    .footer-bar
-                      .meta.meta-address #{objekt.address}
-                      .icons
-                        img(src="assets/images/icons/icon-document.svg")
+          .col
 
 
 
 
+          .col
 
-      .map(id="mapbox" data-component="mapbox")
-
-      .view-switch(data-component="view-switch")
-        .heading.is-sr-only Zobrazení mapy
-        nav.view-switch-nav
-          a(href="#" rel="default").item.active
-            <svg id="view-switch-icon-objects-map" xmlns="http://www.w3.org/2000/svg" width="17.056" height="26.332" viewBox="0 0 17.056 26.332">
-              <g id="Group_900" data-name="Group 900" transform="translate(8.815)">
-                <path id="Path_250" data-name="Path 250" d="M1145.116,324.53h-.011v.389h.012Z" transform="translate(-1145.105 -322.169)" fill="#a0a0a0"/>
-                <path id="Path_251" data-name="Path 251" d="M1145.1,398.416v.389h.051v-.389Z" transform="translate(-1145.105 -384.554)" fill="#a0a0a0"/>
-                <path id="Path_252" data-name="Path 252" d="M1145.118,327.419v-.389h-.012v.389Z" transform="translate(-1145.105 -324.28)" fill="#a0a0a0"/>
-                <path id="Path_253" data-name="Path 253" d="M1145.153,395.915h-.048v.389h.049Z" transform="translate(-1145.105 -382.443)" fill="#a0a0a0"/>
-                <path id="Path_254" data-name="Path 254" d="M1145.122,309.363l.008,2.361a5.945,5.945,0,0,1,.04,11.889l.041,12.082,6.984-13.4a9.542,9.542,0,0,0,1.166-4.573A8.315,8.315,0,0,0,1145.122,309.363Z" transform="translate(-1145.119 -309.363)" fill="#a0a0a0"/>
-                <path id="Path_255" data-name="Path 255" d="M1150.344,334.7a5.173,5.173,0,0,0-5.154-5.167l.035,10.333A5.172,5.172,0,0,0,1150.344,334.7Z" transform="translate(-1145.177 -326.393)" fill="#a0a0a0"/>
-              </g>
-              <g id="Group_901" data-name="Group 901" transform="translate(0 0)">
-                <rect id="Rectangle_357" data-name="Rectangle 357" width="3.706" height="4.68" transform="translate(0 15.96)" fill="#a0a0a0"/>
-                <rect id="Rectangle_358" data-name="Rectangle 358" width="3.706" height="4.68" transform="translate(0 21.28)" fill="#a0a0a0"/>
-                <rect id="Rectangle_359" data-name="Rectangle 359" width="3.706" height="4.68" transform="translate(0 10.64)" fill="#a0a0a0"/>
-                <rect id="Rectangle_360" data-name="Rectangle 360" width="3.706" height="4.68" transform="translate(0 5.32)" fill="#a0a0a0"/>
-                <rect id="Rectangle_361" data-name="Rectangle 361" width="3.706" height="4.68" transform="translate(4.353 21.28)" fill="#a0a0a0"/>
-                <rect id="Rectangle_362" data-name="Rectangle 362" width="3.706" height="4.68" transform="translate(4.353 15.96)" fill="#a0a0a0"/>
-                <rect id="Rectangle_363" data-name="Rectangle 363" width="3.706" height="4.68" transform="translate(4.353 10.64)" fill="#a0a0a0"/>
-                <rect id="Rectangle_364" data-name="Rectangle 364" width="3.706" height="4.68" transform="translate(4.353 5.32)" fill="#a0a0a0"/>
-                <rect id="Rectangle_365" data-name="Rectangle 365" width="3.706" height="4.68" transform="translate(4.353 0)" fill="#a0a0a0"/>
-                <rect id="Rectangle_366" data-name="Rectangle 366" width="3.706" height="4.68" transform="translate(0 0)" fill="#a0a0a0"/>
-              </g>
-            </svg>
+            .title Cíl aplikace MDH Mapa
+            .content
+              p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 
-          a(href="#" rel="objects").item
-            <svg id="icon-view-switch-objects" xmlns="http://www.w3.org/2000/svg" width="17.129" height="26.524" viewBox="0 0 17.129 26.524">
-              <rect id="Rectangle_367" data-name="Rectangle 367" width="3.787" height="4.781" transform="translate(0 16.307)" fill="#9f9f9f"/>
-              <rect id="Rectangle_368" data-name="Rectangle 368" width="3.787" height="4.781" transform="translate(0 21.742)" fill="#9f9f9f"/>
-              <rect id="Rectangle_369" data-name="Rectangle 369" width="3.787" height="4.781" transform="translate(0 10.871)" fill="#9f9f9f"/>
-              <rect id="Rectangle_370" data-name="Rectangle 370" width="3.787" height="4.781" transform="translate(13.342 10.871)" fill="#9f9f9f"/>
-              <rect id="Rectangle_371" data-name="Rectangle 371" width="3.787" height="4.781" transform="translate(0 5.435)" fill="#9f9f9f"/>
-              <rect id="Rectangle_372" data-name="Rectangle 372" width="3.787" height="4.781" transform="translate(13.342 16.307)" fill="#9f9f9f"/>
-              <rect id="Rectangle_373" data-name="Rectangle 373" width="3.787" height="4.781" transform="translate(4.447 21.742)" fill="#9f9f9f"/>
-              <rect id="Rectangle_374" data-name="Rectangle 374" width="3.787" height="4.781" transform="translate(13.342 5.435)" fill="#9f9f9f"/>
-              <rect id="Rectangle_375" data-name="Rectangle 375" width="3.787" height="4.781" transform="translate(8.895 21.742)" fill="#9f9f9f"/>
-              <rect id="Rectangle_376" data-name="Rectangle 376" width="3.787" height="4.781" transform="translate(13.342 21.742)" fill="#9f9f9f"/>
-              <rect id="Rectangle_377" data-name="Rectangle 377" width="3.787" height="4.781" transform="translate(4.447 16.307)" fill="#9f9f9f"/>
-              <rect id="Rectangle_378" data-name="Rectangle 378" width="3.787" height="4.781" transform="translate(4.447 10.871)" fill="#9f9f9f"/>
-              <rect id="Rectangle_379" data-name="Rectangle 379" width="3.787" height="4.781" transform="translate(4.447 5.435)" fill="#9f9f9f"/>
-              <rect id="Rectangle_380" data-name="Rectangle 380" width="3.787" height="4.781" transform="translate(8.895 10.871)" fill="#9f9f9f"/>
-              <rect id="Rectangle_381" data-name="Rectangle 381" width="3.787" height="4.781" transform="translate(8.895 5.435)" fill="#9f9f9f"/>
-              <rect id="Rectangle_382" data-name="Rectangle 382" width="3.787" height="4.781" transform="translate(4.447)" fill="#9f9f9f"/>
-              <rect id="Rectangle_383" data-name="Rectangle 383" width="3.787" height="4.781" transform="translate(8.895)" fill="#9f9f9f"/>
-              <rect id="Rectangle_384" data-name="Rectangle 384" width="3.787" height="4.781" transform="translate(13.342)" fill="#9f9f9f"/>
-              <rect id="Rectangle_385" data-name="Rectangle 385" width="3.787" height="4.781" fill="#9f9f9f"/>
-              <rect id="Rectangle_386" data-name="Rectangle 386" width="3.787" height="4.781" transform="translate(8.895 16.307)" fill="#9f9f9f"/>
-            </svg>
-
-
-          a(href="#" rel="map").item
-            <svg id="icon-view-switch-map" xmlns="http://www.w3.org/2000/svg" width="16.483" height="26.332" viewBox="0 0 16.483 26.332">
-              <path id="Path_256" data-name="Path 256" d="M983.091,118.538a8.319,8.319,0,0,0-8.244,8.358,10.067,10.067,0,0,0,1.239,4.835l7.13,13.139,6.949-13.4a9.542,9.542,0,0,0,1.166-4.573A8.315,8.315,0,0,0,983.091,118.538Zm0,13.862a5.556,5.556,0,1,1,5.556-5.556A5.556,5.556,0,0,1,983.089,132.4Z" transform="translate(-974.847 -118.538)" fill="#a0a0a0"/>
-              <circle id="Ellipse_82" data-name="Ellipse 82" cx="4.811" cy="4.811" r="4.811" transform="translate(1.437 8.306) rotate(-45)" fill="#a0a0a0"/>
-            </svg>
-
-          a(href="#" rel="timeline").item
-            <svg id="icon-view-switch-timeline" xmlns="http://www.w3.org/2000/svg" width="17.424" height="26.164" viewBox="0 0 17.424 26.164">
-              <path id="Path_247" data-name="Path 247" d="M938.838,872.136a8.477,8.477,0,1,0,8.477,8.477A8.477,8.477,0,0,0,938.838,872.136Zm-.306,8.784v-7.5h.613v6.884h5.729v.613Z" transform="translate(-929.901 -872.136)" fill="#9f9f9f"/>
-              <path id="Path_248" data-name="Path 248" d="M943.865,1021.435h-13.9l-2.6-1.941,2.6-1.941h13.9Z" transform="translate(-927.361 -995.271)" fill="#9f9f9f"/>
-              <path id="Path_249" data-name="Path 249" d="M933.361,987.043h13.9l2.6,1.941-2.6,1.941h-13.9Z" transform="translate(-932.441 -969.436)" fill="#9f9f9f"/>
-            </svg>
+      .footer-section.footer-claim
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
 

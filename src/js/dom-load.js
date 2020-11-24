@@ -19,8 +19,22 @@ const domLoad = () => {
   let store = {
     page: {},
     data: {},
-    markes: {}
+    markers: {}
   };
+
+  // variables
+   // map detail
+ const $mapDetailView = document.querySelector('[data-component="map-detail-view"]');
+ const $mapDetailFilter = document.querySelector('[data-component="filter"]');
+ const $mapDetailFilterSwitch = document.querySelector('.filter-button-switch');
+
+  // map view switch
+  const $mapViewSwitch = document.querySelector('[data-component="view-switch"]');
+  const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
+
+  const $mapbox = document.querySelector('[data-component="mapbox"]'); /*:TODO: currently working with only one mapbox per page */
+  const $listViewContainer = document.querySelector('[data-component="list-view-container"]');
+  const $listView = document.querySelector('[data-component="list-view"]');
 
 
   // functions
@@ -81,12 +95,13 @@ const domLoad = () => {
     previousPage = window.location;
     history.replaceState(null, cardProperties.objectId, `?objekt=${cardProperties.objectId}`);
 
-    // prepare list view container for showing the object detail
-    __addClass($listViewContainer, 'inactive');
-
     /// save scroll position so that we can return back to it once detail is closed
     store.page.scrollTopPositionBeforeDetailOpen = $listViewContainer.scrollTop;
     $listViewContainer.scrollTop = 0;
+
+    // prepare list view container for showing the object detail
+    __addClass($listViewContainer, 'inactive');
+
 
     // open leafLeft marker popup
     disableAllInactiveMarkers();
@@ -97,7 +112,24 @@ const domLoad = () => {
 
 
     //store.markers[cardProperties.objectId].openPopup();
-    store.map.setView(store.markes[cardProperties.objectId].getLatLng(), 7);
+    store.map.setView(store.markers[cardProperties.objectId].getLatLng(), 7);
+
+    // close btn handler
+    if (!__hasClass($cardDetail, 'has-handler-close')) {
+
+      const $closeBtn = $cardDetail.querySelector('[data-component="close"]');
+      $closeBtn.addEventListener('click', (e) => {
+
+        e.stopPropagation();
+        e.preventDefault();
+
+        cardDetailClose($cardDetail);
+
+        return false;
+      });
+      __addClass($cardDetail, 'has-handler-close');
+
+    }
 
 
     __removeClass($cardDetail, 'is-hidden');
@@ -107,23 +139,29 @@ const domLoad = () => {
 
     if (!__hasClass($cardDetail, 'has-gallery-init')) {
 
-      const $thisCardMainGallery = $cardDetail.querySelector('.gallery');
+      const $thisCardMainGallery = $cardDetail.querySelector('[data-component="gallery-detail"]');
 
-      const glide = new Glide($thisCardMainGallery, {
-        type: 'carousel',
-        startAt: 0,
-        perView: 1
-      }).mount({ Controls });
+      if ($thisCardMainGallery) {
 
-      // here
-      const lightbox = GLightbox({
-        touchNavigation: true,
-        loop: true,
-        autoplayVideos: false
-    });
+        // the object has images
+
+        const glide = new Glide($thisCardMainGallery, {
+          type: 'carousel',
+          startAt: 0,
+          perView: 1
+        }).mount({ Controls });
+
+        // init gallery
+        const lightbox = GLightbox({
+          touchNavigation: true,
+          loop: true,
+          autoplayVideos: false
+        });
 
 
-      __addClass($cardDetail, 'has-gallery-init');
+        __addClass($cardDetail, 'has-gallery-init');
+
+      }
 
     }
 
@@ -138,6 +176,7 @@ const domLoad = () => {
     __removeClass($listViewContainer, 'inactive');
 
     $listViewContainer.scrollTop = store.page.scrollTopPositionBeforeDetailOpen;
+    console.log("after close, scroll position", store.page.scrollTopPositionBeforeDetailOpen);
 
     __toggleClass($cardDetailObj, 'is-hidden');
 
@@ -166,18 +205,7 @@ const domLoad = () => {
 
   ////////////////////////////////////////////////////////////
 
- // map detail
- const $mapDetailView = document.querySelector('[data-component="map-detail-view"]');
- const $mapDetailFilter = document.querySelector('[data-component="filter"]');
- const $mapDetailFilterSwitch = document.querySelector('.filter-button-switch');
 
-  // map view switch
-  const $mapViewSwitch = document.querySelector('[data-component="view-switch"]');
-  const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
-
-  const $mapbox = document.querySelector('[data-component="mapbox"]'); /*:TODO: currently working with only one mapbox per page */
-  const $listViewContainer = document.querySelector('[data-component="list-view-container"]');
-  const $listView = document.querySelector('[data-component="list-view"]');
 
   // we have mapbox item, initialize Leafleft and Mapbox
   // find map DOM objects and initialize them through Leaflet
@@ -231,16 +259,26 @@ const domLoad = () => {
 
           });
 
+          thisMarker.on('mouseout', (e) => {
+
+            thisMarker.closePopup();
+
+          });
+
+          thisMarker.on('contextmenu', () => {return false;})
+
           thisMarker.on('click', (e) => {
 
             cardDetailOpen({objectId: e.target.feature.properties.name});
+
             thisMarker.setZIndexOffset(30);
+            thisMarker.openPopup();
             e.preventDefault();
             e.stopImmediatePropagation();
 
           });
 
-          store.markes[feature.properties.name] = thisMarker;
+          store.markers[feature.properties.name] = thisMarker;
 
           markerClusters.addLayer( thisMarker );
 
@@ -271,17 +309,17 @@ const domLoad = () => {
 
       if (viewSwitchAction === 'default') {
 
-        mymap.invalidateSize();
+        store.map.invalidateSize();
 
       }
 
       if (viewSwitchAction === 'map') {
 
-        mymap.invalidateSize();
+        store.map.invalidateSize();
 
       }
 
-      __removeClass($mapViewSwitchLinks, 'active');
+      __removeClass(Array.from($mapViewSwitchLinks), 'active');
       __addClass(e.currentTarget, 'active');
 
     });
@@ -289,15 +327,6 @@ const domLoad = () => {
   });
 
   // card detail
-  const $cardDetail = document.querySelectorAll('[data-component="card-detail"]');
-
-  Array.from($cardDetail).forEach( ($item) => {
-
-    const $closeBtn = $item.querySelector('[data-component="close"]');
-    $closeBtn.addEventListener('click', (e) => cardDetailClose($item));
-
-  });
-
 
   // cards
 

@@ -44,7 +44,7 @@
 
 
 [data-component="filter"] {
-    height: calc(100vh - 42px);
+    height: calc(100vh - #{$header-main-height});
     background: #fff;
     display: flex;
     align-items: flex-start;
@@ -190,6 +190,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 
         &:hover {
             background-color: #000;
@@ -208,7 +209,7 @@
 
 [data-component="list-view-container"] {
   background: #eee;
-  height: calc(100vh - 42px);
+  height: calc(100vh - #{$header-main-height});
   overflow: auto;
   flex: 1;
   position: relative;
@@ -425,6 +426,10 @@
   width: 100%;
   z-index: 9;
 
+  @at-root .main-container[data-mode="objects"] & {
+    position: static;
+  }
+
   @include from($widescreen) {
     max-width: $max-content-full-width;
     margin-left: auto;
@@ -472,7 +477,7 @@
 
     .actions {
       width: 93px;
-      height: 42px;
+      height: $header-main-height;
       background-color: #fff;
       border-radius: 10px;
       box-shadow: 0 0.2em .5em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
@@ -552,7 +557,7 @@
 
   .gallery {
 
-    $gallery-height: 460px;
+    $gallery-height: 466px;
 
     height: auto;
     margin-top: $base-mobile-side-margin * 3;
@@ -561,6 +566,8 @@
     .gallery-image {
       height: $gallery-height;
       overflow: hidden;
+      width: 100%;
+      background-color: #eee;
     }
 
     .gallery-description {
@@ -570,7 +577,7 @@
       text-align: center;
     }
 
-    img {width: 100%; }
+    img {width: 100%; height: auto; object-fit: contain; object-position: center;}
   }
 
   .gallery-nav {
@@ -616,7 +623,7 @@
 
 [data-component="mapbox"] {
     flex: auto;
-    height: calc(100vh - 42px);
+    height: calc(100vh - #{$header-main-height});
     position: relative;
     z-index: 1;
     min-width: 50%;
@@ -752,8 +759,8 @@
     background-image: url(../images/icons/icon-object-budova.svg);
   }
 
-  &.pomnik {
-    background-image: url(../images/icons/icon-object-pomnik.svg);
+  &.pamatnik {
+    background-image: url(../images/icons/icon-object-pamatnik.svg);
   }
 
   &.publikace {

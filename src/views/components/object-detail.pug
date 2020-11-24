@@ -56,29 +56,30 @@ mixin object-detail(objekt)
                 .item-meta--heading GPS
                 .item-meta--content #{objekt.properties.y}, #{objekt.properties.x}
 
-          .gallery.gallery-card-detail
+          if (objekt.images.length > 0)
+            .gallery.gallery-card-detail(data-component="gallery-detail")
 
-            .gallery-nav(data-glide-el="controls")
-              a.prev(href="#" data-glide-dir="<")
-              a.next(href="#" data-glide-dir=">")
+              .gallery-nav(data-glide-el="controls")
+                a.prev(href="#" data-glide-dir="<")
+                a.next(href="#" data-glide-dir=">")
 
-            .gallery-image-container.glide__track(data-glide-el="track")
-
-              ul.glide__slides
-                if (objekt.images.length > 0)
-
-                  each image in objekt.images
-
-                    li.gallery-image.glide__slide
-                      a.glightbox(data-gallery=`gallery-${objekt.properties.slug}` href=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.name}`)
-                        img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.galleryThumbnail}`)
-
-                      if (image.description)
-                        .gallery-description #{image.description}
+              .gallery-image-container.glide__track(data-glide-el="track")
 
 
-                else
-                  img(src="assets/images/dummy/object-dummy-image.jpg")
+                  ul.glide__slides
+
+                    each image in objekt.images
+
+                      li.gallery-image.glide__slide
+                        a.glightbox(data-gallery=`gallery-${objekt.properties.slug}` href=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.name}`)
+                          img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.galleryThumbnail}`)
+
+                        if (image.description)
+                          .gallery-description #{image.description}
+
+          else
+            .gallery
+              .gallery-image
 
 
         .related-maps.is-hidden
