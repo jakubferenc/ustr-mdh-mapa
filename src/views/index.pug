@@ -29,19 +29,22 @@ block main
 
         .header-content
 
-          .header-content-text
+          .header-content-text-container
+            .header-content-text
 
-            h1.main-title Topografie paměti – Julius Fučík
+              h1.main-title Topografie paměti – Julius Fučík
 
-            p Julius Fučík, komunistický novinář a odbojář, se těsně po druhé světové válce stal národním hrdinou symbolizujícím vzdor vůči okupantům. Jeho Reportáž, psaná na oprátce, sepsaná v prostředí Pankrácké věznice nedlouho před popravou, se stala základním textem vysvětlujícím zážitek ilegální činnosti v období protektorátu. Skrze osobnost Julia Fučíka měla společnost v režimu socialistické diktatury oficiálně vzpomínat na vítězství v druhé světové válce.
+              p Julius Fučík, komunistický novinář a odbojář, se těsně po druhé světové válce stal národním hrdinou symbolizujícím vzdor vůči okupantům. Jeho Reportáž, psaná na oprátce, sepsaná v prostředí Pankrácké věznice nedlouho před popravou, se stala základním textem vysvětlujícím zážitek ilegální činnosti v období protektorátu. Skrze osobnost Julia Fučíka měla společnost v režimu socialistické diktatury oficiálně vzpomínat na vítězství v druhé světové válce.
 
-            p.goals Cílem této mapy je poukázat na významná místa spojena s kultem  utvořeným kolem osoby levicového intelektuála, jenž byl komunistickou stranou uzurpován jako mocný symbol šíření ideologické propagandy.
+              p.goals Cílem této mapy je poukázat na významná místa spojena s kultem  utvořeným kolem osoby levicového intelektuála, jenž byl komunistickou stranou uzurpován jako mocný symbol šíření ideologické propagandy.
 
-            .section-content-text
+              .section-content-text
+
+            .authors
+
               h2.section-content-text-title Mapu vytvořili
 
-              .authors
-
+              .authors-list
                 .author
                   .author-image
                     img(src="assets/images/dummy/profile-image-dummy.png" alt="Jméno")
@@ -73,7 +76,7 @@ block main
               span
                 img(src="assets/images/icons/icon-button-start-map.svg" alt="")
 
-              .icon-text SPUSTIT MAPU
+            .icon-text SPUSTIT MAPU
 
       .section-container
 
@@ -152,7 +155,7 @@ block main
 
             .section-text-info-content-footer
 
-              a.button.button-send(href="#")
+              a.button.button-with-icon.button-send(href="#")
                 .button-text Napište nám
                 .button-icon
                   img(src="assets/images/icons/icon-button-send.svg" alt="Zaslat zprávu")
@@ -164,19 +167,17 @@ block foot
 
     .footer-section.footer-section-social
 
-      .section-newsletter
+      .footer-subsection.section-newsletter
 
         h2.section-title Odebírejte náš newsletter
 
         .section-content
 
-
           input(type="text")
 
           button.button.button-submit PŘIHLÁSIT SE DO NEWSLETTERU
 
-
-      .social-icons
+      .footer-subsection.social-icons
 
         h2.section-title Jsme na sociálních sítích #mdhmapa
 
@@ -203,49 +204,39 @@ block foot
 
       .footer-section.footer-section-links
 
+        .col
 
-        .col-sub
+          .title Cíl aplikace MDH Mapa
+          .content
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-          .col
+        .col
 
-            .title Cíl aplikace MDH Mapa
-            .content
-              p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          .title Na projektu spolupracovali
+          .content
 
+            .logos
 
-          .col
+              .logo
+                .image
+                  img(src="assets/images/icons/logo-ustr.svg" alt="")
+                .text Ústav pro studium totalitních režimů
 
-            .title Cíl aplikace MDH Mapa
-            .content
+              .logo
+                .image
+                  img(src="assets/images/icons/logo-nm.svg" alt="")
+                .text Národní muzeum v Praze
 
-              .logos
+        .col
 
-                .logo
-                  .image
-                    img(src="assets/images/icons/logo-ustr.svg" alt="")
-                  .text Ústav pro studium totalitních režimů
+        .col
 
-                .logo
-                  .image
-                    img(src="assets/images/icons/logo-nm.svg" alt="")
-                  .text Národní muzeum v Praze
-
-
-
-        .col-sub
-
-          .col
-
-
-
-
-          .col
-
-            .title Cíl aplikace MDH Mapa
-            .content
-              p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          .title Důležité odkazy
+          .content
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 
       .footer-section.footer-claim
         p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+
 

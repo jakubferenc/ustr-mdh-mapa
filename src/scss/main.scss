@@ -77,30 +77,12 @@ a[href^="tel"] {
   cursor: pointer;
 }
 
-.button {
 
-  border: none;
-  padding: 0;
 
-  &.button-text {
-
-    .text {
-
-      @include from($widescreen) {
-
-        @include fontSize(20px);
-        font-weight: bold;
-        color: #000;
-        border-bottom: 2px solid #000;
-      }
-
-    }
-
-    .arrow, .text {display: inline-block;}
-
-    .arrow {margin-left: 15px;}
-  }
-}
+/****************************************************/
+/* :FORMS: */
+@import "forms";
+/****************************************************/
 
 /****************************************************/
 /* :ICONS: */
