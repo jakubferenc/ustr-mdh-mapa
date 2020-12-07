@@ -265,7 +265,7 @@ const domLoad = () => {
 
           });
 
-          thisMarker.on('contextmenu', () => {return false;})
+          thisMarker.on('contextmenu', () => {return false;});
 
           thisMarker.on('click', (e) => {
 
