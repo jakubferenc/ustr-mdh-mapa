@@ -709,6 +709,10 @@ gulp.task('copyToDist', (done) => {
   gulp.src(['.htaccess'])
   .pipe(gulp.dest('./dist/'));
 
+  gulp.src(['./src/data-maps/**/*'])
+  .pipe(gulp.dest('./dist/assets/data-maps/'));
+
+
   done();
 
 });
