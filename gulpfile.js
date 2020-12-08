@@ -695,14 +695,19 @@ gulp.task('prepareMapDataAndImages', prepareObjectJsonWithImages);
 gulp.task('mergeJson', gulp.series(mergeJson, mergeMapJson));
 gulp.task('preparePagesMapDetail',  gulp.series('mergeJson', preparePagesMapDetail));
 
+gulp.task('copyToSrc', (done) => {
+
+  gulp.src(['./temp/data-maps/**/*'])
+  .pipe(gulp.dest('./src/data-maps/'));
+
+  done();
+
+});
 
 
 gulp.task('copyToDist', (done) => {
   gulp.src(['.htaccess'])
   .pipe(gulp.dest('./dist/'));
-
-  gulp.src(['./temp/**/*'])
-  .pipe(gulp.dest('./dist/assets'));
 
   done();
 
@@ -734,14 +739,6 @@ gulp.task('svg', () => {
 
 });
 
-gulp.task('test', (done) => {
-
-  console.log(latinize('č č'));
-  console.log('č'.normalize('NFKD') === 'č'.normalize('NFKD'));
-  console.log('č'.normalize('NFKD').charCodeAt(0) + " " + 'č'.normalize('NFKD').charCodeAt(0));
-  done();
-});
-
 
 gulp.task('watch', (cb) => {
   gulp.watch(['site.webmanifest'], gulp.series('pug'));
@@ -755,6 +752,9 @@ gulp.task('watch', (cb) => {
   gulp.watch(['data/**/*.json'], gulp.series('mergeJson', 'pug'));
   cb();
 });
+
+// GULP:prepare
+gulp.task('prepare', gulp.series('prepareMapDataAndImages', 'copyToSrc'));
 
 // GULP:build
 gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'pug', 'images', 'fonts', 'copyToDist', 'injectSvg'));
