@@ -52,6 +52,7 @@ data/data_merged.json
 
 # MDH specific
 data-maps
+!src/data-maps
 
 # Wordpress #
 wordpress
