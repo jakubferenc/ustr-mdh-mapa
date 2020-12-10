@@ -558,6 +558,19 @@
       background: transparent;
       text-align: center;
       height: auto;
+      position: relative;
+
+      .button-open-gallery {
+        display: inline-block;
+        background: #fff;
+        position: absolute; bottom: 55px; right: 15px;
+        height: 50px;
+        line-height: 50px;
+        min-height: auto;
+        font-size: 14px;
+        width: 20%;
+        max-width: 200px;
+      }
 
       a {
         background-color: #eee;

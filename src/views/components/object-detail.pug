@@ -65,13 +65,15 @@ mixin object-detail(objekt)
 
               .gallery-image-container.glide__track(data-glide-el="track")
 
-
                   ul.glide__slides
 
                     each image in objekt.images
 
                       li.gallery-image.glide__slide
                         a.glightbox(data-gallery=`gallery-${objekt.properties.slug}` href=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.name}`)
+
+                          span.button.button-open-gallery Zvětšit fotografii
+
                           img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${image.galleryThumbnail}`)
 
                         if (image.description)
