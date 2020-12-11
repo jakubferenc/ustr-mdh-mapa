@@ -20,8 +20,31 @@
   }
 }
 
+.toggle-mobile-menu {
+
+  @include until($widescreen) {
+    display: block;
+    font-size: 16px;
+
+  }
+  @include from($widescreen) {
+    display: none;
+
+  }
+
+}
+
 .main-nav {
-  width: 400px;
+
+  display: none;
+
+
+
+  @include from($widescreen) {
+    display: block;
+    width: 400px;
+  }
+
   text-transform: uppercase;
 
   .item {
@@ -36,7 +59,14 @@
 
 
 .user-actions-nav {
-  width: 450px;
+
+  display: none;
+
+  @include from($widescreen) {
+    display: block;
+    width: 450px;
+  }
+
   text-align: right;
   text-transform: uppercase;
 
