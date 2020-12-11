@@ -1,5 +1,6 @@
-import { __addClass, __remove, __hasClass, __removeClass, __toggleClass } from './lib/utils/utils';
+import { __addClass, __remove, __hasClass, __removeClass, __toggleClass, __triggerEvent } from './lib/utils/utils';
 import geoJsonMdhData from '../../temp/data_maps_merged.json';
+import {appConfig as appConfig} from '../../app.config.json';
 import { MarkerClusterGroup } from 'leaflet.markercluster/src';
 
 import Glide, { Controls } from '@glidejs/glide/dist/glide.modular.esm';
@@ -23,7 +24,8 @@ const domLoad = () => {
   };
 
   // variables
-   // map detail
+
+  // map detail
  const $mapDetailView = document.querySelector('[data-component="map-detail-view"]');
  const $mapDetailFilter = document.querySelector('[data-component="filter"]');
  const $mapDetailFilterSwitch = document.querySelector('.filter-button-switch');
@@ -187,16 +189,41 @@ const domLoad = () => {
 
   const getHTMLforLeafletPopup = (feature) => {
 
-    const html = `
-          <div id="popup-${feature.properties.name}" class="map-popup">
-          <h1 class="popup-layer-title">${feature.properties.name}</h1>
-          <div class="popup-layer-tag">
-            <div class="meta meta-category">
-              <span class="text-icon">#</span>
-              <span class="text-content">${feature.properties.layer}</span>
-            </div>
+    let html = '';
+
+    if (feature.images.length > 0) {
+
+      html = `
+        <div id="popup-${feature.properties.name}" class="map-popup">
+        <div class="popup-layer-image">
+          <img src="/assets/data-maps/topografie-pameti-julius-fucik/images/${feature.properties.slug}/${feature.images[0].thumbnail}" alt="">
+        </div>
+        <h1 class="popup-layer-title">${feature.properties.name}</h1>
+        <div class="popup-layer-tag">
+          <div class="meta meta-category">
+            <span class="text-icon">#</span>
+            <span class="text-content">${feature.properties.layer}</span>
           </div>
-        `;
+        </div>
+      `;
+
+    } else {
+
+      html = `
+        <div id="popup-${feature.properties.name}" class="map-popup">
+        <div class="popup-layer-image"></div>
+        <h1 class="popup-layer-title">${feature.properties.name}</h1>
+        <div class="popup-layer-tag">
+          <div class="meta meta-category">
+            <span class="text-icon">#</span>
+            <span class="text-content">${feature.properties.layer}</span>
+          </div>
+        </div>
+      `;
+
+    }
+
+
 
     return html;
 
@@ -209,6 +236,7 @@ const domLoad = () => {
 
   // we have mapbox item, initialize Leafleft and Mapbox
   // find map DOM objects and initialize them through Leaflet
+  ////////////////////////////////////////////////////////////
   if ($mapbox) {
 
     const mymap = L.map('mapbox', {zoomControl: true}).setView([50.08804, 14.42076], 7); /* :TODO: automatize setting the centre of a map via JSON */
@@ -250,7 +278,7 @@ const domLoad = () => {
                   data-marker-layer="${feature.properties.layer}">
               </div>`,
             iconSize: 'auto',
-            riseOnHover: true,
+            riseOnHover: false,
           })});
 
           thisMarker.on('mouseover', (e) => {
@@ -293,11 +321,34 @@ const domLoad = () => {
     // mymap.addLayer( markerClusters );
 
   }
+  ////////////////////////////////////////////////////////////
 
+  // view Switch links
+  ////////////////////////////////////////////////////////////
+  const $viewSwitchActionDefault = document.querySelector('[rel="default"]');
+  const $viewSwitchActionObjects = document.querySelector('[rel="objects"]');
 
-  $mapDetailFilterSwitch.addEventListener('click', (e) => {
-    __toggleClass($mapDetailFilter, 'open');
+  const windowResizeObserver = new ResizeObserver(entries => {
+    for (let entry of entries) {
+
+      if (window.innerWidth < appConfig.responsive.widescreen) {
+
+        const modesToSwitch = [undefined, 'default'];
+
+        if (modesToSwitch.indexOf($mapDetailView.dataset.mode) > -1) {
+
+          $viewSwitchActionObjects.click();
+
+        }
+
+      }
+
+    }
   });
+  windowResizeObserver.observe($body);
+
+
+
 
   Array.from($mapViewSwitchLinks).forEach($item => {
 
@@ -325,6 +376,7 @@ const domLoad = () => {
     });
 
   });
+  ////////////////////////////////////////////////////////////
 
   // card detail
 
@@ -340,6 +392,10 @@ const domLoad = () => {
 
 
   // filter
+
+  $mapDetailFilterSwitch.addEventListener('click', (e) => {
+    __toggleClass($mapDetailFilter, 'open');
+  });
 
   let activeFilterItems = {
     "categories": [],

@@ -1,6 +1,6 @@
 $primary-color: #000;
 $active-color: #00009c;
-$active-gray: #7E7E7E;
+$active-gray: rgb(159, 159, 159);
 $passive-gray: #E0E0E0;
 $border-gray: #EEEEEE;
 $primary-dark-color: #000;
@@ -46,3 +46,6 @@ $header-figure-h-padding: 40px;
 $header-figure-v-padding: 40px;
 
 $base-viewport-width: 1920px;
+
+  /// filter
+  $filter-width: 77px;
