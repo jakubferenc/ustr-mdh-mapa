@@ -28,6 +28,7 @@
 
     [data-component='mapbox'] {
       width: 100%;
+      max-width: initial;
     }
   }
 
@@ -236,7 +237,7 @@
   position: relative;
 
   @include from($widescreen) {
-    $min-widescreen-width: 1920px/2;
+    $min-widescreen-width: 50%;
     min-width: calc(#{$min-widescreen-width} - #{$filter-width})
   }
 
@@ -719,7 +720,7 @@
   height: calc(100vh - #{$header-main-height});
   position: relative;
   z-index: 1;
-  min-width: 50%;
+  max-width: 50%;
 }
 
 [data-component='view-switch'] {
