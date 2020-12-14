@@ -237,7 +237,7 @@
   position: relative;
 
   @include from($widescreen) {
-    $min-widescreen-width: 50%;
+    $min-widescreen-width: 55%;
     min-width: calc(#{$min-widescreen-width} - #{$filter-width})
   }
 
@@ -720,6 +720,7 @@
   height: calc(100vh - #{$header-main-height});
   position: relative;
   z-index: 1;
+  max-width: 50%;
 }
 
 [data-component='view-switch'] {
