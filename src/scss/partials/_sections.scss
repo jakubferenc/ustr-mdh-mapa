@@ -720,7 +720,6 @@
   height: calc(100vh - #{$header-main-height});
   position: relative;
   z-index: 1;
-  max-width: 50%;
 }
 
 [data-component='view-switch'] {
