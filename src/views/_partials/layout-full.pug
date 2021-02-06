@@ -89,8 +89,11 @@ html(lang="cs")
       block foot
         include ./footer.pug
 
+
+      block debug
+        .debug-bar
+
       block javascript
-        script.
 
         script(src="/assets/js/app.build.js?" + Math.floor(Date.now() / 1000))
 

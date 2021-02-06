@@ -3,6 +3,7 @@
 // Import only what you need from Bulma
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
+@import "../../node_modules/bulma/sass/grid/columns.sass";
 // Required Core Stylesheet
 
 @import "../../node_modules/@glidejs/glide/src/assets/sass/glide.core";
@@ -10,21 +11,35 @@
 /* fonts */
 @import "fonts";
 /* end fonts */
+
+// library components
 @import "lib/all";
 
+//typography
+@import "typography";
 
 div, textarea {box-sizing: border-box;}
 
 html {
+
   font-size: 12px;
 
-  @include from($widescreen) {
+  @include from($tablet) {
     font-size: 14px;
   }
 
-  @include from($fullhd) {
-    font-size: $base-font-size;
+  @include from($desktop) {
+
   }
+
+  @include from($widescreen) {
+    font-size: 16px;
+  }
+
+  @include from($fullhd) {
+
+  }
+
 }
 
 body {
@@ -33,10 +48,6 @@ body {
   color: $primary-color;
   line-height: 1.7;
   margin: 0;
-
-  @include from($widescreen) {
-
-  }
 
 }
 
@@ -50,10 +61,10 @@ a {
 }
 
 h1, h2, h3 {
-  font-weight: 200;
+  font-weight: 400;
 }
 
-p {line-height: $base-line-height;}
+p {line-height: $base-line-height; font-weight: 400;}
 
 /* :CUSTOM CLASSES: */
 .home-info em {
@@ -77,6 +88,49 @@ a[href^="tel"] {
   cursor: pointer;
 }
 
+/****************************************************/
+/* :DEBUG: */
+.debug-bar {
+  position: fixed;
+  bottom: 0; right: 0;
+  width: 200px;
+  height: 50px;
+  background: #fff;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:after {
+    content: "mobile";
+  }
+
+  @include from($tablet) {
+    &:after {
+      content: "tablet";
+    }
+  }
+
+  @include from($desktop) {
+    &:after {
+      content: "desktop";
+    }
+  }
+
+  @include from($widescreen) {
+    &:after {
+      content: "widescreen";
+    }
+  }
+
+  @include from($fullhd) {
+    &:after {
+      content: "fullhd";
+    }
+  }
+
+}
+/****************************************************/
 
 
 /****************************************************/
@@ -175,3 +229,6 @@ a[href^="tel"] {
   border-top-right-radius: 0 !important;
 }
 /****************************************************/
+
+// components
+@import "components/component-list-map";

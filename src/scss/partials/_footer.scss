@@ -56,7 +56,7 @@
         display: flex;
         align-items: center;
 
-        .text {margin-left: 20px;}
+        .text {margin-left: $base-mobile-side-margin;}
       }
 
     }
@@ -90,7 +90,7 @@
 
       width: 100%;
       @include until($widescreen) {
-        margin-top: 20px;
+        margin-top: $base-mobile-side-margin;
       }
       @include from($widescreen) {
         margin-left: 40px;
@@ -113,12 +113,12 @@
 
   .main-footer-content-in {
 
-    padding: 40px 20px;
+    padding: $base-mobile-side-margin*2 $base-mobile-side-margin;
 
     @include from($widescreen) {
       display: flex;
       height: calc(100vh - #{$height-footer-social});
-      padding: 80px 100px;
+      padding: $base-mobile-side-margin*4 $base-mobile-side-margin*5;
       justify-content: space-between;
       flex-direction: column;
     }
@@ -129,15 +129,14 @@
   .footer-section-links {
 
 
-
     @include from($widescreen) {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: flex-start;
     }
 
     .col {
-      margin-bottom: 40px;
+      margin-bottom: 2*$base-mobile-side-margin;
       @include from($widescreen) {
         width: 25%;
         margin-bottom: 0;
@@ -151,11 +150,11 @@
     }
 
     .title {
-      margin-bottom: 20px;
+      margin-bottom: $base-mobile-side-margin;
       font-size: 21px;
 
       @include from($widescreen) {
-        margin-bottom: 40px;
+        margin-bottom: 2*$base-mobile-side-margin;
       }
 
     }
@@ -175,10 +174,10 @@
     }
 
     .logo {
-      margin-bottom: 20px;
+      margin-bottom: $base-mobile-side-margin;
 
       @include until($widescreen) {
-        margin-left: 40px;
+        margin-left: 2*$base-mobile-side-margin;
         &:first-child {
           margin-left: 0;
         }

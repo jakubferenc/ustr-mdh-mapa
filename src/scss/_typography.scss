@@ -1,0 +1,124 @@
+$mainTitleFontSize: 74px;
+$subtitleFontSize: 22px;
+
+
+
+.typo-main-title {
+
+  font-size: $mainTitleFontSize/1.5;
+  font-family: 'Robot Condensed', sans-serif;
+
+
+  @include from($desktop) {
+
+    font-size: $mainTitleFontSize;
+
+  }
+
+  line-height: 1.1;
+}
+
+.typo-subtitle {
+
+  font-size: $subtitleFontSize;
+
+}
+
+.typo-hero-box-subtitle {
+
+  font-size: 1.75rem;
+
+  @include until($tablet) {
+
+  }
+
+ @include from($tablet) {
+
+}
+
+  @include from($desktop) {
+
+  }
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+
+}
+
+.typo-section-title {
+
+  font-size: 3rem;
+  text-align: center;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  text-transform: uppercase;
+
+  margin-bottom: 3rem;
+
+
+  @include until($tablet) {
+
+  }
+
+ @include from($tablet) {
+
+}
+
+  @include from($desktop) {
+
+    margin-top: 5rem;
+
+  }
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+
+}
+
+.typo-section-title + .typo-subtitle {}
+
+.typo-subtitle {
+
+  font-size: 1.375rem;
+  line-height: 1.4;
+
+
+  @include until($tablet) {
+
+  }
+
+  @include from($tablet) {
+
+  }
+
+  @include from($desktop) {
+    max-width: 675px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+
+}
+
+
+
+
