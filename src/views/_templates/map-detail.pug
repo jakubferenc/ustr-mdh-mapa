@@ -16,7 +16,7 @@ block main
       "layers": mapSettings.layers,
       })
 
-      .main-content(data-component="list-view-container")
+      .main-content(data-component="list-objects-container")
 
         .main-content-top-bar
           a.icon-container.icon-back(href="/")
@@ -27,7 +27,7 @@ block main
 
           +object-detail(objekt)
 
-        div(data-component="list-view")
+        div(data-component="list-objects")
 
           h1.title #{name}
 

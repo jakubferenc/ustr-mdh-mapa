@@ -1,3 +1,41 @@
+[data-component="section"] {
+
+  &.alt-bg {
+    background-color: #F2F2F2;
+  }
+
+}
+
+.section-padding {
+
+  padding: $base-mobile-side-margin*2 $base-mobile-side-margin;
+
+  @include until($tablet) {
+
+  }
+
+  @include from($tablet) {
+
+  }
+
+  @include from($desktop) {
+
+    padding: $base-mobile-side-margin*4;
+
+  }
+
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+
+}
+
+
 [data-component='map-detail-view'] {
   display: flex;
   align-items: center;
@@ -12,7 +50,7 @@
       display: none;
     }
 
-    [data-component='list-view-container'] {
+    [data-component='list-objects-container'] {
       width: 100%;
       .cards-container {
         max-width: $max-content-full-width;
@@ -22,7 +60,7 @@
   }
 
   &[data-mode='map'] {
-    [data-component='list-view-container'] {
+    [data-component='list-objects-container'] {
       display: none;
     }
 
@@ -229,7 +267,7 @@
   }
 }
 
-[data-component='list-view-container'] {
+[data-component='list-objects-container'] {
   background: #eee;
   height: calc(100vh - #{$header-main-height});
   overflow: auto;
@@ -243,7 +281,7 @@
 
 
   &.inactive {
-    [data-component='list-view'] {
+    [data-component='list-objects'] {
       opacity: 0.1;
       height: 100vh;
       overflow: hidden;
@@ -266,7 +304,7 @@
   }
 }
 
-[data-component='list-view'] {
+[data-component='list-objects'] {
   .title {
     margin-top: $base-mobile-side-margin * 2;
     text-align: center;
@@ -410,6 +448,7 @@
       line-height: 1.2;
     }
     .icons {
+      margin-left: 5px;
       img {
         height: 20px;
       }
@@ -725,7 +764,7 @@
 
 [data-component='view-switch'] {
   position: absolute;
-  top: $base-mobile-side-margin * 2; /* the same as .list-view-detail button back margin top */
+  top: $base-mobile-side-margin * 2; /* the same as .list-objects-detail button back margin top */
   right: 60px;
   z-index: 9;
   width: auto;
@@ -903,4 +942,105 @@
   &.muzeum {
     background-image: url(../images/icons/icon-object-muzeum.svg);
   }
+}
+
+.hero-box {
+
+  position: relative;
+
+  &.homepage {
+
+    height: calc(100vh - #{$header-main-height});
+    background: gray;
+
+    @include from($tablet) {
+      padding: $base-mobile-side-margin*4;
+
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+
+    }
+
+  }
+
+  .title-container,
+  .footer-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .title-container {
+
+    .column {
+      @include from($widescreen) {
+
+        padding-right: 10%;
+
+      }
+    }
+
+
+    .button {
+      margin-top: 3rem;
+      @include from($tablet) {
+
+      }
+    }
+
+    .typo-subtitle {
+      margin-top: 2rem;
+    }
+
+  }
+
+  .footer-container {
+
+    @include from($widescreen) {
+
+      justify-content: space-between;
+
+    }
+
+    .content, .content p {
+      font-size: 16px;
+    }
+
+
+    @include from($widescreen) {
+
+      justify-content: space-between;
+
+    }
+
+    .footer-container-section {
+
+      @include from($widescreen) {
+
+        padding-right: 3%;
+
+      }
+
+    }
+
+    .footer-container-section-goals {
+
+      @include from($widescreen) {
+
+        padding-right: 10%;
+
+      }
+
+    }
+
+  }
+
 }

@@ -35,8 +35,8 @@ const domLoad = () => {
   const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
 
   const $mapbox = document.querySelector('[data-component="mapbox"]'); /*:TODO: currently working with only one mapbox per page */
-  const $listViewContainer = document.querySelector('[data-component="list-view-container"]');
-  const $listView = document.querySelector('[data-component="list-view"]');
+  const $listViewContainer = document.querySelector('[data-component="list-objects-container"]');
+  const $listView = document.querySelector('[data-component="list-objects"]');
 
 
   // functions
