@@ -4,7 +4,8 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "extends" : ["plugin:you-dont-need-lodash-underscore/compatible"]
   },
   "rules": {
       "semi": "error"

@@ -1,5 +1,5 @@
 {
-  "extends": "clock",
+  "extends": "./node_modules/coding-standard/.pug-lintrc",
   "disallowIdLiterals": null,
   "validateAttributeQuoteMarks": "\"",
   "validateAttributeSeparator": {
