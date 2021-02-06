@@ -60,12 +60,6 @@ const makeCzechDateTimeFromYMDT = (dateTimeString) => {
   return { time, date: makeCzechDateFromYMD(date) };
 };
 
-function startBrowserSync() {
-  if (browserSync.active) {
-    return;
-  }
-  browserSync.init(config.browserSync);
-}
 
 function fileContents(filePath, file) {
   return file.contents.toString();
@@ -76,6 +70,8 @@ const getCleanUpJSONFromImgTags = (jsonString, pattern = '<img[^<]+>') => {
   return jsonString.replace(new RegExp(pattern, "gmi"), '');
 
 };
+
+const reloadBrowserSync = () => browserSync.reload({stream: true});
 
 // ==========================================
 // CONFIG
@@ -278,17 +274,25 @@ gulp.task('clean-temp-data-maps', (done) => {
 });
 
 // SERVER
-gulp.task('serve', () => {
-  return startBrowserSync();
+gulp.task('serve', (cb) => {
+
+  if (browserSync.active) {
+    return;
+  }
+  browserSync.init(config.browserSync);
+
+  gulp.watch('src/js/**/*.js', gulp.series('js'));
+  gulp.watch('src/scss/**/*.scss', gulp.series('sass'));
+  gulp.watch(['src/views/**/*.pug']).on('change', gulp.series('pug', browserSync.reload));
+
+  cb();
+
 });
 
-gulp.task('reload', () => {
-  return browserSync.reload();
-});
 
-// pug:index & pug:home (pug -> html)
+
 gulp.task('pug', () => {
-  return gulp.src(['src/views/index.pug'])
+  return gulp.src(['src/views/*.pug'])
     .pipe(
       $.data(() => JSON.parse(fs.readFileSync('./temp/data_maps_merged.json')))
     )
@@ -296,10 +300,7 @@ gulp.task('pug', () => {
       $.data(() => appConfigJson)
     )
     .pipe($.pug(config.pug))
-    .pipe(gulp.dest('dist/'))
-    .pipe(browserSync.reload({
-      stream: true,
-    }));
+    .pipe(gulp.dest('dist/'));
   });
 
 
@@ -324,9 +325,7 @@ gulp.task('sass', () => {
       cascade: false,
     }))
     .pipe(gulp.dest('dist/assets/css'))
-    .pipe(browserSync.reload({
-      stream: true,
-    }));
+    .pipe(browserSync.stream());
 });
 
 
@@ -334,9 +333,7 @@ gulp.task('js', async () => {
   const bundle = await rollup(config.rollup.bundle);
   bundle.write(config.rollup.output);
 
-  browserSync.reload({
-    stream: true,
-  });
+  browserSync.reload({stream: true});
 
 });
 
@@ -371,10 +368,10 @@ const prepareObjectJsonWithImages = (cb) => {
         fs.mkdirSync(`./temp/`);
         console.log("Directory is created.");
     } else {
-        console.log("Directory already exists.");
+        console.error("Directory already exists.");
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 
   // create new directory in ./temp
@@ -387,7 +384,7 @@ const prepareObjectJsonWithImages = (cb) => {
         //console.log("Directory already exists.");
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 
   return gulp.src('./data-maps/**/*.json')
@@ -505,7 +502,7 @@ const prepareObjectJsonWithImages = (cb) => {
                     //console.log("Directory already exists.");
                 }
               } catch (err) {
-                console.log(err);
+                console.error(err);
               }
 
               try {
@@ -517,7 +514,7 @@ const prepareObjectJsonWithImages = (cb) => {
                     //console.log("Directory already exists.");
                 }
               } catch (err) {
-                console.log(err);
+                console.error(err);
               }
 
               const thisObjectFolderNameForImages = `./temp/data-maps/${filename}/images/${newMapObjectFeatureItem.properties.slug}`;
@@ -531,7 +528,7 @@ const prepareObjectJsonWithImages = (cb) => {
                     //console.log("Directory already exists.");
                 }
               } catch (err) {
-                console.log(err);
+                console.error(err);
               }
 
               // resize, rename original
@@ -622,7 +619,7 @@ const prepareObjectJsonWithImages = (cb) => {
           //console.log("Directory already exists.");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
 
     // write the json structure to the file based on the sluggified map name
@@ -718,7 +715,6 @@ gulp.task('copyToDist', (done) => {
 });
 
 
-
 gulp.task('svg', () => {
 
   const svgs = gulp
@@ -745,15 +741,11 @@ gulp.task('svg', () => {
 
 
 gulp.task('watch', (cb) => {
-  gulp.watch(['site.webmanifest'], gulp.series('pug'));
-  gulp.watch('src/js/**/*.js', gulp.series('js'));
-  gulp.watch('src/scss/**/*.scss', gulp.series('sass'));
-  gulp.watch(['src/views/**/*.pug'], gulp.series('pug'));
-  gulp.watch('src/*.html', gulp.series(browserSync.reload));
+
   gulp.watch(['src/images/**/*.+(png|jpg|jpeg|gif|svg)'], gulp.series('images'));
-  gulp.watch(['src/views/**/*.pug'], gulp.series('pug'));
-  gulp.watch('app.config.json', gulp.series('pug'));
+
   gulp.watch(['data/**/*.json'], gulp.series('mergeJson', 'pug'));
+
   cb();
 });
 
