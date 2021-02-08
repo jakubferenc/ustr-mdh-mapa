@@ -753,7 +753,7 @@ gulp.task('watch', (cb) => {
 gulp.task('prepare', gulp.series('prepareMapDataAndImages', 'copyToSrc'));
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'pug', 'images', 'fonts', 'copyToDist', 'injectSvg'));
+gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'pug', 'images', 'fonts', 'copyToDist'));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));
