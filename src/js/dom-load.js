@@ -408,7 +408,7 @@ const domLoad = () => {
 
     Array.from($mapDetailFilterItemsLayer).forEach( ($item) => {
 
-      let layerName = undefined;
+      let layerName;
 
       if (__hasClass($item, 'active')) {
 
