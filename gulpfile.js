@@ -321,10 +321,7 @@ gulp.task('sass', () => {
     .pipe($.sourcemaps.init())
     .pipe($.sass(config.sass).on('error', $.sass.logError))
     .pipe($.sourcemaps.write(gulp.dest('dist/assets/css')))
-    .pipe($.autoprefixer({
-      browsers: ['last 4 versions'],
-      cascade: false,
-    }))
+    .pipe($.autoprefixer())
     .pipe(gulp.dest('dist/assets/css'))
     .pipe(browserSync.stream());
 });
@@ -390,8 +387,6 @@ const prepareObjectJsonWithImages = (cb) => {
 
   return gulp.src('./data-maps/**/*.json')
   .pipe(mapStream((file, done) => {
-
-    //const allPromises = [];
 
     const filename = path.basename(file.path, path.extname(file.path));
     const parentFolderName = path.basename(path.dirname(file.path));
@@ -587,7 +582,9 @@ const prepareObjectJsonWithImages = (cb) => {
       }
 
       // clean up object
-      delete newMapObjectFeatureItem.gx_media_links;
+      if (newMapObjectFeatureItem.gx_media_links) {
+        delete newMapObjectFeatureItem.gx_media_links;
+      }
 
       // add newly created feature item to new features array
       objectsNewFeatures.push(newMapObjectFeatureItem);
@@ -603,6 +600,8 @@ const prepareObjectJsonWithImages = (cb) => {
 
     objectsJson.features = objectsNewFeatures;
 
+    console.log('HERE!!!');
+    console.log(filename);
     // create final json structure
     const transformedJson = {
       [filename]: objectsJson
