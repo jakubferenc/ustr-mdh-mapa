@@ -1,0 +1,24 @@
+mixin article-card(settings)
+
+  - const defaults = {class: ''};
+  - const opts  = Object.assign({}, defaults, settings);
+
+
+  article.article.article-card(class=`${opts.class}` data-component="article-card")
+
+    figure
+      img(src="assets/images/dummy/article-card-image.jpg" alt="Julius Fučík - Lorem ipsum dolor sit ")
+
+
+    .article-card-content
+
+      header.article-header
+        h2.typo-subtitle.list-map-item-title test Julius Fučík - místa paměti Praha
+
+        .meta JMÉNO AUTORA ČLÁNKU  |  27. 6. 2020
+
+
+      p.perex Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat. Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat…
+
+      a.read-more(href="#") Číst dále
+

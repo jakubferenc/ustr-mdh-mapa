@@ -181,43 +181,7 @@
 
     }
 
-    .authors {
 
-      .authors-list {
-        display: flex;
-        margin-top: 10px;
-
-        @include until($widescreen) {
-          flex-direction: column;
-        }
-        @include from($widescreen) {
-          justify-content: space-between;
-          flex-wrap: wrap;
-          margin-top: 20px;
-        }
-
-      }
-
-
-      .author {
-        display: flex;
-
-        @include until($widescreen) {
-          flex-direction: row;
-        }
-        @include from($widescreen) {
-          width: 50%;
-
-        }
-        font-size: 14px;
-        line-height: 21px;
-        margin-bottom: 20px;
-        .author-image {margin-right: 20px;}
-        .name {font-weight: 700;}
-        .what-they-did  {font-style: italic;}
-      }
-
-    }
 
   }
 

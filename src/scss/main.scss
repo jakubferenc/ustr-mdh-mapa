@@ -185,7 +185,110 @@ a[href^="tel"] {
 /****************************************************/
 /* :COMPONENTS: */
 
+.banner.banner-about {
+  .typo-section-title,
+  .typo-subtitle {text-align: left; margin-left: 0;}
 
+  @include until($widescreen) {
+    .banner-text {
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.banner  {
+
+  padding: $base-mobile-side-margin*2;
+
+  @include until($tablet) {
+
+  }
+
+ @include from($tablet) {
+
+  }
+
+  @include from($desktop) {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+
+
+
+  .banner-image {
+
+
+    text-align: center ;
+
+    @include from($desktop) {
+
+      width: 45%;
+      display: flex;
+      justify-content: center;
+
+    }
+
+  }
+
+  .banner-text {
+
+    text-align: left;
+
+    @include from($desktop) {
+
+      width: 45%;
+
+
+    }
+  }
+
+
+}
+
+.banner.banner-large {
+  min-height: 388px;
+  border-radius: 44px;
+  background-color: #fff;
+
+
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+
+  @include until($tablet) {
+
+  }
+
+  @include from($tablet) {
+
+  }
+
+  @include from($desktop) {
+
+    margin-top: 8rem;
+    margin-bottom: 8rem;
+
+  }
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+
+}
 /****************************************************/
 
 /****************************************************/

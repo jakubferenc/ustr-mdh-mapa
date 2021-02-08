@@ -50,9 +50,15 @@
     .social-icon {
 
       .text {font-size: 12px;}
+      .icon {
+        width: 50px;
+        @include from($widescreen) {
+         width: auto;
+        }
+
+      }
 
       @include from($widescreen) {
-
         display: flex;
         align-items: center;
 

@@ -1,0 +1,67 @@
+extends ./_partials/layout-full.pug
+include ./components/article-card.pug
+
+
+block vars
+  - bodyClass = 'list-maps'
+
+block main
+
+  main
+
+
+    article.section.section-padding.alt-bg(data-component="article-detail")
+
+      h1.typo-section-title.is-section-title AKTUALITA PROJEKTU
+
+      h2.typo-subtitle.is-section-title Zde bude perex článku, který uživatel uvidí i na výpisu článků. Perex slouží pro shrnutí hlavních myšlenek článku. Ideálně by perex měl být tak dlouhý, aby se na počítači zobrazoval na tři řádky.
+
+      figure
+        img(src="assets/images/dummy/article-detail-dummy-figure.jpg" alt="Julius Fučík - Lorem ipsum dolor sit ")
+
+
+      .meta JMÉNO AUTORA ČLÁNKU  |  27. 6. 2020
+
+      .article-detail-content
+
+        .typo-text
+
+          p Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat. Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat…
+          p Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat. Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat…
+
+          p Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat. Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat…
+
+
+      .social-buttons.social-share-buttons(data-component="social-share-buttons")
+
+        span.nav-title SDÍLEJTE ČLÁNEK S PŘÁTELI
+        nav.social-buttons-nav
+          a.item(href="#")
+            img(src="assets/images/icons/icon-social-facebook.svg" alt="Facebook")
+          a.item(href="#")
+            img(src="assets/images/icons/icon-social-twitter.svg" alt="Twitter")
+
+
+
+      .authors
+
+        h2.authors-title.typo-subtitle Autor článku
+
+        .authors-list
+
+          .author
+            .author-image
+              img(src="assets/images/dummy/profile-image-dummy-male.png" alt="Jméno")
+            .author-bio
+              .name Mgr. Bohumil Melichar
+              .what-they-did Texty, tvorba mapy
+              .institution Ústav pro studium totalitních režimů
+
+          .author
+            .author-image
+              img(src="assets/images/dummy/profile-image-dummy-male.png" alt="Jméno")
+            .author-bio
+              .name Mgr. Bohumil Melichar
+              .what-they-did Texty, tvorba mapy
+              .institution Ústav pro studium totalitních režimů
+

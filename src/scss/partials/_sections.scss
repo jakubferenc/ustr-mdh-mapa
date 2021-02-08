@@ -1044,3 +1044,239 @@
   }
 
 }
+
+[data-component="article-card"] {
+
+  text-align: left;
+
+  .article-card-content {
+    background-color: #fff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: $base-mobile-side-margin;
+  }
+
+  .article-header {
+    margin-bottom: 1rem;
+  }
+
+  figure {
+    height: 315px;
+    position: relative;
+    img {object-fit: cover; top: 0; left: 0; position: absolute; width: 100%; height:100%;}
+  }
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .read-more {
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  @include until($tablet) {
+
+  }
+
+ @include from($tablet) {
+
+  }
+
+  @include from($desktop) {
+
+    max-width: 550px;
+
+  }
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+}
+
+[data-component="list-articles"] {
+
+  max-width: 1148px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .container-items {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
+  }
+
+  [data-component="article-card"] {
+
+    @include until($tablet) {
+      flex-basis: 100%;
+    }
+
+    @include from($tablet) {
+      max-width: 550px;
+    }
+
+  }
+
+
+
+  @include from($tablet) {
+
+  }
+
+  @include from($desktop) {
+
+  }
+
+  @include from($widescreen) {
+
+  }
+
+  @include from($fullhd) {
+
+  }
+
+
+}
+
+[data-component="article-detail"] {
+
+  $maxWidthContent: 906px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  h2.typo-subtitle {
+    margin-bottom: 4rem;
+  }
+
+  .meta {
+    margin-top: 2rem;
+  }
+
+  .article-detail-content {
+    max-width: $maxWidthContent;
+    margin-top: 4rem;
+
+    &, p {
+      font-size: 1.375rem;
+      line-height: 1.5;
+    }
+
+    p {margin-bottom: 1em}
+  }
+
+  figure {
+
+    width: 100%;
+    max-width: 1100px;
+
+    @include until($tablet) {
+
+    }
+
+   @include from($tablet) {
+
+  }
+
+    @include from($desktop) {
+      height: 630px;
+      position: relative;
+
+      img {object-fit: cover; top: 0; left: 0; position: absolute; width: 100%; height:100%;}
+
+    }
+
+    @include from($widescreen) {
+
+    }
+
+    @include from($fullhd) {
+
+    }
+
+
+  }
+
+  .social-share-buttons {
+    margin-top: 2rem;
+  }
+
+  .authors {
+    margin-top: 4rem;
+    max-width: $maxWidthContent;
+    width: 100%;
+
+    .authors-title {
+      text-align: left;
+    }
+
+    .author {
+    }
+
+    .authors-list {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+  }
+
+}
+
+.social-share-buttons {
+  display: flex;
+
+  .nav-title {}
+  .social-buttons-nav {
+    margin-left: 1rem;
+
+    .item {margin-left: 1rem;}
+  }
+}
+
+.authors {
+
+  .authors-list {
+    display: flex;
+    margin-top: 10px;
+
+    @include until($desktop) {
+      flex-direction: column;
+    }
+    @include from($desktop) {
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+  }
+
+
+  .author {
+    display: flex;
+
+    @include until($desktop) {
+      flex-direction: row;
+    }
+    @include from($desktop) {
+      width: 50%;
+
+    }
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    .author-image {margin-right: 20px;}
+    .name {font-weight: 700;}
+    .what-they-did  {font-style: italic;}
+  }
+
+}
