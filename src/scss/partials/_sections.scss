@@ -1165,7 +1165,15 @@
 
   .article-detail-content {
     max-width: $maxWidthContent;
-    margin-top: 4rem;
+
+    &.spacing-top {
+      margin-top: 4rem;
+    }
+
+    &.spacing-bottom {
+      margin-bottom: 4rem;
+    }
+
 
     &, p {
       font-size: 1.375rem;
@@ -1249,9 +1257,10 @@
     display: flex;
     margin-top: 10px;
 
-    @include until($desktop) {
+    @include until($tablet) {
       flex-direction: column;
     }
+
     @include from($desktop) {
       justify-content: space-between;
       flex-wrap: wrap;
@@ -1267,10 +1276,7 @@
     @include until($desktop) {
       flex-direction: row;
     }
-    @include from($desktop) {
-      width: 50%;
 
-    }
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 20px;
