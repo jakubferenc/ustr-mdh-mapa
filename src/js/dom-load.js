@@ -1,7 +1,7 @@
 import { __addClass, __remove, __hasClass, __removeClass, __toggleClass, __triggerEvent } from './lib/utils/utils';
 import geoJsonMdhData from '../../temp/data_maps_merged.json';
 import {appConfig as appConfig} from '../../app.config.json';
-import { MarkerClusterGroup } from 'leaflet.markercluster/src';
+//import { MarkerClusterGroup } from 'leaflet.markercluster/src';
 
 import Glide, { Controls } from '@glidejs/glide/dist/glide.modular.esm';
 
@@ -242,7 +242,7 @@ const domLoad = () => {
     const mymap = L.map('mapbox', {zoomControl: true}).setView([50.08804, 14.42076], 7); /* :TODO: automatize setting the centre of a map via JSON */
     store.map = mymap;
 
-    const markerClusters = L.markerClusterGroup();
+    //const markerClusters = L.markerClusterGroup();
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Mapová data ÚSTR | Podkladová mapa &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -308,17 +308,18 @@ const domLoad = () => {
 
           store.markers[feature.properties.name] = thisMarker;
 
-          markerClusters.addLayer( thisMarker );
+          //markerClusters.addLayer( thisMarker );
 
           return thisMarker;
 
       },
   });
 
+  vrstvaPlaces.addTo(mymap);
   const placesGroup = L.layerGroup([vrstvaPlaces]);
   placesGroup.addTo(mymap);
 
-    // mymap.addLayer( markerClusters );
+  //mymap.addLayer( markerClusters );
 
   }
   ////////////////////////////////////////////////////////////
@@ -397,8 +398,33 @@ const domLoad = () => {
     __toggleClass($mapDetailFilter, 'open');
   });
 
+  const $mapDetailFilterItemsLayer = $mapDetailFilter.querySelectorAll('[data-filter-layer]');
+  const $mapDetailFilterItemsType = $mapDetailFilter.querySelectorAll('[data-filter-type]');
+
+
+  const getDefaultFilterLayers = () => {
+
+    let defaultLayerNames = [];
+
+    Array.from($mapDetailFilterItemsLayer).forEach( ($item) => {
+
+      let layerName = undefined;
+
+      if (__hasClass($item, 'active')) {
+
+        layerName = $item.dataset.filterLayer;
+
+        defaultLayerNames.push(layerName);
+      }
+
+    });
+
+    return defaultLayerNames;
+
+  };
+
   let activeFilterItems = {
-    "categories": [],
+    "categories": getDefaultFilterLayers(),
     "types": []
   };
 
@@ -420,12 +446,12 @@ const domLoad = () => {
     }
 
     // check if we are supposed to do filtering (an item is selected, if not show all)
-    if (activeFilterItems.categories.length === 0) {
+    /*if (activeFilterItems.categories.length === 0) {
       __removeClass($allObjects, isHiddenClassName);
       __removeClass($allMarkers, isHiddenClassName);
 
       return;
-    }
+    }*/
 
     Array.from($allObjects).forEach( (item) => {
 
@@ -454,6 +480,28 @@ const domLoad = () => {
 
 
   };
+
+  Array.from($mapDetailFilterItemsLayer).forEach( ($item) => {
+
+    $item.addEventListener('click', (e) => {
+
+      const layerName = $item.dataset.filterLayer;
+
+      if (!__hasClass($item, 'active')) {
+        __addClass($item, 'active');
+      } else {
+        __removeClass($item, 'active');
+
+      }
+
+      filterLayers(layerName);
+
+
+    });
+
+  });
+
+
 
   const filterTypes = (typeName) => {
 
@@ -504,29 +552,6 @@ const domLoad = () => {
 
 
   };
-
-  const $mapDetailFilterItemsLayer = $mapDetailFilter.querySelectorAll('[data-filter-layer]');
-  const $mapDetailFilterItemsType = $mapDetailFilter.querySelectorAll('[data-filter-type]');
-
-  Array.from($mapDetailFilterItemsLayer).forEach( ($item) => {
-
-    $item.addEventListener('click', (e) => {
-
-      const layerName = $item.dataset.filterLayer;
-
-      if (!__hasClass($item, 'active')) {
-        __addClass($item, 'active');
-      } else {
-        __removeClass($item, 'active');
-
-      }
-
-      filterLayers(layerName);
-
-
-    });
-
-  });
 
   Array.from($mapDetailFilterItemsType).forEach( ($item) => {
 

@@ -2,13 +2,16 @@
 	"topografie_pameti_julius_fucik": {
 		"name": "Topografie paměti – Julius Fučík",
 		"slug": "topografie-pameti-julius-fucik",
+		"safeSlug": "topografie_pameti_julius_fucik",
 		"mapSettings": {
 			"types": [
 				1,
 				2,
 				3,
 				4,
-				5
+				5,
+				6,
+				7
 			],
 			"layers": {
 				"Místa z Reportáže": {
@@ -24,13 +27,13 @@
 					"color": "hsl(90, 60%, 82%)"
 				},
 				"Fučík a mládež": {
-					"color": "hsl(120, 60%, 82%)"
+					"color": "hsl(220, 60%, 82%)"
 				},
 				"Fučík po roce 1989": {
 					"color": "hsl(180, 60%, 82%)"
 				},
 				"Přírodní monumenty": {
-					"color": "hsl(220, 60%, 82%)"
+					"color": "hsl(120, 60%, 82%)"
 				},
 				"Ulice": {
 					"color": "hsl(250, 60%, 82%)"
@@ -5310,7 +5313,6 @@
 				"properties": {
 					"layer": "Místa z Reportáže",
 					"name": "Petschkův palác, Praha",
-					"type": "pamatnik",
 					"description": "<br><br>Sídlo gestapa, kde byl vyslýchán Julius Fučík - pamětní deska věnovaná perzekuovaným nacistickým režimem ukončená výzvou: \"Lidé bděte\"<br><br>\"Seděti v pozoru, s tělem strnule vzpřímeným, s rukama přimknutýma ke kolenům a s očima až k oslepnutí upřenýma na zažloutlou stěnu \"domácího vezení\" v Petschkově paláci - to věru není poloha nejvhodnější pro myšlení. Ale kdo přiměje myšlenku, aby seděla v pozoru? Kdysi kdosi - už nikdy asi nezjistíme kdy a kdo - nazval \"domácí vězení\" v Petschkově paláci \"biografem\".\"<br><br>Julius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 20<br>x: 14.4311381<br>y: 50.0813765<br>icon: <br><br>",
 					"popis": "Sídlo gestapa, kde byl vyslýchán Julius Fučík - pamětní deska věnovaná perzekuovaným nacistickým režimem ukončená výzvou: \"Lidé bděte\"\n\n\"Seděti v pozoru, s tělem strnule vzpřímeným, s rukama přimknutýma ke kolenům a s očima až k oslepnutí upřenýma na zažloutlou stěnu \"domácího vezení\" v Petschkově paláci - to věru není poloha nejvhodnější pro myšlení. Ale kdo přiměje myšlenku, aby seděla v pozoru? Kdysi kdosi - už nikdy asi nezjistíme kdy a kdo - nazval \"domácí vězení\" v Petschkově paláci \"biografem\".\"\n\nJulius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 20",
 					"x": "14.4311381",
@@ -5344,7 +5346,6 @@
 				"type": "Feature",
 				"properties": {
 					"layer": "Místa z Reportáže",
-					"type": "budova",
 					"name": "věznice Pankrác, Praha",
 					"description": "<br><br>Sedm kroků tam, sedm kroků zpátky. Na jedné stěně sklápěcí kavalec, na druhé stěně smutně hnědá polička s hliněným nádobím. Ano, to znám. Teď je to tu jen trochu zmechanizováno, topení je ústřední, kbelík je nahrazen splachovacím klozetem – a hlavně lidé, hlavně lidé jsou zmechanizováni. Jako automat. Zmačkni knoflík, to jest zarachoť klíčem v dveřích cely nebo otevři špehýrku – a vězňové vyskočí, ať dělají co dělají, postaví se v pozoru za sebou, otevři dveře a starosta cely vyrazí jedním dechem: „Achtung! celecvózíbnzechcikbelegtmittrajmanalesinordnung.“ Tak tedy: 267. To je naše cela.<br>Julius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1948 str. 32-33 <br>Ve věznici byla v poválečných letech pietně uchovávána cela, ve které byl Julius Fučík vězněn.<br>Kresba sovětských autorů J. Vološka a F. Avasijana zachycuje idealizovaný moment vzniku textu Reportáže psané na oprátce v Pankrácké cele.<br>zdroj:Zdislav Buříval a kol.: Praha revoluční. Soupis pražských památek a památných míst revolučního dělnického hnutí, Komunistické strany a protifašistického odboje, Praha: Olympia 1975, ANM, MDH, fond J. Fučík<br><br><br>x: 14.4381746<br>y: 50.0582666<br>icon: <br><br><br><br>",
 					"popis": "Sedm kroků tam, sedm kroků zpátky. Na jedné stěně sklápěcí kavalec, na druhé stěně smutně hnědá polička s hliněným nádobím. Ano, to znám. Teď je to tu jen trochu zmechanizováno, topení je ústřední, kbelík je nahrazen splachovacím klozetem – a hlavně lidé, hlavně lidé jsou zmechanizováni. Jako automat. Zmačkni knoflík, to jest zarachoť klíčem v dveřích cely nebo otevři špehýrku – a vězňové vyskočí, ať dělají co dělají, postaví se v pozoru za sebou, otevři dveře a starosta cely vyrazí jedním dechem: „Achtung! celecvózíbnzechcikbelegtmittrajmanalesinordnung.“ Tak tedy: 267. To je naše cela.\nJulius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1948 str. 32-33 \nVe věznici byla v poválečných letech pietně uchovávána cela, ve které byl Julius Fučík vězněn.\nKresba sovětských autorů J. Vološka a F. Avasijana zachycuje idealizovaný moment vzniku textu Reportáže psané na oprátce v Pankrácké cele.\nzdroj:Zdislav Buříval a kol.: Praha revoluční. Soupis pražských památek a památných míst revolučního dělnického hnutí, Komunistické strany a protifašistického odboje, Praha: Olympia 1975, ANM, MDH, fond J. Fučík\n\n",
@@ -5393,7 +5394,6 @@
 				"type": "Feature",
 				"properties": {
 					"layer": "Místa z Reportáže",
-					"type": "dokument",
 					"name": "Hradčany, Praha",
 					"description": "Místo, kde komisař Böhm nabízel mimo věznici spolupráci s gestapem<br><br>\"Jindy mě po celodenním výslechu posadil do auta a zavezl večerní Prahou na Hradčany nad Nerudovu ulici: Vím, že máš rád Prahu. Podívej! Cožpak se už nikdy nechceš do ní vrátit? Jak je krásná! A bude krásná! I když ty nebudeš ...Hrál dobře úlohu Pokušitele. Letní večer nadechl na<br>Prahu už blízkost podzimu, byla modravá a zamžená jako zrající réva a jako víno opojná, chtěl bych se dívat až do skonání světa ... ale přerušil jsem ho: ... a bude ještě krásnější, až vy tu nebudete.\"<br><br>Julius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 82<br>x: 14.3989355<br>y: 50.0885109<br>icon: ",
 					"popis": "Místo, kde komisař Böhm nabízel mimo věznici spolupráci s gestapem\n\n\"Jindy mě po celodenním výslechu posadil do auta a zavezl večerní Prahou na Hradčany nad Nerudovu ulici: Vím, že máš rád Prahu. Podívej! Cožpak se už nikdy nechceš do ní vrátit? Jak je krásná! A bude krásná! I když ty nebudeš ...Hrál dobře úlohu Pokušitele. Letní večer nadechl na\nPrahu už blízkost podzimu, byla modravá a zamžená jako zrající réva a jako víno opojná, chtěl bych se dívat až do skonání světa ... ale přerušil jsem ho: ... a bude ještě krásnější, až vy tu nebudete.\"\n\nJulius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 82",
@@ -5414,7 +5414,6 @@
 				"type": "Feature",
 				"properties": {
 					"layer": "Místa z Reportáže",
-					"type": "pamatnik",
 					"name": "Kobyliská střelnice, Praha",
 					"description": "Popraviště, které v době stanného práva Fučík zmiňuje jako stálou hrozbu<br><br>\"Otecko Pešek už býval zneklidněn otázkou: vrátí se ještě vůbec? Objal mě, pověděl jsem krátce, co je nového, kdo další padl včera v Kobylisích - a pak jsme hladově pojídali odpornou sušenou zeleninu, zpívali veselé písně nebo se zlobením hrál tupou hru v kostky...\"<br><br>Julius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 91<br>x: 14.460874<br>y: 50.130906<br>icon: ",
 					"popis": "Popraviště, které v době stanného práva Fučík zmiňuje jako stálou hrozbu\n\n\"Otecko Pešek už býval zneklidněn otázkou: vrátí se ještě vůbec? Objal mě, pověděl jsem krátce, co je nového, kdo další padl včera v Kobylisích - a pak jsme hladově pojídali odpornou sušenou zeleninu, zpívali veselé písně nebo se zlobením hrál tupou hru v kostky...\"\n\nJulius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 91",
@@ -5436,7 +5435,6 @@
 				"properties": {
 					"layer": "Místa z Reportáže",
 					"name": "Ilegální byt Jelínkových",
-					"type": "pamatnik",
 					"description": "<br><br>Místo zatčení Julia Fučíka v dubnu 1942 při konspirační schůzce v bytě Jelínkových.<br><br>\"Pospíchám - pokud mi to dovoluje figura staršího kulhajícího pána, kterou hraji - pospíchám, abych dorazil k Jelínkům ještě před uzavřením domu. Čeká tam na mne můj \"pobočník\" Mirek. Vím, 'že mi nic důležitého tentokráte nepoví, a ani já mu nemám co říci, ale nepřijít na ujednanou schůzku mohlo by znamenat paniku.\" <br> <br>Julius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 21<br><br>V ulici U družstva Ideál Praha 4 Pankrác byla v roce 1978 odhalena Juliu Fučíkovi bronzová pamětní deska. Jejím autorem byl J.Michálek.<br>Více zde: pametni-desky-v-praze.cz/products/fucik-julius-v-praze-4-pankrac-u-druzstva-ideal-/<br>x: 14.4464737<br>y: 50.0573257<br>icon: ",
 					"popis": "Místo zatčení Julia Fučíka v dubnu 1942 při konspirační schůzce v bytě Jelínkových.\n\n\"Pospíchám - pokud mi to dovoluje figura staršího kulhajícího pána, kterou hraji - pospíchám, abych dorazil k Jelínkům ještě před uzavřením domu. Čeká tam na mne můj \"pobočník\" Mirek. Vím, 'že mi nic důležitého tentokráte nepoví, a ani já mu nemám co říci, ale nepřijít na ujednanou schůzku mohlo by znamenat paniku.\" \n \nJulius Fučík: Reportáž psaná na oprátce, Praha: Československý spisovatel, 1973 str. 21\n\nV ulici U družstva Ideál Praha 4 Pankrác byla v roce 1978 odhalena Juliu Fučíkovi bronzová pamětní deska. Jejím autorem byl J.Michálek.\nVíce zde: pametni-desky-v-praze.cz/products/fucik-julius-v-praze-4-pankrac-u-druzstva-ideal-/",
 					"x": "14.4464737",

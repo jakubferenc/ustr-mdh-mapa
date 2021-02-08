@@ -1,9 +1,11 @@
 extends ../_partials/layout.pug
 
 block vars
-  - bodyClass = 'index'
+  - bodyClass = 'map-detail'
 
   - const countObjects = features.length
+  - const limit = 30;
+  - let i = 0;
 
 block main
 
@@ -27,6 +29,7 @@ block main
 
           +object-detail(objekt)
 
+
         div(data-component="list-objects")
 
           h1.title #{name}
@@ -37,7 +40,8 @@ block main
 
               +object-card(objekt)
 
-      .map(id="mapbox" data-component="mapbox" data-slug=`${slug}`)
+
+      .map(id="mapbox" data-component="mapbox" data-slug=`${safeSlug}`)
 
       .view-switch(data-component="view-switch")
         .heading.is-sr-only Zobrazení mapy

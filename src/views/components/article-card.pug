@@ -7,18 +7,19 @@ mixin article-card(settings)
   article.article.article-card(class=`${opts.class}` data-component="article-card")
 
     figure
-      img(src="assets/images/dummy/article-card-image.jpg" alt="Julius Fučík - Lorem ipsum dolor sit ")
+      a(href=`${opts.url}`)
+        img(src="assets/images/dummy/article-card-image.jpg" alt="Julius Fučík - Lorem ipsum dolor sit ")
 
 
     .article-card-content
 
       header.article-header
-        h2.typo-subtitle.list-map-item-title test Julius Fučík - místa paměti Praha
+        h2.typo-subtitle.list-map-item-title
+          a(href=`${opts.url}`) test Julius Fučík - místa paměti Praha
 
-        .meta JMÉNO AUTORA ČLÁNKU  |  27. 6. 2020
-
+        .meta JMÉNO AUTORA ČLÁNKU  |  27. 12. 2020
 
       p.perex Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat. Zde bude případně perex článku, pokud to bude třeba a autoři článků se budou chtít rozepisovat…
 
-      a.read-more(href="#") Číst dále
+      a.read-more(href=`${opts.url}`) Číst dále
 

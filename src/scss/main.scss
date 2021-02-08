@@ -4,6 +4,9 @@
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
 @import "../../node_modules/bulma/sass/grid/columns.sass";
+
+@import "../../node_modules/bulma/sass/helpers/visibility.sass";
+
 // Required Core Stylesheet
 
 @import "../../node_modules/@glidejs/glide/src/assets/sass/glide.core";

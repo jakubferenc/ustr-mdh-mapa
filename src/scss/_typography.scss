@@ -5,13 +5,13 @@ $subtitleFontSize: 22px;
 
 .typo-main-title {
 
-  font-size: $mainTitleFontSize/1.5;
+  font-size: 3rem;
   font-family: 'Robot Condensed', sans-serif;
 
 
   @include from($desktop) {
 
-    font-size: $mainTitleFontSize;
+    font-size: 3rem;
 
   }
 

@@ -9,7 +9,7 @@ mixin filter(opts)
         .filter-section-list.filter-section-list--full-width.filter-section-list--label
 
           each val, key in opts.layers
-            a.filter-item(href="#" data-filter-layer=`${key}`)
+            a.filter-item.active(href="#" data-filter-layer=`${key}`)
               span.filter-item-text #{key}
               span.color-indicator(style=`background-color: ${val.color}`)
 

@@ -34,9 +34,9 @@
             "icon": "icon-object-misto"
           },
           "7": {
-            "label": "Umělecké předměty",
+            "label": "Umělecké artefakty",
             "slug": "artefakt",
-            "icon": "icon-object-artefakt"
+            "icon": "icon-object-dokument"
           }
         }
       }

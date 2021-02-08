@@ -952,6 +952,8 @@
 
     height: calc(100vh - #{$header-main-height});
     background: gray;
+    background-image: url(../images/hero-box-background.png);
+    background-size: cover;
 
     @include from($tablet) {
       padding: $base-mobile-side-margin*4;

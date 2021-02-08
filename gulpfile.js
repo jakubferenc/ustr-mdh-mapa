@@ -283,7 +283,7 @@ gulp.task('serve', (cb) => {
 
   gulp.watch('src/js/**/*.js').on('change', gulp.series('js', browserSync.reload));
   gulp.watch('src/scss/**/*.scss').on('change', gulp.series('sass', browserSync.reload));
-  gulp.watch('src/images/**/*.{jpg,png,svg,gif}').on('change', gulp.series('images', browserSync.reload));
+  gulp.watch('src/images/**/*.{jpg,png,svg,gif}', gulp.series('images', browserSync.reload));
   gulp.watch(['src/views/**/*.pug']).on('change', gulp.series('pug', browserSync.reload));
 
   cb();

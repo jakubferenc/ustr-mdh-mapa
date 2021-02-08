@@ -13,6 +13,8 @@ mixin object-card(objekt)
         .gallery-image
           if (objekt.images.length > 0)
             img(src=`/assets/data-maps/topografie-pameti-julius-fucik/images/${objekt.properties.slug}/${objekt.images[0].thumbnail}`)
+          else
+            img(src=`/assets/images/object-default-image.png`)
 
       .card-content
         .title-bar

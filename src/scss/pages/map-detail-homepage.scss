@@ -19,7 +19,7 @@
   .header-figure {
 
     @include until($widescreen) {
-      height: 30%;
+      height: 30vh;
     }
 
   }
@@ -28,7 +28,7 @@
   .header-content {
 
     @include until($widescreen) {
-      height: 70%;
+      height: 70vh;
     }
 
   }
@@ -122,16 +122,14 @@
 
     .main-title {
 
-      $font-size: 48px;
 
-      font-size: $font-size;
       font-weight: 400;
       line-height: 1.1;
       margin-bottom: #{100/($base-viewport-width/30px)}vw;
+      font-family: 'Roboto Condensed', sans-serif;
 
 
       @include from($widescreen) {
-        font-size: #{100/($base-viewport-width/$font-size)}vw;
         margin-bottom: 60px;
 
       }
