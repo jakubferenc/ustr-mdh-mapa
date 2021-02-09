@@ -241,14 +241,14 @@ block main
 
           - const features = topografie_pameti_julius_fucik.features;
           - const mapSettings = topografie_pameti_julius_fucik.mapSettings;
-          - const limit = 30;
-          - let i = 0;
+          - let i = 190;
+          - const limit = i + 80;
 
           each objekt in features
 
             if (i < limit)
 
-              +object-card(objekt)
+              +object-card(features[i])
 
             - i = i + 1
 
