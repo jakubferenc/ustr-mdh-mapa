@@ -1,5 +1,7 @@
 extends ./_partials/layout-full.pug
 include ./components/object-card.pug
+include ./components/list-map-item.pug
+
 
 
 block vars
@@ -62,169 +64,20 @@ block main
 
       .list-in-section(data-component="list-map")
 
+
         .container-items.columns.is-multiline
 
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
+          each key in Object.keys(maps)
 
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
+            - const {name, safeSlug, slug, mainPhoto} = maps[key]
 
-
-
-            h3.typo-subtitle.list-map-item-title test Topografie paměti – Julius Fučík
-
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
-
-
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-
-            h3.typo-subtitle.list-map-item-title
-              a(href="map-detail.html") Topografie paměti – Julius Fučík
-
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
-
-
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-
-            h3.typo-subtitle.list-map-item-title
-              a(href="map-detail.html") Topografie paměti – Julius Fučík
-
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
-
-
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-
-            h3.typo-subtitle.list-map-item-title
-              a(href="map-detail.html") Topografie paměti – Julius Fučík
-
-
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
-
-
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-                .map-item-action
-
-            h3.typo-subtitle.list-map-item-title
-              a(href="map-detail.html") Topografie paměti – Julius Fučík
-
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
-
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-
-            h3.typo-subtitle.list-map-item-title
-              a(href="map-detail.html") Topografie paměti – Julius Fučík
-
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
-
-
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-
-            h3.typo-subtitle.list-map-item-title
-              a(href="map-detail.html") Topografie paměti – Julius Fučík
-
-          article.column(data-component="list-map-item").is-one-quarter-widescreen.is-one-third-desktop.is-half
-
-
-            figure
-              a(href="map-detail.html")
-                img(src="assets/images/maps/map-thumb-image.jpg" alt="Topografie paměti – Julius Fučík")
-              nav.list-map-nav.list-map-nav-symbols
-                .map-item-symbol.timeline
-                  img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-                .map-item-symbol.objects
-                  img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-                .map-item-symbol.map
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-              nav.list-map-nav.list-map-nav-actions
-                .map-item-symbol
-                  img(src="assets/images/icons/icon-view-switch-map-large.svg")
-
-            h3.typo-subtitle.list-map-item-title
-              a(href="map-detail.html") Topografie paměti – Julius Fučík
-
+            +list-map-item({
+              class: 'is-one-quarter-widescreen is-one-third-desktop is-half',
+              name,
+              mainPhoto,
+              safeSlug,
+              slug
+            })
 
         a.button.button-more(href="list-maps.html") Všechny mapy
 
@@ -239,6 +92,7 @@ block main
 
         .cards-container
 
+        //
           - const features = topografie_pameti_julius_fucik.features;
           - const mapSettings = topografie_pameti_julius_fucik.mapSettings;
           - let i = 190;

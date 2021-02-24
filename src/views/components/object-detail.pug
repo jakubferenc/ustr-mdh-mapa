@@ -2,7 +2,6 @@ mixin object-detail(objekt)
 
   - const images = objekt.images
 
-
     article.card.card-detail.is-hidden(data-object-detail-id=`${objekt.properties.name}` data-component="card-detail")
 
       .layer-bar(style=`background-color: ${mapSettings.layers[objekt.properties.layer].color}`)
@@ -14,6 +13,7 @@ mixin object-detail(objekt)
           a(href="#" data-component="close").item Zavřít
 
       .card-content-container
+
 
         .subheader-bar
           .submetas

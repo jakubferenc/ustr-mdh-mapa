@@ -1,15 +1,6 @@
 @charset "utf-8";
 
-// Import only what you need from Bulma
-@import "../../node_modules/bulma/sass/utilities/_all.sass";
-@import "../../node_modules/bulma/sass/base/_all.sass";
-@import "../../node_modules/bulma/sass/grid/columns.sass";
-
-@import "../../node_modules/bulma/sass/helpers/visibility.sass";
-
-// Required Core Stylesheet
-
-@import "../../node_modules/@glidejs/glide/src/assets/sass/glide.core";
+@import "vendor/all";
 
 /* fonts */
 @import "fonts";

@@ -233,7 +233,6 @@ const domLoad = () => {
   ////////////////////////////////////////////////////////////
 
 
-
   // we have mapbox item, initialize Leafleft and Mapbox
   // find map DOM objects and initialize them through Leaflet
   ////////////////////////////////////////////////////////////
@@ -255,6 +254,7 @@ const domLoad = () => {
 
 
     const thisMapSlug = $mapbox.dataset.slug;
+    console.log(thisMapSlug);
     const places = geoJsonMdhData[thisMapSlug];
 
       //vytvoří skupinu s vrstvou  bez klastrů

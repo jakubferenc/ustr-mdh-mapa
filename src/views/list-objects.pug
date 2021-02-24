@@ -18,20 +18,22 @@ block main
 
       .list-in-section(data-component="list-objects")
 
+
         .cards-container
 
-          - const features = topografie_pameti_julius_fucik.features;
-          - const mapSettings = topografie_pameti_julius_fucik.mapSettings;
-          - let i = 190;
-          - const limit = i + 80;
+          //
+            - const features = topografie_pameti_julius_fucik.features;
+            - const mapSettings = topografie_pameti_julius_fucik.mapSettings;
+            - let i = 190;
+            - const limit = i + 80;
 
-          each objekt in features
+            each objekt in features
 
-            if (i < limit)
+              if (i < limit)
 
-              +object-card(features[i])
+                +object-card(features[i])
 
-            - i = i + 1
+              - i = i + 1
 
 
 

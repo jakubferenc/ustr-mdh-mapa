@@ -1,27 +1,45 @@
 // ==========================================
-// 1. DEPENDENCIES
+// 0. DEPENDENCIES
 // ==========================================
+
+// node libraries
+import fs from 'fs';
+import del from 'del';
+import path, { resolve } from 'path';
+
+
 // gulp-dev-dependencies
+import gulp from 'gulp';
+import gulpLoadPlugins from 'gulp-load-plugins';
+
+import {rollup} from 'rollup';
+import rollupNodeResolve from '@rollup/plugin-node-resolve';
+import rollupBabel from '@rollup/plugin-babel';
+import rollupJson from '@rollup/plugin-json';
+import commonjs from '@rollup/plugin-commonjs';
+
+import slugify from 'slugify';
+import latinize from 'latinize';
+import mapStream from 'map-stream';
+
+import browserSync from 'browser-sync';
+
+import postcssAutoprefixer from 'autoprefixer';
+import postcssCssnano from 'cssnano';
+
+import Jimp from 'jimp/es';
+
+
+// ==========================================
+// 0. INITIALIZATION
+// ==========================================
+
+// node environment
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 process.env.NODE_ENV = 'development';
 
-const gulp = require('gulp');
-// check package.json for gulp plugins
-const gulpLoadPlugins = require('gulp-load-plugins');
 
 // dev-dependencies
-const browserSync = require('browser-sync').create();
-const del = require('del');
-const fs = require('fs');
-const rollup = require('rollup').rollup;
-const rollupNodeResolve = require('rollup-plugin-node-resolve');
-const rollupBabel = require('rollup-plugin-babel');
-const rollupJson = require('rollup-plugin-json');
-const postcssAutoprefixer = require('autoprefixer');
-const postcssCssnano = require('cssnano');
-const mapStream = require('map-stream');
-const latinize = require('latinize');
-const slugify = require('slugify');
 const slugifyCustomDefaultSettings = {
   replacement: '-',  // replace spaces with replacement character, defaults to `-`
   remove: /[*+~.()'"!:@]/g, // remove characters that match regex, defaults to `undefined`
@@ -29,22 +47,9 @@ const slugifyCustomDefaultSettings = {
   strict: true,     // strip special characters except replacement, defaults to `false`
   locale: 'cs'       // language code of the locale to use
 };
-const Jimp = require('jimp');
-
-
-const path = require('path');
-
 const pkg = require('./package.json');
-
 const $ = gulpLoadPlugins();
-
 const version = pkg.version;
-
-const ftpSettings = require('./ftp.json');
-const ftp = require( 'vinyl-ftp' );
-const changed = require('gulp-changed');
-
-const {google} = require('googleapis');
 
 // ==========================================
 // 2. FUNCTIONS
@@ -70,8 +75,6 @@ const getCleanUpJSONFromImgTags = (jsonString, pattern = '<img[^<]+>') => {
   return jsonString.replace(new RegExp(pattern, "gmi"), '');
 
 };
-
-const reloadBrowserSync = () => browserSync.reload({stream: true});
 
 // ==========================================
 // CONFIG
@@ -106,7 +109,6 @@ const config = {
     },
     js: {
       app: 'src/js/app.js',
-      components: 'src/js/components/components.js',
       files: 'src/js/**/*.js',
       library: 'src/js/lib/',
       vendorFiles: 'src/js/vendor/**/*.js',
@@ -121,28 +123,12 @@ const config = {
       folder: 'src/text/',
       html: 'src/text/**/*.html',
     },
-    scaffolding: {
-      folder: 'src/scaffolding/',
-      data: {
-        folder: 'src/scaffolding/data/',
-      },
-      views: {
-        folder: 'src/scaffolding/views/',
-        cviceni: {
-          folder: 'src/scaffolding/views/cviceni/',
-        },
-      },
-      text: {
-        folder: 'src/scaffolding/text/',
 
-      },
-    },
   },
   tmp: {
     folder: 'tmp/',
     data: {
       folder: 'tmp/data/',
-      cviceni: 'tmp/data/cviceni.json',
     },
     js: {
       folder: 'tmp/js/',
@@ -156,14 +142,6 @@ const config = {
   },
   dist: {
     folder: 'dist/',
-    audio: 'dist/cviceni/assets/audio/',
-    cviceni: 'dist/cviceni/',
-    css: 'dist/cviceni/assets/css/',
-    fonts: 'dist/cviceni/assets/fonts/',
-    img: 'dist/cviceni/assets/img/',
-    js: 'dist/cviceni/assets/js/',
-    jsVendor: 'dist/cviceni/assets/js/vendor/',
-    pdf: 'dist/cviceni/assets/pdf/',
   },
   // plugin settings
   // SERVER
@@ -206,7 +184,7 @@ const config = {
   },
   // PUG
   pug: {
-    pretty: true
+    pretty: false
   },
   // ROLLUP
   rollup: {
@@ -217,7 +195,9 @@ const config = {
         rollupJson(),
         rollupBabel({
           exclude: 'node_modules/**',
+          babelHelpers: 'inline'
         }),
+        commonjs(),
       ],
     },
     output: {
@@ -227,35 +207,20 @@ const config = {
       sourcemap: true,
     },
   },
-  components: {
-    bundle: {
-      input: 'src/js/components/components.js',
-      plugins: [
-        rollupNodeResolve(),
-        rollupBabel({
-          exclude: 'node_modules/**',
-        }),
-      ],
-    },
-    output: {
-      file: 'dist/cviceni/assets/js/components.build.js',
-      format: 'iife',
-      name: 'components',
-      sourcemap: true,
-    }
-  },
   // SASS
   sass: {
     errLogToConsole: true,
+    includePaths: ['node_modules'],
     outputStyle: 'expanded',
   },
 };
+
+const appConfigJson = JSON.parse(fs.readFileSync('./app.config.json'));
 
 config.pug.locals = {
   makeCzechDateFromYMD, makeCzechDateTimeFromYMDT,
 };
 
-const appConfigJson = JSON.parse(fs.readFileSync('./app.config.json'));
 
 // ==========================================
 // 4. TASKS
@@ -269,9 +234,9 @@ gulp.task('clean-temp', (done) => {
   return del(['temp'], done);
 });
 
-gulp.task('clean-temp-data-maps', (done) => {
+const cleanTempDataFolder = (done) => {
   return del(['temp/data-maps'], done);
-});
+};
 
 // SERVER
 gulp.task('serve', (cb) => {
@@ -281,15 +246,20 @@ gulp.task('serve', (cb) => {
   }
   browserSync.init(config.browserSync);
 
+  const refreshPug = (cb) => {
+
+    gulp.series('pug', browserSync.reload);
+
+    cb();
+
+  };
+
   gulp.watch('src/js/**/*.js').on('change', gulp.series('js', browserSync.reload));
   gulp.watch('src/scss/**/*.scss').on('change', gulp.series('sass', browserSync.reload));
   gulp.watch('src/images/**/*.{jpg,png,svg,gif}', gulp.series('images', browserSync.reload));
-  gulp.watch(['src/views/**/*.pug']).on('change', gulp.series('pug', browserSync.reload));
-
-  cb();
+  gulp.watch(['src/views/**/*.pug'], refreshPug);
 
 });
-
 
 
 gulp.task('pug', () => {
@@ -343,21 +313,45 @@ gulp.task('images', () => gulp.src('src/images/**/*.{jpg,png,svg,gif}')
 gulp.task('fonts', () => gulp.src('src/fonts/**/*.*')
     .pipe(gulp.dest('dist/assets/fonts')));
 
+const mergeMapJson = async (done) => {
 
-const mergeJson = () => {
-  return gulp.src('./data/**/*.json')
-  .pipe($.mergeJson({
-    fileName: 'data_merged.json',
-  }))
-  .pipe(gulp.dest('./temp/'));
+  await new Promise((resolve, reject) => {
+    gulp.src('./temp/data-maps/**/*.json')
+    .pipe($.mergeJson({
+      fileName: 'data_maps_merged.json',
+    }))
+    .pipe(gulp.dest('./temp/'))
+    .on("end", resolve);
+
+  });
+
+
+  const mergedMapsRawData = fs.readFileSync(`./temp/data_maps_merged.json`);
+  const mergedMapsJsonData = JSON.parse(mergedMapsRawData);
+
+  let transformedJson = {
+    maps: Object.assign({}, mergedMapsJsonData)
+  };
+
+  transformedJson = JSON.stringify(transformedJson);
+
+  // write the json structure to the file based on the sluggified map name
+  fs.writeFileSync(`./temp/data_maps_merged.json`, transformedJson, (err) => {
+    if (!err) {
+        console.log('done');
+    }
+  });
+
+  done();
+
 };
 
-const prepareObjectJsonWithImages = (cb) => {
+
+const prepareObjectJsonWithImages = async (done) => {
 
   const subfolderWithImagesName = 'images';
   const allowedImageExtensions = ['jpg', 'jpeg', 'tif', 'png', 'tiff'];
-  const generateThumbnailImages = true;
-  const debug = false;
+  const generateThumbnailImages = false;
 
   // create ./temp
   try {
@@ -385,46 +379,33 @@ const prepareObjectJsonWithImages = (cb) => {
     console.error(err);
   }
 
-  return gulp.src('./data-maps/**/*.json')
-  .pipe(mapStream((file, done) => {
+  gulp.src('./data-maps/**/data.geojson')
+  .pipe(mapStream(async (file, done) => {
 
-    const filename = path.basename(file.path, path.extname(file.path));
+    let filename = path.basename(file.path, path.extname(file.path)); // get the name of the file
     const parentFolderName = path.basename(path.dirname(file.path));
+
+    filename = parentFolderName;
+
     const parentFolderPath = path.dirname(file.path);
     const subfolderWithImagesPath = `${parentFolderPath}${path.sep}${subfolderWithImagesName}`;
     const subfolderImages = fs.readdirSync(subfolderWithImagesPath);
 
     const objectsJson = JSON.parse(file.contents.toString());
 
+
     const objectsNewFeatures = [];
 
-    const statistics = {
-      countObjects: objectsJson.features.length,
-      countFolders: subfolderImages.length,
-      countObjectsHavingFolder: 0,
-      iterationsOverObjectsBegin: 0,
-      iterationsOverObjectsFinished: 0,
-      folderNameUsedForObject: []
-    };
 
     const subfolderImagesNormalized = subfolderImages.map(item => latinize(slugify(item.normalize('NFC'), slugifyCustomDefaultSettings)).toLowerCase());
 
-    objectsJson.features.forEach((mapObject) => {
+    objectsJson.features.forEach( async (mapObject) => {
 
-      if (debug) {
-        statistics.iterationsOverObjectsBegin++;
-        console.log("/////////////////////////////////////////////////");
-        console.log("object start");
-      }
 
       const newMapObjectFeatureItem = mapObject;
       newMapObjectFeatureItem.images = [];
 
       newMapObjectFeatureItem.properties.slug = latinize(slugify(mapObject.properties.name.normalize('NFC'), slugifyCustomDefaultSettings));
-
-      if (debug) {
-        console.log("object start name: " + newMapObjectFeatureItem.properties.slug);
-      }
 
       // if true, it means that the map object has images to display
       // compare it based on the sluggified versions of the object and subfolder names
@@ -432,10 +413,6 @@ const prepareObjectJsonWithImages = (cb) => {
 
       if ( hasObjectFolderWithImagesIndex > -1 ) {
 
-        if (debug) {
-          statistics.countObjectsHavingFolder++;
-          statistics.folderNameUsedForObject.push(subfolderImagesNormalized[hasObjectFolderWithImagesIndex]);
-        }
 
         const folderName = subfolderImages[hasObjectFolderWithImagesIndex];
 
@@ -459,8 +436,6 @@ const prepareObjectJsonWithImages = (cb) => {
 
           if (thisFileImageExtensionWithoutDot.length > 1) {
             thisFileImageExtensionWithoutDot = thisFileImageExtensionWithoutDot[1].toLowerCase();
-          } else {
-            // probably a dot file like .DS_STORE and other
           }
 
           if (allowedImageExtensions.includes(thisFileImageExtensionWithoutDot)) {
@@ -527,54 +502,46 @@ const prepareObjectJsonWithImages = (cb) => {
                 console.error(err);
               }
 
-              // resize, rename original
-              Jimp.read(thisFileImagePath)
-              .then(image => {
+              (async () => {
+
+                // resize, rename original
+                const image = await Jimp.read(thisFileImagePath);
 
                 const imageWidth = image.bitmap.width;
 
                 // check if the original image size is larger than the max full width size defined in the app settings
                 if (imageWidth > appConfigJson.appConfig.images.object.full.width) {
-                  image.resize(appConfigJson.appConfig.images.object.full.width, Jimp.AUTO); // resize
+                   image.resize(appConfigJson.appConfig.images.object.full.width, Jimp.AUTO); // resize
                 }
 
-                return image
-                .quality(85) // set JPEG quality
-                .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.name}`); // save
-
-              })
-              .then(image => {
+                 image.write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.name}`);
 
                 // generate, resize, rename gallery thumbs
-                return image
-                  .resize(appConfigJson.appConfig.images.object.galleryThumbnail.width, Jimp.AUTO) // resize
-                  .quality(80) // set JPEG quality
-                  .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`); // save
-              })
-              .then(image => {
-                // generate, resize, rename thumbs
-                return image
-                  .cover(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
-                  .quality(80) // set JPEG quality
-                  .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`); // save
-              })
-              .catch(err => {
-                console.error(err);
-              });
+                image
+                .resize(appConfigJson.appConfig.images.object.galleryThumbnail.width, Jimp.AUTO) // resize
+                .quality(80) // set JPEG quality
+                .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`, () => resolve() ); // save
+
+                image
+                .cover(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
+                .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`);
+
+                console.log(`hotovo pro ${thisFileImagePath}`);
+
+              })();
+
+
+              // description
+              if (fs.existsSync(potentialTxtFilePath)) {
+                // found txt file
+                const textData = fs.readFileSync(potentialTxtFilePath, {encoding:'utf8', flag:'r'});
+                imageObj.description = textData;
+              }
+
+              newMapObjectFeatureItem.images.push(imageObj);
 
             }
 
-            // description
-            if (fs.existsSync(potentialTxtFilePath)) {
-              // found txt file
-              const textData = fs.readFileSync(potentialTxtFilePath, {encoding:'utf8', flag:'r'});
-              imageObj.description = textData;
-            }
-
-            newMapObjectFeatureItem.images.push(imageObj);
-
-          } else {
-            //console.log('skipping a file with a not allowed extension, this filename: ' + thisFilename);
           }
 
         });
@@ -589,26 +556,10 @@ const prepareObjectJsonWithImages = (cb) => {
       // add newly created feature item to new features array
       objectsNewFeatures.push(newMapObjectFeatureItem);
 
-      if (debug) {
-        statistics.iterationsOverObjectsFinished++;
-        console.log("object end");
-        console.log("/////////////////////////////////////////////////");
-      }
 
     });
 
-
     objectsJson.features = objectsNewFeatures;
-
-    console.log('HERE!!!');
-    console.log(filename);
-    // create final json structure
-    const transformedJson = {
-      [filename]: objectsJson
-    };
-
-    // final cleaning up of the JSON file
-    const transformedJsonCleanUp = getCleanUpJSONFromImgTags(JSON.stringify(transformedJson));
 
     try {
       // first check if directory already exists
@@ -622,65 +573,53 @@ const prepareObjectJsonWithImages = (cb) => {
       console.error(err);
     }
 
+    // merge nastaveni and data json files, create a merged single json
+    const nastaveniRawData = fs.readFileSync(`${parentFolderPath}/nastaveni.json`);
+    const nastaveniJson = JSON.parse(nastaveniRawData);
+
+    // create final json structure
+    const transformedJson = {
+      [filename]: Object.assign({}, objectsJson, nastaveniJson)
+    };
+
+    // final cleaning up of the JSON file
+    const transformedJsonCleanedUp = getCleanUpJSONFromImgTags(JSON.stringify(transformedJson));
+
     // write the json structure to the file based on the sluggified map name
-    fs.writeFileSync(`./temp/data-maps/${filename}/${filename}.json`, transformedJsonCleanUp, (err) => {
+    fs.writeFileSync(`./temp/data-maps/${filename}/${filename}.json`, transformedJsonCleanedUp, (err) => {
       if (!err) {
           console.log('done');
       }
     });
 
-    if (debug) {
-      statistics.folderNameNotUsedForObject = [];
-      statistics.folderNameNotUsedForObject = subfolderImagesNormalized.filter(item => !statistics.folderNameUsedForObject.includes(item));
-
-      console.log("statistics");
-      console.log(statistics);
-    }
-
-
-    done(null, file);
-    cb();
-
   }));
 
+  done();
 };
-gulp.task('prepareObjectJsonWithImages', gulp.series('clean-temp-data-maps', prepareObjectJsonWithImages));
 
+gulp.task('prepareMapDataAndImages', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages, mergeMapJson));
 
-const mergeMapJson = () => {
-
-  return gulp.src('./temp/data-maps/**/*.json')
-  .pipe(mapStream((file, done) => {
-
-    done(null, file);
-
-  }))
-  .pipe($.mergeJson({
-    fileName: 'data_maps_merged.json',
-  }))
-  .pipe(gulp.dest('./temp/'));
-
-};
 
 const preparePagesMapDetail = (done) => {
 
   const data = JSON.parse(fs.readFileSync('./temp/data_maps_merged.json'));
 
-  for (const [key, value] of Object.entries(data)) {
+  for (const [key, map] of Object.entries(data.maps)) {
 
     //  html
-     gulp.src('src/views/_templates/map-detail.pug')
-      .pipe(
-        $.data(
-          (file) => value
-        )
+    gulp.src('src/views/_templates/map-detail.pug')
+    .pipe(
+      $.data(
+        (file) => map
       )
-      .pipe(
-        $.data(() => appConfigJson)
-      )
-      .pipe($.pug(config.pug))
-      .pipe($.rename(`${key}.html`))
-      .pipe(gulp.dest(`./dist/`));
+    )
+    .pipe(
+      $.data(() => appConfigJson)
+    )
+    .pipe($.pug(config.pug))
+    .pipe($.rename(`${map.slug}.html`))
+    .pipe(gulp.dest(`./dist/mapa/`));
+
 
   }
 
@@ -688,9 +627,8 @@ const preparePagesMapDetail = (done) => {
 
 };
 
-gulp.task('prepareMapDataAndImages', prepareObjectJsonWithImages);
-gulp.task('mergeJson', gulp.series(mergeJson, mergeMapJson));
-gulp.task('preparePagesMapDetail',  gulp.series('mergeJson', preparePagesMapDetail));
+gulp.task('mergeMapJson', mergeMapJson);
+gulp.task('preparePagesMapDetail', preparePagesMapDetail);
 
 gulp.task('copyToSrc', (done) => {
 
@@ -744,7 +682,7 @@ gulp.task('watch', (cb) => {
 
   gulp.watch(['src/images/**/*.+(png|jpg|jpeg|gif|svg)'], gulp.series('images'));
 
-  gulp.watch(['data/**/*.json'], gulp.series('mergeJson', 'pug'));
+  gulp.watch(['data/**/*.json'], gulp.series('pug'));
 
   cb();
 });
