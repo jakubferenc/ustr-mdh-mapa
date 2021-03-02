@@ -21,9 +21,18 @@ block main
 
         .container-items.columns.is-multiline
 
-          +list-map-item({
-            class: 'is-one-quarter-widescreen is-one-third-desktop is-half'
-          })
+          each key in Object.keys(maps)
+
+            - const {name, safeSlug, slug, thumbPhoto, mapSettings} = maps[key]
+
+            +list-map-item({
+              class: 'is-one-quarter-widescreen is-one-third-desktop is-half',
+              name,
+              thumbPhoto,
+              safeSlug,
+              slug,
+              mapSettings,
+            })
 
 
     section.section.section-padding.alt-bg(data-component="section")

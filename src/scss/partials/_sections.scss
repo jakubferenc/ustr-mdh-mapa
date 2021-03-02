@@ -610,7 +610,6 @@
   }
 
   .card-content-in {
-    max-width: 792px;
     margin: 0 auto;
   }
 
@@ -1233,10 +1232,7 @@
     .author {
     }
 
-    .authors-list {
-      display: flex;
-      justify-content: flex-start;
-    }
+    .authors-list {}
 
   }
 
@@ -1259,10 +1255,6 @@
     display: flex;
     margin-top: 10px;
 
-    @include until($tablet) {
-      flex-direction: column;
-    }
-
     @include from($desktop) {
       justify-content: space-between;
       flex-wrap: wrap;
@@ -1271,18 +1263,22 @@
 
   }
 
+  &.is-article .authors-list {
+    justify-content: flex-start;
+    .author {
+      margin-right: 40px;
+    }
+  }
+
 
   .author {
-    display: flex;
-
-    @include until($desktop) {
-      flex-direction: row;
-    }
 
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 20px;
-    .author-image {margin-right: 20px;}
+    .author-image {
+      img {border-radius: 100%; height: 75px; min-width: 75px;  }
+      margin-right: 20px; }
     .name {font-weight: 700;}
     .what-they-did  {font-style: italic;}
   }

@@ -138,30 +138,33 @@
     }
 
     .section-content-text-title {
-      font-size: 21px;
+      font-size: 2rem;
       font-weight: 400;
     }
 
     .section-content-text {
       margin-bottom: #{100/($base-viewport-width/60px)}vw;
 
+      font-size: 1.4rem;
+
+      @include from($tablet) {
+
+      }
+
+      @include from($desktop) {
+
+      }
+
       @include from($widescreen) {
-        margin-bottom: 60px;
+
+      }
+
+      @include from($fullhd) {
+
       }
 
     }
 
-    p {
-
-      $font-size: 22px;
-
-      font-size: $font-size;
-      @include from($widescreen) {
-        font-size: #{100/($base-viewport-width/$font-size)}vw;
-      }
-
-      line-height: 1.4;
-    }
 
     p.goals {
 

@@ -254,8 +254,8 @@ const domLoad = () => {
 
 
     const thisMapSlug = $mapbox.dataset.slug;
-    console.log(thisMapSlug);
-    const places = geoJsonMdhData[thisMapSlug];
+
+    const places = geoJsonMdhData.maps[thisMapSlug];
 
       //vytvoří skupinu s vrstvou  bez klastrů
     let vrstvaPlaces = L.geoJSON(places, {

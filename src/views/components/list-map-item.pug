@@ -4,21 +4,30 @@ mixin list-map-item(settings)
   - const opts = Object.assign({}, defaults, settings);
 
 
+
   article.column(data-component="list-map-item" class=`${opts.class}`)
 
     figure
       a(href=`mapa/${opts.slug}/`)
-        img(src=`assets/data-maps/${opts.safeSlug}/${opts.mainPhoto}` alt=`${opts.name}`)
+        img(src=`/assets/data-maps/${opts.safeSlug}/${opts.thumbPhoto}` alt=`${opts.name}`)
       nav.list-map-nav.list-map-nav-symbols
-        .map-item-symbol.timeline
-          img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
-        .map-item-symbol.objects
-          img(src="assets/images/icons/icon-view-switch-objects-large.svg")
-        .map-item-symbol.map
-          img(src="assets/images/icons/icon-view-switch-map-large.svg")
+
+
+        if opts.mapSettings.modes.includes('map')
+          .map-item-symbol.map
+            img(src="/assets/images/icons/icon-view-switch-map-large.svg")
+
+        if opts.mapSettings.modes.includes('objects')
+          .map-item-symbol.objects
+            img(src="/assets/images/icons/icon-view-switch-objects-large.svg")
+
+        if opts.mapSettings.modes.includes('timeline')
+          .map-item-symbol.timeline
+            img(src="/assets/images/icons/icon-view-switch-timeline-large.svg")
+
       nav.list-map-nav.list-map-nav-actions
         .map-item-symbol
-          img(src="assets/images/icons/icon-bookmark-large.svg")
+          img(src="/assets/images/icons/icon-bookmark-large.svg")
 
     h3.typo-subtitle.list-map-item-title
       a(href=`mapa/${opts.slug}/`) #{opts.name}

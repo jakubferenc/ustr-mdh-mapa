@@ -38,7 +38,7 @@ block main
 
             each objekt in features
 
-              +object-card(objekt)
+              +object-card(objekt, {safeSlug})
 
 
       .map(id="mapbox" data-component="mapbox" data-slug=`${safeSlug}`)

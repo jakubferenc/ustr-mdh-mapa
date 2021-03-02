@@ -14,18 +14,18 @@ block main
 
           ul.header-figure-types
             li.timeline
-              img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
+              img(src="/assets/images/icons/icon-view-switch-timeline-large.svg")
             li.objects
-               img(src="assets/images/icons/icon-view-switch-objects-large.svg")
+               img(src="/assets/images/icons/icon-view-switch-objects-large.svg")
             li.map
-               img(src="assets/images/icons/icon-view-switch-map-large.svg")
+               img(src="/assets/images/icons/icon-view-switch-map-large.svg")
 
 
           ul.header-figure-actions
             li.bookmark
-              img(src="assets/images/icons/icon-bookmark-large.svg")
+              img(src="/assets/images/icons/icon-bookmark-large.svg")
 
-          img(src=`/assets/data-maps/${safeSlug}/${mainPhoto}` alt=`${name}`)
+          img.header-figure-image(src=`/assets/data-maps/${safeSlug}/${mainPhoto}` alt=`${name}`)
 
         .header-content
 
@@ -34,23 +34,25 @@ block main
 
               h1.typo-main-title.main-title #{name}
 
-              p #{description}
-
               .section-content-text
+                p #{description}
+
 
             .authors
 
               h2.section-content-text-title Mapu vytvořili
 
-              .authors-list
+              .authors-list.columns
 
-                .author
-                  .author-image
-                    img(src="assets/images/dummy/profile-image-dummy-male.png" alt="Jméno")
-                  .author-bio
-                    .name Mgr. Bohumil Melichar
-                    .what-they-did Texty, tvorba mapy
-                    .institution Ústav pro studium totalitních režimů
+                each author in authors
+
+                  .author.column.is-one-third-widescreen.is-half
+                    .author-image
+                      img(src=`${author.photo}` alt=`${author.name}`)
+                    .author-bio
+                      .name #{author.name}
+                      .what-they-did #{author.position}
+                      .institution #{author.institution}
 
           a.header-button(href="detail.html")
 
@@ -82,7 +84,7 @@ block main
             ul.attachments
               li.attachment
                 .icon
-                  img(src="assets/images/icons/icon-file-type-docx.svg" alt="Microsoft Word Docx")
+                  img(src="/assets/images/icons/icon-file-type-docx.svg" alt="Microsoft Word Docx")
                 .text
                   div.title Stáhnout
                   div.text
@@ -90,7 +92,7 @@ block main
 
               li.attachment
                 .icon
-                  img(src="assets/images/icons/icon-file-type-pdf.svg" alt="Adobe PDF")
+                  img(src="/assets/images/icons/icon-file-type-pdf.svg" alt="Adobe PDF")
                 .text
                   div.title Stáhnout
                   div.text

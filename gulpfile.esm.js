@@ -4,8 +4,10 @@
 
 // node libraries
 import fs from 'fs';
+import { copyFile } from 'fs/promises';
 import del from 'del';
 import path, { resolve } from 'path';
+import colors from 'colors/safe';
 
 
 // gulp-dev-dependencies
@@ -225,94 +227,6 @@ config.pug.locals = {
 // ==========================================
 // 4. TASKS
 // ==========================================
-// CLEAN
-gulp.task('clean', (done) => {
-  return del(['dist'], done);
-});
-
-gulp.task('clean-temp', (done) => {
-  return del(['temp'], done);
-});
-
-const cleanTempDataFolder = (done) => {
-  return del(['temp/data-maps'], done);
-};
-
-// SERVER
-gulp.task('serve', (cb) => {
-
-  if (browserSync.active) {
-    return;
-  }
-  browserSync.init(config.browserSync);
-
-  const refreshPug = (cb) => {
-
-    gulp.series('pug', browserSync.reload);
-
-    cb();
-
-  };
-
-  gulp.watch('src/js/**/*.js').on('change', gulp.series('js', browserSync.reload));
-  gulp.watch('src/scss/**/*.scss').on('change', gulp.series('sass', browserSync.reload));
-  gulp.watch('src/images/**/*.{jpg,png,svg,gif}', gulp.series('images', browserSync.reload));
-  gulp.watch(['src/views/**/*.pug'], refreshPug);
-
-});
-
-
-gulp.task('pug', () => {
-  return gulp.src(['src/views/*.pug'])
-    .pipe(
-      $.data(() => JSON.parse(fs.readFileSync('./temp/data_maps_merged.json')))
-    )
-    .pipe(
-      $.data(() => appConfigJson)
-    )
-    .pipe($.pug(config.pug))
-    .pipe(gulp.dest('dist/'));
-  });
-
-
-  gulp.task('injectSvg', () => {
-
-    return gulp.src('dist/*.html')
-      .pipe($.embedSvg({
-        root: 'dist/'
-      }))
-      .pipe(gulp.dest('./dist'));
-
-  });
-
-// SASS
-gulp.task('sass', () => {
-  return gulp.src('src/scss/main.scss')
-    .pipe($.sourcemaps.init())
-    .pipe($.sass(config.sass).on('error', $.sass.logError))
-    .pipe($.sourcemaps.write(gulp.dest('dist/assets/css')))
-    .pipe($.autoprefixer())
-    .pipe(gulp.dest('dist/assets/css'))
-    .pipe(browserSync.stream());
-});
-
-
-gulp.task('js', async () => {
-  const bundle = await rollup(config.rollup.bundle);
-  bundle.write(config.rollup.output);
-
-  browserSync.reload({stream: true});
-
-});
-
-// IMAGES
-gulp.task('images', () => gulp.src('src/images/**/*.{jpg,png,svg,gif}')
-    .pipe(gulp.dest('dist/assets/images')));
-
-// FONTS
-gulp.task('fonts', () => gulp.src('src/fonts/**/*.*')
-    .pipe(gulp.dest('dist/assets/fonts')));
-
 
 // GENERATING CONTENT AND IMAGES
 const mergeMapJson = (done) => {
@@ -601,34 +515,26 @@ const prepareObjectJsonWithImages = async (done) => {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     // copy map profile images to temp folder
-    fs.rename(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`, function (err) {
-      if (err) {
-          throw err
-      } else {
-          console.log("Successfully moved the file!");
-      }
-    });
+    try {
+      await copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
+      console.log(`Copying image ${nastaveniJson.mainPhoto} for the map ${filename}: ${colors.green('OK!')}`);
+    } catch {
+      console.error('The file could not be copied');
+    }
 
-    fs.rename(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`, function (err) {
-      if (err) {
-          throw err
-      } else {
-          console.log("Successfully moved the file!");
-      }
-    });
+    try {
+      await copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
+      console.log(`The image ${nastaveniJson.thumbPhoto} for the map ${filename}: ${colors.green('OK!')}`);
+    } catch {
+      console.error('The file could not be copied');
+    }
+
+    done();
 
 
   }));
 
-  done();
-
 };
-
-gulp.task('prepareMapDataAndImages', gulp.series(prepareObjectJsonWithImages, mergeMapJson));
-
-
-gulp.task('prepareMapDataAndImagesClean', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages, mergeMapJson));
-
 
 const preparePagesMapDetail = (done) => {
 
@@ -669,31 +575,109 @@ const preparePagesMapDetail = (done) => {
 
 };
 
-gulp.task('mergeMapJson', mergeMapJson);
-gulp.task('preparePagesMapDetail', preparePagesMapDetail);
+const cleanTempDataFolder = (done) => {
+  return del(['temp/data-maps'], done);
+};
 
-gulp.task('copyToSrc', (done) => {
+const copyToDist = (done) => {
 
-  gulp.src(['./temp/data-maps/**/*'])
-  .pipe(gulp.dest('./src/data-maps/'));
-
-  done();
-
-});
-
-
-gulp.task('copyToDist', (done) => {
   gulp.src(['.htaccess'])
   .pipe(gulp.dest('./dist/'));
 
-  gulp.src(['./src/data-maps/**/*'])
-  .pipe(gulp.dest('./dist/assets/data-maps/'));
+  done();
 
+};
+
+const copyTempDataToDist = (done) => {
+
+  gulp.src(['./temp/data-maps/**/*'])
+  .pipe(gulp.dest('./dist/assets/data-maps/'));
 
   done();
 
+};
+
+// CLEAN
+gulp.task('clean', (done) => {
+  return del(['dist'], done);
 });
 
+gulp.task('clean-temp', (done) => {
+  return del(['temp'], done);
+});
+
+// SERVER
+gulp.task('serve', (cb) => {
+
+  if (browserSync.active) {
+    return;
+  }
+  browserSync.init(config.browserSync);
+
+  gulp.watch('src/js/**/*.js').on('change', gulp.series('js', browserSync.reload));
+  gulp.watch('src/scss/**/*.scss').on('change', gulp.series('sass', browserSync.reload));
+  gulp.watch('src/images/**/*.{jpg,png,svg,gif}', gulp.series('images', browserSync.reload));
+  gulp.watch(['src/views/**/*.pug'], gulp.series('pug', 'preparePagesMapDetail', browserSync.reload));
+
+});
+
+
+gulp.task('pug', () => {
+  return gulp.src(['src/views/*.pug'])
+    .pipe(
+      $.data(() => JSON.parse(fs.readFileSync('./temp/data_maps_merged.json')))
+    )
+    .pipe(
+      $.data(() => appConfigJson)
+    )
+    .pipe($.pug(config.pug))
+    .pipe(gulp.dest('dist/'));
+  });
+
+
+// SASS
+gulp.task('sass', () => {
+  return gulp.src('src/scss/main.scss')
+    .pipe($.sourcemaps.init())
+    .pipe($.sass(config.sass).on('error', $.sass.logError))
+    .pipe($.sourcemaps.write(gulp.dest('dist/assets/css')))
+    .pipe($.autoprefixer())
+    .pipe(gulp.dest('dist/assets/css'))
+    .pipe(browserSync.stream());
+});
+
+
+gulp.task('js', async () => {
+  const bundle = await rollup(config.rollup.bundle);
+  bundle.write(config.rollup.output);
+
+  browserSync.reload({stream: true});
+
+});
+
+// IMAGES
+gulp.task('images', () => gulp.src('src/images/**/*.{jpg,png,svg,gif}')
+    .pipe(gulp.dest('dist/assets/images')));
+
+// FONTS
+gulp.task('fonts', () => gulp.src('src/fonts/**/*.*')
+    .pipe(gulp.dest('dist/assets/fonts')));
+
+
+
+gulp.task('mergeMapJson', mergeMapJson);
+gulp.task('preparePagesMapDetail', preparePagesMapDetail);
+
+
+gulp.task('injectSvg', () => {
+
+  return gulp.src('dist/*.html')
+    .pipe($.embedSvg({
+      root: 'dist/'
+    }))
+    .pipe(gulp.dest('./dist'));
+
+});
 
 gulp.task('svg', () => {
 
@@ -730,10 +714,11 @@ gulp.task('watch', (cb) => {
 });
 
 // GULP:prepare
-gulp.task('prepare', gulp.series('prepareMapDataAndImages', 'copyToSrc'));
+gulp.task('prepare-first', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages));
+gulp.task('prepare-second', gulp.series(mergeMapJson));
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'pug', 'images', 'fonts', 'copyToDist'));
+gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'pug', 'images', 'fonts', copyToDist, copyTempDataToDist));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));

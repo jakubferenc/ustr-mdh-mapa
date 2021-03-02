@@ -55,7 +55,6 @@ block main
 
       .background
 
-
     section.section.section-padding(data-component="section")
 
       h1.typo-section-title.is-section-title Interaktivní historie na mapách
@@ -64,19 +63,19 @@ block main
 
       .list-in-section(data-component="list-map")
 
-
         .container-items.columns.is-multiline
 
           each key in Object.keys(maps)
 
-            - const {name, safeSlug, slug, mainPhoto} = maps[key]
+            - const {name, safeSlug, slug, thumbPhoto, mapSettings} = maps[key]
 
             +list-map-item({
               class: 'is-one-quarter-widescreen is-one-third-desktop is-half',
               name,
-              mainPhoto,
+              thumbPhoto,
               safeSlug,
-              slug
+              slug,
+              mapSettings,
             })
 
         a.button.button-more(href="list-maps.html") Všechny mapy
