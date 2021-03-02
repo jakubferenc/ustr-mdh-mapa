@@ -313,39 +313,41 @@ gulp.task('images', () => gulp.src('src/images/**/*.{jpg,png,svg,gif}')
 gulp.task('fonts', () => gulp.src('src/fonts/**/*.*')
     .pipe(gulp.dest('dist/assets/fonts')));
 
-const mergeMapJson = async (done) => {
 
-  await new Promise((resolve, reject) => {
-    gulp.src('./temp/data-maps/**/*.json')
-    .pipe($.mergeJson({
-      fileName: 'data_maps_merged.json',
-    }))
-    .pipe(gulp.dest('./temp/'))
-    .on("end", resolve);
+// GENERATING CONTENT AND IMAGES
+const mergeMapJson = (done) => {
+
+  gulp.src('./temp/data-maps/**/*.json')
+  .pipe($.mergeJson({
+    fileName: 'data_maps_merged.json',
+  }))
+  .pipe(gulp.dest('./temp/'))
+  .on("end", () => {
+
+    const mergedMapsRawData = fs.readFileSync(`./temp/data_maps_merged.json`);
+    const mergedMapsJsonData = JSON.parse(mergedMapsRawData);
+
+    let transformedJson = {
+      maps: Object.assign({}, mergedMapsJsonData)
+    };
+
+    transformedJson = JSON.stringify(transformedJson);
+
+    // write the json structure to the file based on the sluggified map name
+    fs.writeFileSync(`./temp/data_maps_merged.json`, transformedJson, (err) => {
+      if (!err) {
+        done();
+      } else {
+        console.error(err);
+      }
+    });
+
+    done();
+
 
   });
-
-
-  const mergedMapsRawData = fs.readFileSync(`./temp/data_maps_merged.json`);
-  const mergedMapsJsonData = JSON.parse(mergedMapsRawData);
-
-  let transformedJson = {
-    maps: Object.assign({}, mergedMapsJsonData)
-  };
-
-  transformedJson = JSON.stringify(transformedJson);
-
-  // write the json structure to the file based on the sluggified map name
-  fs.writeFileSync(`./temp/data_maps_merged.json`, transformedJson, (err) => {
-    if (!err) {
-        console.log('done');
-    }
-  });
-
-  done();
 
 };
-
 
 const prepareObjectJsonWithImages = async (done) => {
 
@@ -391,8 +393,9 @@ const prepareObjectJsonWithImages = async (done) => {
     const subfolderWithImagesPath = `${parentFolderPath}${path.sep}${subfolderWithImagesName}`;
     const subfolderImages = fs.readdirSync(subfolderWithImagesPath);
 
+    // Process objects of the map
+    //////////////////////////////////////////////////////////////////////////////////////////
     const objectsJson = JSON.parse(file.contents.toString());
-
 
     const objectsNewFeatures = [];
 
@@ -572,8 +575,11 @@ const prepareObjectJsonWithImages = async (done) => {
     } catch (err) {
       console.error(err);
     }
+    //////////////////////////////////////////////////////////////////////////////////////////
 
     // merge nastaveni and data json files, create a merged single json
+    //////////////////////////////////////////////////////////////////////////////////////////
+
     const nastaveniRawData = fs.readFileSync(`${parentFolderPath}/nastaveni.json`);
     const nastaveniJson = JSON.parse(nastaveniRawData);
 
@@ -592,12 +598,36 @@ const prepareObjectJsonWithImages = async (done) => {
       }
     });
 
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+    // copy map profile images to temp folder
+    fs.rename(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`, function (err) {
+      if (err) {
+          throw err
+      } else {
+          console.log("Successfully moved the file!");
+      }
+    });
+
+    fs.rename(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`, function (err) {
+      if (err) {
+          throw err
+      } else {
+          console.log("Successfully moved the file!");
+      }
+    });
+
+
   }));
 
   done();
+
 };
 
-gulp.task('prepareMapDataAndImages', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages, mergeMapJson));
+gulp.task('prepareMapDataAndImages', gulp.series(prepareObjectJsonWithImages, mergeMapJson));
+
+
+gulp.task('prepareMapDataAndImagesClean', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages, mergeMapJson));
 
 
 const preparePagesMapDetail = (done) => {
@@ -606,8 +636,7 @@ const preparePagesMapDetail = (done) => {
 
   for (const [key, map] of Object.entries(data.maps)) {
 
-    //  html
-    gulp.src('src/views/_templates/map-detail.pug')
+    gulp.src('src/views/mapa/map-detail.pug')
     .pipe(
       $.data(
         (file) => map
@@ -617,8 +646,21 @@ const preparePagesMapDetail = (done) => {
       $.data(() => appConfigJson)
     )
     .pipe($.pug(config.pug))
-    .pipe($.rename(`${map.slug}.html`))
-    .pipe(gulp.dest(`./dist/mapa/`));
+    .pipe($.rename(`detail.html`))
+    .pipe(gulp.dest(`./dist/mapa/${map.slug}/`));
+
+    gulp.src('src/views/mapa/map-index.pug')
+    .pipe(
+      $.data(
+        (file) => map
+      )
+    )
+    .pipe(
+      $.data(() => appConfigJson)
+    )
+    .pipe($.pug(config.pug))
+    .pipe($.rename(`index.html`))
+    .pipe(gulp.dest(`./dist/mapa/${map.slug}/`));
 
 
   }

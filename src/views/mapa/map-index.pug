@@ -1,0 +1,159 @@
+extends ../_partials/layout-full.pug
+
+block vars
+  - bodyClass = 'index'
+
+block main
+
+  main
+
+    .page-content.page-content-map-detail-homepage
+
+      .header
+        .header-figure
+
+          ul.header-figure-types
+            li.timeline
+              img(src="assets/images/icons/icon-view-switch-timeline-large.svg")
+            li.objects
+               img(src="assets/images/icons/icon-view-switch-objects-large.svg")
+            li.map
+               img(src="assets/images/icons/icon-view-switch-map-large.svg")
+
+
+          ul.header-figure-actions
+            li.bookmark
+              img(src="assets/images/icons/icon-bookmark-large.svg")
+
+          img(src=`/assets/data-maps/${safeSlug}/${mainPhoto}` alt=`${name}`)
+
+        .header-content
+
+          .header-content-text-container
+            .header-content-text
+
+              h1.typo-main-title.main-title #{name}
+
+              p #{description}
+
+              .section-content-text
+
+            .authors
+
+              h2.section-content-text-title Mapu vytvořili
+
+              .authors-list
+
+                .author
+                  .author-image
+                    img(src="assets/images/dummy/profile-image-dummy-male.png" alt="Jméno")
+                  .author-bio
+                    .name Mgr. Bohumil Melichar
+                    .what-they-did Texty, tvorba mapy
+                    .institution Ústav pro studium totalitních režimů
+
+          a.header-button(href="detail.html")
+
+            .icon
+
+              span
+                img(src="assets/images/icons/icon-button-start-map.svg" alt="")
+
+            .icon-text SPUSTIT MAPU
+
+      .section-container
+
+        .section.section-text-info
+
+          h2 Informace o období
+
+          .section-text-info-content
+            p Julius Fučík, komunistický novinář a odbojář, se těsně po druhé světové válce stal národním hrdinou symbolizujícím vzdor vůči okupantům. Jeho Reportáž, psaná na oprátce, sepsaná v prostředí Pankrácké věznice nedlouho před popravou, se stala základním textem vysvětlujícím zážitek ilegální činnosti v období protektorátu. Skrze osobnost Julia Fučíka měla společnost v režimu socialistické diktatury oficiálně vzpomínat na vítězství v druhé světové válce. Vyprávění o jeho životě a díle nebylo jediným příběhem, jenž byl takto využit, lze ale tvrdit, že patřil k těm nejdůležitějším.
+            br
+            p Mýtus, který se kolem Fučíka postupně utvářel, se propisoval do veřejného prostoru, kde byl každý den na očích jako memento „úpadku kapitalismu a bestiality fašismu“. Interaktivní mapa zachycuje výběr památníků, ulic či institucí nesoucích jméno Julia Fučíka. Patří k nim místa spjatá přímo s jeho životem, dějiště pietních aktů, ale i lokace, kde se odehrává Reportáž, psaná na oprátce, nebo prostory, které byly po Fučíkovi pojmenovány zcela náhodně. Mapa se snaží udržet celosvětové měřítko, které pomáhá odhalit míru úcty prokazované tomuto socialistickému mučedníkovi. Názorně pak dokládá, že centrální oblastí zájmu o Julia Fučíka bylo Československo. Silnou odezvu měl jeho příběh také v Sovětském svazu a jeho satelitech. Ve všech jmenovaných oblastech byl zájem o jeho osobu nesen oficiální kulturní politikou. Svoji přitažlivost však měl i pro levicové prostředí na druhé straně železné opony.
+
+
+        .section.section-text-info
+          h2 Didaktické a výzkumné cíle
+
+          .section-text-info-content
+            p Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
+
+            ul.attachments
+              li.attachment
+                .icon
+                  img(src="assets/images/icons/icon-file-type-docx.svg" alt="Microsoft Word Docx")
+                .text
+                  div.title Stáhnout
+                  div.text
+                    u Dokument Pracovní list
+
+              li.attachment
+                .icon
+                  img(src="assets/images/icons/icon-file-type-pdf.svg" alt="Adobe PDF")
+                .text
+                  div.title Stáhnout
+                  div.text
+                    u Příprava
+
+        .section.section-text-info
+
+          h2 Témata/Kategorie
+
+          .section-text-info-content
+            p Mapu jsme rozdělili do několika vrstev. Ty by měly usnadnit orientaci, nejde však o přesně definované a pevné kategorie: některá místa jsou obtížně zařaditelná, klasifikace se v některých případech překrývá. Základním smyslem mapy je, aby nám pomáhala klást si otázky, které se můžete pokusit zodpovědět prostřednictvím výstavy, svých vzpomínek či rozhovorem s pamětníky.
+            .layers-container
+
+              .layer(style="background-color: hsl(250, 60%, 82%);")
+                .title Ulice
+                .text Mnoho měst a obcí pojmenovalo některou ze svých ulic po Juliu Fučíkovi, a to nejen v Československu. Byla Fučíkova ulice i ve vašem rodném městě? Kde Fučíkova zůstala a kde byla přejmenována? Jednalo se o hlavní bulvár, nebo o uličku na periferii? A je Fučíkova pojmenována po Juliovi nebo jeho strýci a hudebním skladateli Bedřichovi?
+
+              .layer(style="background-color: hsl(60, 60%, 82%);")
+                .title Monumenty ve veřejném prostoru
+                .text Byl Fučík ve veřejném prostoru skutečně všudypřítomný? Vybavíte si některý z pomníků Julia Fučíka, který po roce 1989 zmizel. Můžete na Fučíka ještě někde dnes narazit? Která ze stanic metra dříve nesla název Fučíkova? Vědí vaše děti, kde se nachází “Fučíkárna”?
+
+              .layer(style="background-color: hsl(120, 60%, 82%);")
+                .title Přírodní monumenty
+                .text Jméno Julia Fučíka se nepropsalo jen do měst a obcí, ale i do přírodní krajiny. I když jde spíše o kuriozity, věděli byste, kde hledat horu Julia Fučíka?
+
+              .layer(style="background-color: hsl(30, 60%, 82%);")
+                .title Místa Fučíkova života
+                .text V oficiálním vzpomínání na Julia Fučíka hrála podstatnou roli místa, která Fučík navštívil,  kde žil  nebo kde byl zatčen. Jaké to je žít v bytě, v němž při zatčení Fučík nestřílel?
+
+
+              .layer(style="background-color: hsl(0, 60%, 82%);")
+                .title Místa z Reportáže
+                .text Dokonce i Reportáž, psaná na oprátce oplývá zajímavou prostorovou dynamikou. Kromě věznění na Pankráci a výslechů v Petschkově paláci se děj odehrává i na dalších místech. Kde komisař Böhm ve známé scéně pokoušel Fučíka a přemlouval ho k výpovědi?
+
+              .layer(style="background-color: hsl(280, 60%, 82%);")
+                .title Konference
+                .text Po válce se uskutečnilo i několik konferencí na fučíkovské téma. Kdo zde vystoupil? A mělo by smysl pořádat konferenci o Fučíkovi i v současné době?
+
+              .layer(style="background-color: hsl(180, 60%, 82%);")
+                .title Fučík po roce 1989
+                .text Některá místa spojená s Juliem Fučíkem se po roce 1989 výrazně proměnila. Kde můžete na Fučíka narazit ještě dnes?
+
+              .layer(style="background-color: hsl(90, 60%, 82%);")
+                .title Podniky a pracovní kolektivy
+                .text Po Fučíkovi bylo pojmenováno i několik podniků. Kde se rozprostíraly Doly Julia Fučíka? Znamenalo toto jméno něco pro místní dělníky?
+
+              .layer(style="background-color: hsl(220, 60%, 82%);")
+                .title Fučík a mládež
+                .text Fučík sloužil jako příkladná postava pro dospívající, proto po něm bylo pojmenováno několik mládežnických organizací. Kdo z vás chodil do pionýrského oddílu Julia Fučíka?
+
+
+
+        .section.section-text-info
+
+          h2 Jak se zapojit do projektu?
+
+          .section-text-info-content
+            p Chybí vám na mapě nějaké místo, které dobře znáte a s tématem souvisí? Budeme rádi, když nám dáte vědět.
+
+            .section-text-info-content-footer
+
+              a.button.button-with-icon.button-send(href="#")
+                .button-text Napište nám
+                .button-icon
+                  img(src="assets/images/icons/icon-button-send.svg" alt="Zaslat zprávu")
+
