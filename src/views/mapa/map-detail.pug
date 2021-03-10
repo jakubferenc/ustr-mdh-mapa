@@ -3,10 +3,6 @@ extends ../_partials/layout.pug
 block vars
   - bodyClass = 'map-detail'
 
-  - const countObjects = features.length
-  - const limit = 30;
-  - let i = 0;
-
 block main
 
   main
@@ -25,9 +21,9 @@ block main
             <svg xmlns="http://www.w3.org/2000/svg" width="19.245" height="28" viewBox="0 0 19.245 28"><defs><style>.a{fill:#1a1818;}</style></defs><g transform="translate(-634.499 -538.828)"><path class="a" d="M645.238,566.828l-10.739-14,10.739-14"/><rect class="a" width="10.158" height="10.158" transform="translate(643.586 547.749)"/></g></svg>
             span.icon-text Zpět
 
-        each objekt in features
+        each object in features
 
-          +object-detail(objekt)
+          +object-detail(object, {safeSlug, mapSettings})
 
 
         div(data-component="list-objects")
@@ -36,9 +32,14 @@ block main
 
           .cards-container
 
-            each objekt in features
+            each mapLayer in Object.keys(mapSettings.layers)
 
-              +object-card(objekt, {safeSlug})
+              - let thisFeaturesSet = features.filter(item => item.properties.layer === mapLayer)
+              - thisFeaturesSet.map(item => { if (item.images.length == 0) {thisFeaturesSet.push(thisFeaturesSet.shift())} })
+
+              each object in thisFeaturesSet
+
+                +object-card(object, {safeSlug, mapSettings})
 
 
       .map(id="mapbox" data-component="mapbox" data-slug=`${safeSlug}`)

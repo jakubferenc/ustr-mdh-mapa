@@ -21,21 +21,18 @@ block main
 
         .cards-container
 
-          //
-            - const features = topografie_pameti_julius_fucik.features;
-            - const mapSettings = topografie_pameti_julius_fucik.mapSettings;
-            - let i = 190;
-            - const limit = i + 80;
+          - let objects = []
 
-            each objekt in features
+          each key in Object.keys(maps)
 
-              if (i < limit)
+            - let thisMapObjects = maps[key].features.filter(item => item.images.length > 0 && item.properties.description != '')
+            - thisMapObjects = thisMapObjects.map((item) => {item.mapSafeSlug = maps[key].safeSlug; item.mapSettings = maps[key].mapSettings; return item;})
 
-                +object-card(features[i])
+            - objects = [...objects, ...thisMapObjects]
 
-              - i = i + 1
+          each object in objects
 
-
+            +object-card(object, {safeSlug: object.mapSafeSlug, mapSettings: object.mapSettings})
 
         a.button.button-more(href="#") Načíst další objekty (neaktivní)
 
@@ -44,7 +41,7 @@ block main
 
         .banner-image
 
-          img(src="assets/images/banner-icon-add-to-bookmark.svg")
+          img(src="/assets/images/banner-icon-add-to-bookmark.svg")
 
 
         .banner-text
@@ -63,4 +60,4 @@ block main
 
         .banner-image
 
-          img(src="assets/images/box.svg")
+          img(src="/assets/images/box.svg")

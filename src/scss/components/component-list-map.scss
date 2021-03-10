@@ -29,7 +29,6 @@
   .button-more {
     margin-left: auto;
     margin-right: auto;
-    display: block;
 
     margin-top: $margin-basic;
   }
@@ -44,7 +43,7 @@
 
   figure {
     position: relative;
-    
+
     img {
       object-fit: cover;
       width: 100%;

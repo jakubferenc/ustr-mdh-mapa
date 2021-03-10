@@ -3,11 +3,10 @@
 // ==========================================
 
 // node libraries
-import fs from 'fs';
+import fs, { truncate } from 'fs';
 import { copyFile } from 'fs/promises';
 import del from 'del';
 import path, { resolve } from 'path';
-import colors from 'colors/safe';
 
 
 // gulp-dev-dependencies
@@ -29,7 +28,7 @@ import browserSync from 'browser-sync';
 import postcssAutoprefixer from 'autoprefixer';
 import postcssCssnano from 'cssnano';
 
-import Jimp from 'jimp/es';
+const sharp = require('sharp');
 
 
 // ==========================================
@@ -263,11 +262,12 @@ const mergeMapJson = (done) => {
 
 };
 
+
 const prepareObjectJsonWithImages = async (done) => {
 
   const subfolderWithImagesName = 'images';
-  const allowedImageExtensions = ['jpg', 'jpeg', 'tif', 'png', 'tiff'];
-  const generateThumbnailImages = false;
+  const allowedImageExtensions = ['jpg', 'jpeg', 'png'];
+  const generateThumbnailImages = true;
 
   // create ./temp
   try {
@@ -316,7 +316,7 @@ const prepareObjectJsonWithImages = async (done) => {
 
     const subfolderImagesNormalized = subfolderImages.map(item => latinize(slugify(item.normalize('NFC'), slugifyCustomDefaultSettings)).toLowerCase());
 
-    objectsJson.features.forEach( async (mapObject) => {
+    objectsJson.features.forEach( (mapObject, index, thisArray) => {
 
 
       const newMapObjectFeatureItem = mapObject;
@@ -330,13 +330,11 @@ const prepareObjectJsonWithImages = async (done) => {
 
       if ( hasObjectFolderWithImagesIndex > -1 ) {
 
-
         const folderName = subfolderImages[hasObjectFolderWithImagesIndex];
-
         const thisFilePath = `${subfolderWithImagesPath}${path.sep}${folderName}${path.sep}`;
 
         // get a file list from the folder
-        const subfolderImagesFiles = fs.readdirSync(`${thisFilePath}`);
+        const subfolderImagesFiles = fs.readdirSync(`${subfolderWithImagesPath}${path.sep}${folderName}${path.sep}`);
 
         // process the images one by one and create object structures
         /// find main image
@@ -344,10 +342,11 @@ const prepareObjectJsonWithImages = async (done) => {
 
         let hasMainPhotoBeenCreated = false;
 
-        subfolderImagesFiles.forEach( (thisFilename) => {
+        subfolderImagesFiles.forEach( async (thisFilename) => {
 
           thisFilename = thisFilename.normalize('NFKD');
 
+          // get the file extension without a dot
           const thisFileImageExtension = path.extname(thisFilename);
           let thisFileImageExtensionWithoutDot = thisFileImageExtension.split('.');
 
@@ -355,11 +354,12 @@ const prepareObjectJsonWithImages = async (done) => {
             thisFileImageExtensionWithoutDot = thisFileImageExtensionWithoutDot[1].toLowerCase();
           }
 
+          // process only if the file  type is allowed
+          // (based only on the file extension, not the binary data)
           if (allowedImageExtensions.includes(thisFileImageExtensionWithoutDot)) {
 
             const thisFilenameOnly = path.basename(thisFilename, thisFileImageExtension);
             const thisFileImagePath = `${thisFilePath}${thisFilename}`;
-            const potentialTxtFilePath = `${thisFilePath}${thisFilenameOnly}.txt`;
 
             const imageObj = {};
 
@@ -378,6 +378,8 @@ const prepareObjectJsonWithImages = async (done) => {
               hasMainPhotoBeenCreated = true;
 
             }
+
+            newMapObjectFeatureItem.images.push(imageObj);
 
             if (generateThumbnailImages) {
 
@@ -419,47 +421,64 @@ const prepareObjectJsonWithImages = async (done) => {
                 console.error(err);
               }
 
-              (async () => {
+              // do image processing only if the largest/main does not exist
+              if (!fs.existsSync(`${thisObjectFolderNameForImages}${path.sep}${imageObj.name}`)) {
+
+                console.log(thisFileImagePath);
 
                 // resize, rename original
-                const image = await Jimp.read(thisFileImagePath);
 
-                const imageWidth = image.bitmap.width;
+                const image = sharp(thisFileImagePath);
+
+                const imageWidth = (await image.metadata()).width;
+
+
+                image.resize({width: appConfigJson.appConfig.images.object.full.width}); // resize even if the image is smaller (upsize)
+
+/*                 if (imageWidth > appConfigJson.appConfig.images.object.full.width) {
+                  image.resize({width: appConfigJson.appConfig.images.object.full.width}); // resize
+                } */
+
+                await image.toFile(`${thisObjectFolderNameForImages}${path.sep}${imageObj.name}`);
+
+                await image.toBuffer();
 
                 // check if the original image size is larger than the max full width size defined in the app settings
-                if (imageWidth > appConfigJson.appConfig.images.object.full.width) {
-                   image.resize(appConfigJson.appConfig.images.object.full.width, Jimp.AUTO); // resize
+                if (!fs.existsSync(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`)) {
+
+                  // generate, resize, rename gallery thumb
+                  image
+                  .resize({width: appConfigJson.appConfig.images.object.galleryThumbnail.width}) // resize
+                  .toFile(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`); // save
+
+                } else {
+                  // :TODO: write a message to console that the image is skipped
                 }
 
-                 image.write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.name}`);
+                if (!fs.existsSync(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`)) {
 
-                // generate, resize, rename gallery thumbs
-                image
-                .resize(appConfigJson.appConfig.images.object.galleryThumbnail.width, Jimp.AUTO) // resize
-                .quality(80) // set JPEG quality
-                .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.galleryThumbnail}`, () => resolve() ); // save
+                  // generate, resize, rename image thumb
+                  return image
+                  .resize({width: appConfigJson.appConfig.images.object.thumbnail.width, fit: 'cover'}) // resize
+                  .toFile(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`); // save
 
-                image
-                .cover(appConfigJson.appConfig.images.object.thumbnail.width, appConfigJson.appConfig.images.object.thumbnail.height) // resize
-                .write(`${thisObjectFolderNameForImages}${path.sep}${imageObj.thumbnail}`);
+                }
 
-                console.log(`hotovo pro ${thisFileImagePath}`);
+                image = null;
 
-              })();
-
+              }
 
               // description
-              if (fs.existsSync(potentialTxtFilePath)) {
+              /*if (fs.existsSync(potentialTxtFilePath)) {
                 // found txt file
                 const textData = fs.readFileSync(potentialTxtFilePath, {encoding:'utf8', flag:'r'});
                 imageObj.description = textData;
-              }
-
-              newMapObjectFeatureItem.images.push(imageObj);
+              }*/
 
             }
 
           }
+
 
         });
 
@@ -517,14 +536,13 @@ const prepareObjectJsonWithImages = async (done) => {
     // copy map profile images to temp folder
     try {
       await copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
-      console.log(`Copying image ${nastaveniJson.mainPhoto} for the map ${filename}: ${colors.green('OK!')}`);
     } catch {
       console.error('The file could not be copied');
     }
 
     try {
       await copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
-      console.log(`The image ${nastaveniJson.thumbPhoto} for the map ${filename}: ${colors.green('OK!')}`);
+
     } catch {
       console.error('The file could not be copied');
     }
@@ -568,6 +586,43 @@ const preparePagesMapDetail = (done) => {
     .pipe($.rename(`index.html`))
     .pipe(gulp.dest(`./dist/mapa/${map.slug}/`));
 
+
+  }
+
+  done();
+
+};
+
+const prepareObjektDetail = (done) => {
+
+  const data = JSON.parse(fs.readFileSync('./temp/data_maps_merged.json'));
+
+  for (const [key, map] of Object.entries(data.maps)) {
+
+    for (let object of map.features) {
+
+      let mapObjectContainer = {
+        object: object,
+        map: {
+          mapSettings: map.mapSettings,
+          safeSlug: map.safeSlug
+        }
+      };
+
+      gulp.src('src/views/objekt/page-objekt-detail.pug')
+      .pipe(
+        $.data(
+          (file) => mapObjectContainer
+        )
+      )
+      .pipe(
+        $.data(() => appConfigJson)
+      )
+      .pipe($.pug(config.pug))
+      .pipe($.rename(`index.html`))
+      .pipe(gulp.dest(`./dist/objekt/${object.properties.slug}/`));
+
+    }
 
   }
 
@@ -668,6 +723,9 @@ gulp.task('fonts', () => gulp.src('src/fonts/**/*.*')
 gulp.task('mergeMapJson', mergeMapJson);
 gulp.task('preparePagesMapDetail', preparePagesMapDetail);
 
+gulp.task('prepareObjektDetail', prepareObjektDetail);
+
+
 
 gulp.task('injectSvg', () => {
 
@@ -714,11 +772,12 @@ gulp.task('watch', (cb) => {
 });
 
 // GULP:prepare
+gulp.task('prepare-generate-data-images', gulp.series(prepareObjectJsonWithImages));
 gulp.task('prepare-first', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages));
 gulp.task('prepare-second', gulp.series(mergeMapJson));
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'sass', 'js', 'pug', 'images', 'fonts', copyToDist, copyTempDataToDist));
+gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'pug', 'sass', 'js',  'images', 'fonts', copyToDist, copyTempDataToDist));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));

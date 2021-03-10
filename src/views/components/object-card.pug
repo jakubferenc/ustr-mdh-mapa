@@ -1,24 +1,23 @@
-mixin object-card(objekt, map)
+mixin object-card(object, map)
 
-  - const images = objekt.images
+  - const images = object.images
 
+  article.card.card-thumb(data-object-id=`${object.properties.name}` data-object-name=`${object.properties.name}` data-component="card" data-object-layer=`${object.properties.layer}` data-object-type=`${object.properties.type}` )
 
-  article.card.card-thumb(data-object-id=`${objekt.properties.name}` data-object-name=`${objekt.properties.name}` data-component="card" data-object-layer=`${objekt.properties.layer}` data-object-type=`${objekt.properties.type}` )
-
-    .layer-bar(style=`background-color: ${mapSettings.layers[objekt.properties.layer].color}`)
-      .meta.meta-category #{objekt.properties.layer}
+    .layer-bar(style=`background-color: ${map.mapSettings.layers[object.properties.layer].color}`)
+      .meta.meta-category #{object.properties.layer}
 
     .card-content-container
       .gallery
         .gallery-image
-          if (objekt.images.length > 0)
-            img(src=`/assets/data-maps/${map.safeSlug}/images/${objekt.properties.slug}/${objekt.images[0].thumbnail}`)
+          if (object.images.length > 0)
+            img(src=`/assets/data-maps/${map.safeSlug}/images/${object.properties.slug}/${object.images[0].thumbnail}`)
           else
             img(src=`/assets/images/object-default-image.png`)
 
       .card-content
         .title-bar
-          .card-title #{objekt.properties.name}
+          .card-title #{object.properties.name}
           .icons
             <svg class="icon icon-action" xmlns="http://www.w3.org/2000/svg" width="12.871" height="19.793" viewBox="0 0 12.871 19.793">
               <g transform="translate(-132.331 -89.309)" fill="none">
@@ -26,8 +25,8 @@ mixin object-card(objekt, map)
               </g>
             </svg>
         .footer-bar
-          .meta.meta-address GPS: #{objekt.properties.y}, #{objekt.properties.x}
+          .meta.meta-address GPS: #{object.properties.y}, #{object.properties.x}
           .icons
 
-            if (objekt.properties.type)
-              img(src=`/assets/images/icons/icon-object-${objekt.properties.type}.svg`)
+            if (object.properties.type)
+              img(src=`/assets/images/icons/icon-object-${object.properties.type}.svg`)
