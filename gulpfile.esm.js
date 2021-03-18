@@ -4,7 +4,7 @@
 
 // node libraries
 import fs, { truncate } from 'fs';
-//import { copyFile } from 'fs/promises';
+import { copyFile } from 'fs/promises';
 import del from 'del';
 import path, { resolve } from 'path';
 
@@ -534,7 +534,7 @@ const prepareObjectJsonWithImages = async (done) => {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     // copy map profile images to temp folder
-    /*
+
     try {
       await copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
     } catch {
@@ -549,8 +549,6 @@ const prepareObjectJsonWithImages = async (done) => {
     }
 
     done();
-
-    */
 
 
   }));
@@ -605,11 +603,8 @@ const prepareObjektDetail = (done) => {
     for (let object of map.features) {
 
       let mapObjectContainer = {
-        object: object,
-        map: {
-          mapSettings: map.mapSettings,
-          safeSlug: map.safeSlug
-        }
+        object,
+        map /* :TODO: inject all variables without map.features for faster build! Also, we do not need map.features here */
       };
 
       gulp.src('src/views/objekt/page-objekt-detail.pug')
@@ -780,7 +775,7 @@ gulp.task('prepare-first', gulp.series(cleanTempDataFolder, prepareObjectJsonWit
 gulp.task('prepare-second', gulp.series(mergeMapJson));
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'pug', 'sass', 'js',  'images', 'fonts', copyToDist, copyTempDataToDist));
+gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'prepareObjektDetail', 'pug', 'sass', 'js',  'images', 'fonts', copyToDist, copyTempDataToDist));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));

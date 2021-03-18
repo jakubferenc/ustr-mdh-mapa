@@ -8,7 +8,7 @@ mixin list-map-item(settings)
   article.column(data-component="list-map-item" class=`${opts.class}`)
 
     figure
-      a(href=`mapa/${opts.slug}/`)
+      a(href=`/mapa/${opts.slug}/`)
         img(src=`/assets/data-maps/${opts.safeSlug}/${opts.thumbPhoto}` alt=`${opts.name}`)
       nav.list-map-nav.list-map-nav-symbols
 
@@ -30,5 +30,5 @@ mixin list-map-item(settings)
           img(src="/assets/images/icons/icon-bookmark-large.svg")
 
     h3.typo-subtitle.list-map-item-title
-      a(href=`mapa/${opts.slug}/`) #{opts.name}
+      a(href=`/mapa/${opts.slug}/`) #{opts.name}
 

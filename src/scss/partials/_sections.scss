@@ -40,10 +40,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #eee;
 
-  @include until($widescreen) {
-    padding-left: $filter-width;
-  }
 
   &[data-mode='objects'] {
     [data-component='mapbox'] {
@@ -85,15 +83,34 @@
 
 [data-component='filter'] {
   height: calc(100vh - #{$header-main-height});
-  background: #fff;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   width: auto;
 
-  @include until($widescreen) {
-    position: absolute; top: 0; left: 0;
+  @include until($desktop) {
+    position: absolute; top: 0%; left: 0;
     z-index: 99;
+    height: 100%;
+    align-items: center;
+
+    &.open {
+      background-color: #fff;
+      align-items: flex-start;
+
+    }
+
+    .filter-button-switch {
+
+      background: #fff;
+
+    }
+
+
+  }
+
+  @include from($desktop) {
+    background: #fff;
   }
 
   .filter-section-container {
@@ -101,7 +118,7 @@
     width: calc(100vw - #{$filter-width});
     padding: $base-mobile-side-margin * 2 $base-mobile-side-margin;
 
-    @include from($widescreen) {
+    @include from($desktop) {
       width: 271px;
     }
 
@@ -144,6 +161,11 @@
       .filter-item {
         padding-left: 20px;
 
+        @include until($desktop) {
+          padding-right: 95px;
+        }
+
+
         .filter-item-text {
           position: relative;
           z-index: 2;
@@ -166,9 +188,9 @@
         &.active:after {
 
 
-          content: "x zrušit výběr";
+          content: "x zrušit";
 
-          @include from($widescreen) {
+          @include from($desktop) {
             content: "x";
           }
 
@@ -225,11 +247,24 @@
     }
   }
 
-  &.open .filter-section-container {
-    display: block;
-  }
-
   &.open {
+
+    .filter-button-switch {
+
+      @include until($desktop) {
+        height: 100%;
+      }
+
+    }
+
+    .filter-section-container {
+      display: block;
+    }
+
+    .filter-section-container {
+      display: block;
+    }
+
     .icon-open {
       display: none;
     }
@@ -251,6 +286,10 @@
     justify-content: center;
     cursor: pointer;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+    @include until($desktop) {
+      height: $filter-width;
+    }
 
     &:hover {
       background-color: #000;
@@ -276,7 +315,8 @@
 
   @include from($widescreen) {
     $min-widescreen-width: 55%;
-    min-width: calc(#{$min-widescreen-width} - #{$filter-width})
+    min-width: calc(#{$min-widescreen-width} - #{$filter-width});
+    min-width: 845px;
   }
 
 
@@ -315,15 +355,19 @@
     padding-right: $base-mobile-side-margin * 2;
   }
   .cards-container {
-    //display: flex;
-    //flex-wrap: wrap;
+
     padding-left: $base-mobile-side-margin * 2;
     padding-right: $base-mobile-side-margin * 2;
     padding-bottom: $base-mobile-side-margin * 4;
-    //justify-content: space-between;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(233px, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+
+
+    @include from($widescreen) {
+      gap: 32px;
+      grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+    }
   }
 }
 
@@ -506,7 +550,7 @@
 
   &.card-detail-page {
     margin-top: 2rem;
-    width: 100%;
+    width: 50%;
   }
 
   &:not(.card-detail-page) {

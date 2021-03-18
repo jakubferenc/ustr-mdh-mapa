@@ -94,6 +94,7 @@ a[href^="tel"] {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 20;
 
   &:after {
     content: "mobile";

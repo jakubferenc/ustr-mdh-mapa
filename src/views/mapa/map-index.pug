@@ -42,11 +42,11 @@ block main
 
               h2.section-content-text-title Mapu vytvořili
 
-              .authors-list.columns
+              .authors-list.columns.is-multiline
 
                 each author in authors
 
-                  .author.column.is-one-third-widescreen.is-half
+                  .author.column.is-one-third-desktop.is-half
                     .author-image
                       img(src=`${author.photo}` alt=`${author.name}`)
                     .author-bio

@@ -25,7 +25,11 @@ mixin object-card(object, map)
               </g>
             </svg>
         .footer-bar
-          .meta.meta-address GPS: #{object.properties.y}, #{object.properties.x}
+          .meta.meta-address
+            if (object.properties.exists === false)
+              s GPS: #{object.properties.y}, #{object.properties.x}
+            else
+              | GPS: #{object.properties.y}, #{object.properties.x}
           .icons
 
             if (object.properties.type)

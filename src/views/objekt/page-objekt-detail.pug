@@ -1,4 +1,6 @@
 extends ../_partials/layout.pug
+include ../components/list-map-item.pug
+
 
 block vars
   - bodyClass = 'objekt-detail'
@@ -94,12 +96,13 @@ block main
 
           .list-maps
 
-            .item-map-thumb
+            - const {name, safeSlug, slug, thumbPhoto, mapSettings} = map
 
-              img.image-bg(src="/assets/images/dummy/map-dummy-image-02.jpg" alt="")
-              .item-map-thumb--title Název mapy
-
-            .item-map-thumb
-
-              img.image-bg(src="/assets/images/dummy/map-dummy-image-02.jpg" alt="")
-              .item-map-thumb--title Název mapy
+            +list-map-item({
+              class: 'is-half-widescreen is-half',
+              name,
+              thumbPhoto,
+              safeSlug,
+              slug,
+              mapSettings,
+            })

@@ -39,8 +39,9 @@
   display: none;
 
   @include from($widescreen) {
-    display: block;
     width: 500px;
+    display: flex;
+    justify-content: center;
   }
 
   text-transform: uppercase;

@@ -34,6 +34,7 @@ const domLoad = () => {
   const $mapViewSwitch = document.querySelector('[data-component="view-switch"]');
   const $mapViewSwitchLinks = $mapViewSwitch.querySelectorAll('.item');
 
+
   const $mapbox = document.querySelector('[data-component="mapbox"]'); /*:TODO: currently working with only one mapbox per page */
   const $listViewContainer = document.querySelector('[data-component="list-objects-container"]');
   const $listView = document.querySelector('[data-component="list-objects"]');
@@ -349,34 +350,36 @@ const domLoad = () => {
   windowResizeObserver.observe($body);
 
 
+  if ($mapViewSwitchLinks) {
+    Array.from($mapViewSwitchLinks).forEach($item => {
 
+      $item.addEventListener('click', (e) => {
 
-  Array.from($mapViewSwitchLinks).forEach($item => {
+        const viewSwitchAction = e.currentTarget.getAttribute('rel');
 
-    $item.addEventListener('click', (e) => {
+        $mapDetailView.setAttribute('data-mode', `${viewSwitchAction}`);
 
-      const viewSwitchAction = e.currentTarget.getAttribute('rel');
+        if (viewSwitchAction === 'default') {
 
-      $mapDetailView.setAttribute('data-mode', `${viewSwitchAction}`);
+          store.map.invalidateSize();
 
-      if (viewSwitchAction === 'default') {
+        }
 
-        store.map.invalidateSize();
+        if (viewSwitchAction === 'map') {
 
-      }
+          store.map.invalidateSize();
 
-      if (viewSwitchAction === 'map') {
+        }
 
-        store.map.invalidateSize();
+        __removeClass(Array.from($mapViewSwitchLinks), 'active');
+        __addClass(e.currentTarget, 'active');
 
-      }
-
-      __removeClass(Array.from($mapViewSwitchLinks), 'active');
-      __addClass(e.currentTarget, 'active');
+      });
 
     });
+  }
 
-  });
+
   ////////////////////////////////////////////////////////////
 
   // card detail
