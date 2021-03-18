@@ -4,7 +4,7 @@
 
 // node libraries
 import fs, { truncate } from 'fs';
-import { copyFile } from 'fs/promises';
+//fimport { copyFile } from 'fs/promises';
 import del from 'del';
 import path, { resolve } from 'path';
 
@@ -534,7 +534,7 @@ const prepareObjectJsonWithImages = async (done) => {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     // copy map profile images to temp folder
-
+/*
     try {
       await copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
     } catch {
@@ -547,6 +547,8 @@ const prepareObjectJsonWithImages = async (done) => {
     } catch {
       console.error('The file could not be copied');
     }
+
+    */
 
     done();
 
