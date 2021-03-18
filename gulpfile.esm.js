@@ -644,9 +644,21 @@ const copyToDist = (done) => {
 
 };
 
-const copyTempDataToDist = (done) => {
+const copyTempDataToSrc = (done) => {
 
   gulp.src(['./temp/data-maps/**/*'])
+  .pipe(gulp.dest('./src/data-maps/'));
+
+  done();
+
+};
+
+gulp.task('copyTempDataToSrc', copyTempDataToSrc);
+
+
+const copySrcDataToDist = (done) => {
+
+  gulp.src(['./src/data-maps/**/*'])
   .pipe(gulp.dest('./dist/assets/data-maps/'));
 
   done();
@@ -778,7 +790,7 @@ gulp.task('prepare-first', gulp.series(cleanTempDataFolder, prepareObjectJsonWit
 gulp.task('prepare-second', gulp.series(mergeMapJson));
 
 // GULP:build
-gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'prepareObjektDetail', 'pug', 'sass', 'js',  'images', 'fonts', copyToDist, copyTempDataToDist));
+gulp.task('build', gulp.series('clean', 'preparePagesMapDetail', 'prepareObjektDetail', 'pug', 'sass', 'js',  'images', 'fonts', copyToDist, copySrcDataToDist));
 
 // GULP:default
 gulp.task('default', gulp.series('build', 'watch', 'serve'));
