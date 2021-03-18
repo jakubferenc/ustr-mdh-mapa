@@ -4,7 +4,8 @@
 
 // node libraries
 import fs, { truncate } from 'fs';
-//fimport { copyFile } from 'fs/promises';
+//import { copyFile } from 'fs/promises';
+import { copyFile } from 'fs';
 import del from 'del';
 import path, { resolve } from 'path';
 
@@ -534,21 +535,21 @@ const prepareObjectJsonWithImages = async (done) => {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     // copy map profile images to temp folder
-/*
+
     try {
-      await copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
+      //await copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
+      copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
     } catch {
       console.error('The file could not be copied');
     }
 
     try {
-      await copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
+      // await copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
+      copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
 
     } catch {
       console.error('The file could not be copied');
     }
-
-    */
 
     done();
 
