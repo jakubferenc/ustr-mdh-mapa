@@ -94,48 +94,20 @@ block main
 
         .section.section-text-info
 
-          h2 Témata/Kategorie
+          h2 Kategorie
 
           .section-text-info-content
             p Mapu jsme rozdělili do několika vrstev. Ty by měly usnadnit orientaci, nejde však o přesně definované a pevné kategorie: některá místa jsou obtížně zařaditelná, klasifikace se v některých případech překrývá. Základním smyslem mapy je, aby nám pomáhala klást si otázky, které se můžete pokusit zodpovědět prostřednictvím výstavy, svých vzpomínek či rozhovorem s pamětníky.
             .layers-container
 
-              .layer(style="background-color: hsl(250, 60%, 82%);")
-                .title Ulice
-                .text Mnoho měst a obcí pojmenovalo některou ze svých ulic po Juliu Fučíkovi, a to nejen v Československu. Byla Fučíkova ulice i ve vašem rodném městě? Kde Fučíkova zůstala a kde byla přejmenována? Jednalo se o hlavní bulvár, nebo o uličku na periferii? A je Fučíkova pojmenována po Juliovi nebo jeho strýci a hudebním skladateli Bedřichovi?
+              each key in Object.keys(mapSettings.layers)
 
-              .layer(style="background-color: hsl(60, 60%, 82%);")
-                .title Monumenty ve veřejném prostoru
-                .text Byl Fučík ve veřejném prostoru skutečně všudypřítomný? Vybavíte si některý z pomníků Julia Fučíka, který po roce 1989 zmizel. Můžete na Fučíka ještě někde dnes narazit? Která ze stanic metra dříve nesla název Fučíkova? Vědí vaše děti, kde se nachází “Fučíkárna”?
-
-              .layer(style="background-color: hsl(120, 60%, 82%);")
-                .title Přírodní monumenty
-                .text Jméno Julia Fučíka se nepropsalo jen do měst a obcí, ale i do přírodní krajiny. I když jde spíše o kuriozity, věděli byste, kde hledat horu Julia Fučíka?
-
-              .layer(style="background-color: hsl(30, 60%, 82%);")
-                .title Místa Fučíkova života
-                .text V oficiálním vzpomínání na Julia Fučíka hrála podstatnou roli místa, která Fučík navštívil,  kde žil  nebo kde byl zatčen. Jaké to je žít v bytě, v němž při zatčení Fučík nestřílel?
+                - const {color, description} = mapSettings.layers[key]
 
 
-              .layer(style="background-color: hsl(0, 60%, 82%);")
-                .title Místa z Reportáže
-                .text Dokonce i Reportáž, psaná na oprátce oplývá zajímavou prostorovou dynamikou. Kromě věznění na Pankráci a výslechů v Petschkově paláci se děj odehrává i na dalších místech. Kde komisař Böhm ve známé scéně pokoušel Fučíka a přemlouval ho k výpovědi?
-
-              .layer(style="background-color: hsl(280, 60%, 82%);")
-                .title Konference
-                .text Po válce se uskutečnilo i několik konferencí na fučíkovské téma. Kdo zde vystoupil? A mělo by smysl pořádat konferenci o Fučíkovi i v současné době?
-
-              .layer(style="background-color: hsl(180, 60%, 82%);")
-                .title Fučík po roce 1989
-                .text Některá místa spojená s Juliem Fučíkem se po roce 1989 výrazně proměnila. Kde můžete na Fučíka narazit ještě dnes?
-
-              .layer(style="background-color: hsl(90, 60%, 82%);")
-                .title Podniky a pracovní kolektivy
-                .text Po Fučíkovi bylo pojmenováno i několik podniků. Kde se rozprostíraly Doly Julia Fučíka? Znamenalo toto jméno něco pro místní dělníky?
-
-              .layer(style="background-color: hsl(220, 60%, 82%);")
-                .title Fučík a mládež
-                .text Fučík sloužil jako příkladná postava pro dospívající, proto po něm bylo pojmenováno několik mládežnických organizací. Kdo z vás chodil do pionýrského oddílu Julia Fučíka?
+                .layer(style=`background-color: ${color};`)
+                  .title #{key}
+                  .text #{description}
 
 
 

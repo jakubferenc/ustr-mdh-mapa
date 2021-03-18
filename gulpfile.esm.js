@@ -268,7 +268,7 @@ const prepareObjectJsonWithImages = async (done) => {
 
   const subfolderWithImagesName = 'images';
   const allowedImageExtensions = ['jpg', 'jpeg', 'png'];
-  const generateThumbnailImages = true;
+  const generateThumbnailImages = false;
 
   // create ./temp
   try {
@@ -537,15 +537,17 @@ const prepareObjectJsonWithImages = async (done) => {
     // copy map profile images to temp folder
 
     try {
-      //await copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
-      copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
+      if (!fs.existsSync(`./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`)) {
+        copyFile(`./data-maps/${filename}/${nastaveniJson.mainPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.mainPhoto}`);
+      }
     } catch {
       console.error('The file could not be copied');
     }
 
     try {
-      // await copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
-      copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
+      if (!fs.existsSync(`./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`)) {
+        copyFile(`./data-maps/${filename}/${nastaveniJson.thumbPhoto}`, `./temp/data-maps/${filename}/${nastaveniJson.thumbPhoto}`);
+      }
 
     } catch {
       console.error('The file could not be copied');
@@ -786,7 +788,9 @@ gulp.task('watch', (cb) => {
 
 // GULP:prepare
 gulp.task('prepare-generate-data-images', gulp.series(prepareObjectJsonWithImages));
-gulp.task('prepare-first', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages));
+gulp.task('prepare-first-clean', gulp.series(cleanTempDataFolder, prepareObjectJsonWithImages));
+gulp.task('prepare-first', gulp.series(prepareObjectJsonWithImages));
+
 gulp.task('prepare-second', gulp.series(mergeMapJson));
 
 // GULP:build
